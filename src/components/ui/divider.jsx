@@ -1,15 +1,13 @@
-// src/components/ui/divider.jsx
-export function Divider({ children, className }) {
+export function Divider({ children }) {
   return (
-    <div className={`relative my-4 ${className}`}>
-      <div className="absolute inset-0 flex items-center">
-        <span className="w-full border-t" />
-      </div>
+    <div className="flex items-center my-4" s>
+      <span className="flex-1 border-t border-gray-300"></span>
       {children && (
-        <div className="relative flex justify-center text-[16px] ">
-          <span className="bg-white px-2 text-gray-800">{children}</span>
-        </div>
+        <span className="mx-2 text-base text-gray-800 bg-white px-2">
+          {children}
+        </span>
       )}
+      <span className="flex-1 border-t border-gray-300"></span>
     </div>
   );
 }

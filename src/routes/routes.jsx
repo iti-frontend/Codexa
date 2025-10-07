@@ -3,10 +3,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthRoute from "./AuthRoute";
 import Home from "../pages/Home/Home";
 import Dashboard from "../pages/Dashboard";
-import Register from "../pages/auth/Register";
-import Login from "../pages/auth/Login";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
+import { LoginForm } from "@/components/auth/LoginForm";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export const router = createBrowserRouter([
   // Auth Pages
@@ -17,8 +17,8 @@ export const router = createBrowserRouter([
       </AuthRoute>
     ),
     children: [
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
+      { path: "/login", element: <LoginForm /> },
+      { path: "/register", element: <RegisterForm /> },
     ],
   },
 
