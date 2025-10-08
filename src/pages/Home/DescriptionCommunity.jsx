@@ -1,0 +1,77 @@
+import React from "react";
+import communityImg from "../../assets/Home_Images/community.jpg";
+import { HandHeart, MessagesSquare, Save } from "lucide-react";
+import { Button } from "@/components/ui/button";
+function DescriptionCommunity() {
+  const communitiesList = [
+    {
+      icon: HandHeart,
+      title: "Like & Support",
+      desc: "Show appreciation for valuable content and help the best ideas rise to the top.",
+    },
+    {
+      icon: MessagesSquare,
+      title: "Comment & Discuss",
+      desc: "Engage in thoughtful discussions and learn from diverse perspectives.",
+    },
+    {
+      icon: Save,
+      title: "Save & Organize",
+      desc: "Build your personal library of resources to revisit anytime.",
+    },
+  ];
+
+  return (
+    <section id="community" className="py-14 bg-primary/10">
+      <div className="container mx-auto p-6 w-[90%]  lg:w-full">
+        <div className="text-center  mx-auto ">
+          <h2 className="text-3xl font-bold">
+            Join a Vibrant{" "}
+            <span className="text-primary">Learning Community</span>
+          </h2>
+          <p className="text-muted-foreground py-4">
+            Connect with developers and tech experts from around the world.
+            Share insights through posts and blogs, engage in meaningful
+            discussions, and build lasting professional relationships.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6  items-center py-4  ">
+          <div className="rounded-[12px] overflow-hidden  transition-transform duration-150">
+            <img
+              src={communityImg}
+              alt="community image"
+              className="h-full object-fill hover:scale-101"
+            />
+          </div>
+          <div>
+            <div>
+              <ul className="list-none py-2 flex flex-col gap-3">
+                {communitiesList.map((community) => (
+                  <li className="flex py-2 ">
+                    <div className="bg-primary text-white h-fit p-2 me-2 rounded-xl hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
+                      <community.icon />
+                    </div>
+                    <div>
+                      <h3 className="text-[20px] font-medium">
+                        {community.title}
+                      </h3>
+                      <p className="text-muted-foreground ">{community.desc}</p>
+                    </div>
+                  </li>
+                ))}
+
+                <li className="py-2 text-center lg:text-start ">
+                  <Button className="mt-2 text-primary bg-white hover:bg-white text-xl border border-primary hover:scale-102 transition-all">
+                    Join the Community
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default DescriptionCommunity;
