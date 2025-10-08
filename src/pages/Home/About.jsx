@@ -58,8 +58,8 @@ function About() {
               className="border border-gray-300  hover:scale-103 transition-all text-center md:text-start "
             >
               <CardHeader className="flex flex-col items-center md:items-start">
-                <div className=" bg-primary p-2 text-white text-2xl w-max rounded-xl hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
-                  <ele.icon />
+                <div className=" bg-primary p-2 text-white  w-max rounded-full hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
+                  <ele.icon size={22} />
                 </div>
                 <CardTitle className="font-medium">{ele.title}</CardTitle>
               </CardHeader>

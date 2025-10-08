@@ -35,7 +35,7 @@ function DescriptionCommunity() {
             discussions, and build lasting professional relationships.
           </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6  items-center py-4  ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center py-4  ">
           <div className="rounded-[12px] overflow-hidden  transition-transform duration-150">
             <img
               src={communityImg}
@@ -48,7 +48,7 @@ function DescriptionCommunity() {
               <ul className="list-none py-2 flex flex-col gap-3">
                 {communitiesList.map((community) => (
                   <li className="flex py-2 ">
-                    <div className="bg-primary text-white h-fit p-2 me-2 rounded-xl hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
+                    <div className="bg-primary text-white h-fit p-2 me-2 rounded-full hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
                       <community.icon />
                     </div>
                     <div>
@@ -61,7 +61,7 @@ function DescriptionCommunity() {
                 ))}
 
                 <li className="py-2 text-center lg:text-start ">
-                  <Button className="mt-2 text-primary bg-white hover:bg-white text-xl border border-primary hover:scale-102 transition-all">
+                  <Button className="mt-2 text-primary py-5 bg-white hover:bg-white text-xl border border-primary hover:scale-102 transition-all">
                     Join the Community
                   </Button>
                 </li>

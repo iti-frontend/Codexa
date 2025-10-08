@@ -11,9 +11,8 @@ import img8 from "../../assets/Home_Images/image8.jpg";
 import React from "react";
 import { motion } from "framer-motion";
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8,img1];
+const images = [img1, img2, img3, img4, img5, img6, img7, img8, img1];
 function HeroSection() {
-
   return (
     <section className="py-14 font-inter bg-primary/10">
       <div className="container mx-auto">
@@ -24,7 +23,6 @@ function HeroSection() {
           </h1>
         </div>
         <div>
-       
           <section className="relative pt-3  mx-auto md:mx-0 md:w-full h-[200px] flex items-end justify-center overflow-hidden ">
             <div className="relative w-[700px] ">
               {images.map((src, index) => {
@@ -49,7 +47,7 @@ function HeroSection() {
                     className="absolute w-30 h-30 object-cover rounded-2xl shadow-xl border-2 border-primary"
                     style={{
                       left: `calc(50% + ${x}px - 56px)`,
-                      bottom: `${y * 0.3}px`, 
+                      bottom: `${y * 0.3}px`,
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -66,10 +64,16 @@ function HeroSection() {
               of coders worldwide.
             </p>
             <div className="text-center py-3.5 flex flex-col gap-4 md:flex-row justify-center ">
-              <Button className="bg-primary text-secondary text-xl hover:scale-102  hover:transition-all">
+              <Button
+                className="bg-primary py-5 text-secondary text-lg hover:scale-102  hover:transition-all"
+                size={"lg"}
+              >
                 Start Learning Free <ArrowRight />
               </Button>
-              <Button className="text-primary border border-primary bg-secondary hover:scale-102  transition-all hover:bg-white text-xl">
+              <Button
+                size={"lg"}
+                className="text-primary py-5 border border-primary bg-secondary hover:scale-102  transition-all hover:bg-white text-lg"
+              >
                 Explore Community
               </Button>
             </div>
@@ -88,7 +92,6 @@ function HeroSection() {
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </section>

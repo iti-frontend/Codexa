@@ -40,9 +40,9 @@ function DescriptionCourses() {
             <div>
               <ul className="list-none py-2 flex flex-col gap-3 ">
                 {coursesList.map((course) => (
-                  <li key={course.title} className="flex py-2">
-                    <div className="bg-primary text-white h-fit p-2 me-2 rounded-xl hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
-                      <course.icon />
+                  <li key={course.title} className="flex py-2 gap-2">
+                    <div className="bg-primary text-white h-fit p-2 me-2 rounded-full hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
+                      <course.icon size={22} />
                     </div>
                     <div>
                       <h3 className="text-[20px] font-medium">
@@ -53,7 +53,7 @@ function DescriptionCourses() {
                   </li>
                 ))}
                 <li className="py-2">
-                  <Button className="mt-2 text-xl text-primary bg-white hover:bg-white text-[20px] border border-primary hover:scale-102 transition-all">
+                  <Button className="mt-2 text-xl text-primary py-5 bg-white hover:bg-white text-[20px] border border-primary hover:scale-102 transition-all">
                     Start Learning Free
                   </Button>
                 </li>
