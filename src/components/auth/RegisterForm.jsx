@@ -80,7 +80,7 @@ function RegisterForm() {
         <SocialButtons />
 
         <div className="text-center text-sm">
-          Don't already have account?{" "}
+          already have account?{" "}
           <Link
             to="/login"
             className="text-primary font-medium hover:underline transition-colors"
