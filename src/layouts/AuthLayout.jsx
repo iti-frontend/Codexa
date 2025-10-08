@@ -12,6 +12,7 @@ export default function AuthLayout() {
     <div className="grid min-h-screen lg:grid-cols-2 overflow-hidden">
       {/* Form Section */}
       <Motion.div
+        key={isRegister ? "register-form" : "login-form"}
         initial={{ opacity: 0, x: isRegister ? 400 : -400 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeInOut" }}
@@ -30,6 +31,7 @@ export default function AuthLayout() {
 
       {/* Image Section */}
       <Motion.div
+        key={isRegister ? "register-img" : "login-img"}
         initial={{ opacity: 0, x: isRegister ? -400 : 400 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeInOut" }}
