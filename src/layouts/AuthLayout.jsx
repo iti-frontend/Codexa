@@ -2,15 +2,19 @@ import { Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import registerImg from "@/assets/register.png";
 import loginImg from "@/assets/login.png";
+import { motion as Motion } from "framer-motion";
 
 export default function AuthLayout() {
   const { pathname } = useLocation();
   const isRegister = pathname.includes("register");
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="grid min-h-screen lg:grid-cols-2 overflow-hidden">
       {/* Form Section */}
-      <div
+      <Motion.div
+        initial={{ opacity: 0, x: isRegister ? 400 : -400 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
         className={cn(
           "flex flex-col gap-4 p-6 md:p-10",
           isRegister ? "lg:order-2" : "lg:order-1"
@@ -22,10 +26,13 @@ export default function AuthLayout() {
             <Outlet />
           </div>
         </div>
-      </div>
+      </Motion.div>
 
       {/* Image Section */}
-      <div  
+      <Motion.div
+        initial={{ opacity: 0, x: isRegister ? -400 : 400 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
         className={cn(
           "bg-muted relative hidden lg:block",
           isRegister ? "lg:order-1" : "lg:order-2"
@@ -36,7 +43,7 @@ export default function AuthLayout() {
           alt="Auth Image"
           className="absolute inset-0 h-full w-full object-cover"
         />
-      </div>
+      </Motion.div>
     </div>
   );
 }
