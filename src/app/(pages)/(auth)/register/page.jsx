@@ -1,15 +1,16 @@
-import { Form } from "../ui/form";
-import { FormInput } from "./FormInput";
-import { Lock, Mail, User } from "lucide-react";
-import { Button } from "../ui/button";
-import { Divider } from "../ui/divider";
+"use client";
+
+import { FormInput } from "@/components/auth/FormInput";
+import { SocialButtons } from "@/components/auth/SocialButtons";
+import { Button } from "@/components/ui/button";
+import { Divider } from "@/components/ui/divider";
+import { Form } from "@/components/ui/form";
 import { useRegister } from "@/hooks/userRegister";
+import { Lock, Mail, User } from "lucide-react";
 import Link from "next/link";
-import { SocialButtons } from "./SocialButtons";
 
-function RegisterForm() {
+function RegisterPage() {
   const { form, onSubmit, isSubmitting } = useRegister();
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
@@ -92,4 +93,4 @@ function RegisterForm() {
     </Form>
   );
 }
-export default RegisterForm;
+export default RegisterPage;

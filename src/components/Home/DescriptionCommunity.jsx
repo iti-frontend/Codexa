@@ -1,26 +1,8 @@
 import React from "react";
-import communityImg from "../../assets/Home_Images/community.jpg";
-import { HandHeart, MessagesSquare, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
-function DescriptionCommunity() {
-  const communitiesList = [
-    {
-      icon: HandHeart,
-      title: "Like & Support",
-      desc: "Show appreciation for valuable content and help the best ideas rise to the top.",
-    },
-    {
-      icon: MessagesSquare,
-      title: "Comment & Discuss",
-      desc: "Engage in thoughtful discussions and learn from diverse perspectives.",
-    },
-    {
-      icon: Save,
-      title: "Save & Organize",
-      desc: "Build your personal library of resources to revisit anytime.",
-    },
-  ];
+import { communitiesList } from "@/Constants/Home-data";
 
+function DescriptionCommunity() {
   return (
     <section id="community" className="py-14 bg-primary/10">
       <div className="container mx-auto p-6 w-[90%]  lg:w-full">
@@ -38,7 +20,7 @@ function DescriptionCommunity() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center py-4  ">
           <div className="rounded-[12px] overflow-hidden  transition-transform duration-150">
             <img
-              src={communityImg}
+              src="/Home_Images/community.jpg"
               alt="community image"
               className="h-full object-fill hover:scale-101"
             />
@@ -46,8 +28,8 @@ function DescriptionCommunity() {
           <div>
             <div>
               <ul className="list-none py-2 flex flex-col gap-3">
-                {communitiesList.map((community) => (
-                  <li className="flex py-2 ">
+                {communitiesList.map((community, index) => (
+                  <li key={index} className="flex py-2 ">
                     <div className="bg-primary text-white h-fit p-2 me-2 rounded-full hover:bg-primary/20 hover:text-muted-foreground transition-all duration-200">
                       <community.icon />
                     </div>

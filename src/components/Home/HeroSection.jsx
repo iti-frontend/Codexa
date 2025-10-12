@@ -1,17 +1,20 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import img1 from "../../assets/Home_Images/image1.jpg";
-import img2 from "../../assets/Home_Images/image2.jpg";
-import img3 from "../../assets/Home_Images/image3.jpg";
-import img4 from "../../assets/Home_Images/image4.jpg";
-import img5 from "../../assets/Home_Images/image5.jpg";
-import img6 from "../../assets/Home_Images/image6.jpg";
-import img7 from "../../assets/Home_Images/image7.jpg";
-import img8 from "../../assets/Home_Images/image8.jpg";
 import React from "react";
 import { motion } from "framer-motion";
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8, img1];
+const images = [
+  "/Home_Images/image1.jpg",
+  "/Home_Images/image2.jpg",
+  "/Home_Images/image3.jpg",
+  "/Home_Images/image4.jpg",
+  "/Home_Images/image5.jpg",
+  "/Home_Images/image6.jpg",
+  "/Home_Images/image7.jpg",
+  "/Home_Images/image8.jpg",
+];
+
 function HeroSection() {
   return (
     <section className="py-14 font-inter bg-primary/10">

@@ -1,6 +1,6 @@
 import { Facebook, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import Link from "next/link";
 import React from "react";
-import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -69,7 +69,7 @@ function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Certifications
                 </Link>
               </li>
@@ -81,24 +81,24 @@ function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link
-                  to="#about"
+                  href="#about"
                   className="transition-colors hover:text-primary"
                 >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Press
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Partners
                 </Link>
               </li>
@@ -109,22 +109,22 @@ function Footer() {
             <h4 className="mb-4 font-semibold">Support</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/" className="transition-colors hover:text-primary">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Terms of Service
                 </Link>
               </li>
@@ -139,7 +139,7 @@ function Footer() {
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Mail className="h-4 w-4" />
             <Link
-              to="mailto:hello@codexa.com"
+              href="mailto:hello@codexa.com"
               className="hover:text-foreground"
             >
               hello@codexa.com

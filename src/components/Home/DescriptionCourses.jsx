@@ -1,30 +1,13 @@
 import React from "react";
-import coursesImg from "../../assets/Home_Images/courses.jpg";
-import { Award, Rocket, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-function DescriptionCourses() {
-  const coursesList = [
-    {
-      icon: Rocket,
-      title: "1000+ Quality Courses",
-      desc: "From beginner to advanced, taught by industry experts",
-    },
-    {
-      icon: Award,
-      title: "Skills & Certifications",
-      desc: "Earn recognized badges and certificates",
-    },
-    {
-      icon: TrendingUp,
-      title: "Track Your Progress",
-      desc: "Detailed analytics and personalized learning paths",
-    },
-  ];
+import { coursesList } from "@/Constants/Home-data";
+import Image from "next/image";
 
+function DescriptionCourses() {
   return (
     <section id="courses" className="py-14">
-      <div className="container mx-auto p-6 w-[90%]  lg:w-full">
-        <div className="text-center  mx-auto">
+      <div className="container mx-auto p-6 w-[90%] lg:w-full">
+        <div className="text-center mx-auto">
           <h2 className="text-3xl font-bold">
             Master New Skills with{" "}
             <span className="text-primary">Expert-Led Courses</span>
@@ -62,7 +45,8 @@ function DescriptionCourses() {
           </div>
           <div className="rounded-[12px] overflow-hidden order-first lg:order-none transition-transform duration-150">
             <img
-              src={coursesImg}
+              fill
+              src="/Home_Images/courses.jpg"
               alt="courses image"
               className="h-full object-fill hover:scale-101"
             />

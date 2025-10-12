@@ -1,13 +1,12 @@
-import { Outlet, useLocation } from "react-router-dom";
+"use client";
 import { cn } from "@/lib/utils";
-import registerImg from "@/assets/register.png";
-import loginImg from "@/assets/login.png";
 import { motion as Motion } from "framer-motion";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
-export default function AuthLayout() {
-  const { pathname } = useLocation();
-  const isRegister = pathname.includes("register");
-
+function AuthLayout({ children }) {
+  const pathName = usePathname();
+  const isRegister = pathName === "/register";
   return (
     <div className="grid min-h-screen lg:grid-cols-2 overflow-hidden">
       {/* Form Section */}
@@ -23,8 +22,8 @@ export default function AuthLayout() {
       >
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-md flex flex-col items-center">
-            <img src="/logo.png" alt="logo" className="w-28 h-28 mb-6" />
-            <Outlet />
+            <Image src="/logo.png" alt="logo" fill className="w-28 h-28 mb-6" />
+            {children}
           </div>
         </div>
       </Motion.div>
@@ -40,12 +39,15 @@ export default function AuthLayout() {
           isRegister ? "lg:order-1" : "lg:order-2"
         )}
       >
-        <img
-          src={isRegister ? registerImg : loginImg}
+        <Image
+          src={isRegister ? "/auth/register.png" : "/auth/login.png"}
           alt="Auth Image"
+          fill
+          priority
           className="absolute inset-0 h-full w-full object-cover"
         />
       </Motion.div>
     </div>
   );
 }
+export default AuthLayout;

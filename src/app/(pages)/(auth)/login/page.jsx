@@ -1,18 +1,17 @@
 "use client";
-import React from "react";
-import { Form } from "@/components/ui/form";
+
+import { FormInput } from "@/components/auth/FormInput";
+import { RememberForgot } from "@/components/auth/RememberForgot";
+import { SocialButtons } from "@/components/auth/SocialButtons";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
-import { Mail, Lock } from "lucide-react";
-import { FormInput } from "./FormInput";
-import { SocialButtons } from "./SocialButtons";
+import { Form } from "@/components/ui/form";
 import { useLogin } from "@/hooks/useLogin";
-import { RememberForgot } from "./RememberForgot";
+import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 
-export const LoginForm = () => {
+function LoginPage() {
   const { form, onSubmit, isSubmitting } = useLogin();
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
@@ -72,4 +71,5 @@ export const LoginForm = () => {
       </form>
     </Form>
   );
-};
+}
+export default LoginPage;

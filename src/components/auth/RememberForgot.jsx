@@ -6,7 +6,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export const RememberForgot = ({ control }) => {
   return (
@@ -30,7 +30,7 @@ export const RememberForgot = ({ control }) => {
         )}
       />
       <Link
-        to="/forgot-password"
+        href="/forgot-password"
         className="text-sm text-primary hover:underline transition-colors"
       >
         Forgot password?

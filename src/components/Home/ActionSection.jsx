@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 function ActionSection() {
   return (
     <section className="Action_Section py-14 ">
@@ -15,7 +15,7 @@ function ActionSection() {
           </p>
           <div>
             <Button className="bg-primary py-5 text-secondary hover:scale-102 transition-all mt-2 text-xl">
-              <Link to="/register">Create Your Free Account</Link>
+              <Link href="/register">Create Your Free Account</Link>
             </Button>
           </div>
         </div>

@@ -5,18 +5,17 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { Menu, User } from "lucide-react";
+import Link from "next/link";
 
 function HomeNavbar() {
   return (
     <header className="w-fullshadow-xs font-inter bg-primary/10 ">
       <div className="container mx-auto flex items-center justify-between h-16 px-6">
         {/* ===== Logo ===== */}
-        <Link to="/" className="text-2xl font-bold text-primary">
+        <Link href="/" className="text-2xl font-bold text-primary">
           Codexa
         </Link>
 
@@ -59,9 +58,6 @@ function HomeNavbar() {
         </NavigationMenu>
 
         {/* ===== Login Button ===== */}
-        <Button size="sm" className="bg-primary text-xl text-secondary">
-          <Link to="/login">Login</Link>
-        </Button>
 
         <div className="md:hidden">
           <Sheet>
@@ -75,11 +71,11 @@ function HomeNavbar() {
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-64 p-6">
-              <DialogTitle className="sr-only">Main Navigation</DialogTitle>
+            <SheetContent side="top" className="w-full p-3">
+              <h3 className="sr-only">Main Navigation</h3>
               <nav className="flex flex-col gap-6 text-lg">
                 <Link
-                  to="/"
+                  href="/"
                   className="font-bold text-primary text-xl border-b border-gray-300"
                 >
                   Codexa
@@ -96,6 +92,11 @@ function HomeNavbar() {
                   Reviews
                 </a>
               </nav>
+              <Button size="sm" className="bg-primary text-xl text-secondary">
+                <Link className="flex items-center gap-2" href="/login">
+                  <User /> Login
+                </Link>
+              </Button>
             </SheetContent>
           </Sheet>
         </div>
