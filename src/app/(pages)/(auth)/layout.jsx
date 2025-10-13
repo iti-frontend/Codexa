@@ -22,7 +22,9 @@ function AuthLayout({ children }) {
       >
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-md flex flex-col items-center">
-            <Image src="/logo.png" alt="logo" fill className="w-28 h-28 mb-6" />
+            <div className="relative w-28 h-28 mb-6">
+              {/* <Image src="/logo.png" alt="logo" fill /> */}
+            </div>
             {children}
           </div>
         </div>
