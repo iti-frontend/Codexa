@@ -1,11 +1,12 @@
 import SidebarComponent from "@/components/shared/SidebarComponent";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { InstructorLinks } from "@/Constants/sidebar-links";
 
 function StudentLayout({ children }) {
   return (
     <SidebarProvider>
       {/* The Main Side bar */}
-      <SidebarComponent />
+      <SidebarComponent Links={InstructorLinks} />
 
       {/* The Main Content */}
       <main>
