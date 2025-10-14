@@ -12,7 +12,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "../ui/mode-toggle";
 import { LanguageToggle } from "../ui/language-toggle";
-import { UserMenu } from "./user-menu";
+import { UserMenu } from "../shared/user-menu";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
