@@ -17,12 +17,12 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="gap-3 justify-start px-5 py-6 mt-5"
+          className="gap-3 rounded-2xl justify-start px-5 py-6 mt-5 border-b border-border"
           size="lg"
         >
           {/* User Image */}
-          <Avatar>
-            <AvatarImage src='' />
+          <Avatar className="relative">
+            <AvatarImage src="/auth/login.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           {/* User Details */}

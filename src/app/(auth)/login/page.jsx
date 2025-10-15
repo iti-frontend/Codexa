@@ -9,9 +9,14 @@ import { Form } from "@/components/ui/form";
 import { useLogin } from "@/hooks/useLogin";
 import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function LoginPage() {
   const { form, onSubmit, isSubmitting } = useLogin();
+  const router = useRouter();
+  const handleLogin = () => {
+    router.push("/InstructorDashboard");
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
@@ -51,6 +56,7 @@ function LoginPage() {
           type="submit"
           className="w-full cursor-pointer bg-primary text-white py-2 rounded-lg shadow-md"
           disabled={isSubmitting}
+          onClick={handleLogin}
         >
           {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Settings } from "lucide-react";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export function SettingsMenu() {
   return (
@@ -24,7 +25,9 @@ export function SettingsMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>Dark Mode</DropdownMenuItem>
+        <DropdownMenuItem>
+          <ModeToggle />
+        </DropdownMenuItem>
         <DropdownMenuItem>Language</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
