@@ -22,7 +22,7 @@ export function UserMenu() {
         >
           {/* User Image */}
           <Avatar>
-            <AvatarImage src="" />
+            <AvatarImage src='' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           {/* User Details */}
