@@ -8,9 +8,14 @@ import { Form } from "@/components/ui/form";
 import { useRegister } from "@/hooks/userRegister";
 import { Lock, Mail, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function RegisterPage() {
   const { form, onSubmit, isSubmitting } = useRegister();
+  const router = useRouter();
+  const handleRegister = () => {
+    router.push("/InstructorDashboard");
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
@@ -72,6 +77,7 @@ function RegisterPage() {
           type="submit"
           className="w-full cursor-pointer bg-primary text-white py-2 rounded-lg shadow-md"
           disabled={isSubmitting}
+          onClick={handleRegister}
         >
           {isSubmitting ? "Signing up..." : "Sign Up"}
         </Button>

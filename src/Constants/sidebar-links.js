@@ -1,7 +1,7 @@
 "use client";
 import {  Bell, Bookmark, BookmarkIcon, ChartLine, Grid2x2X, Home, ListChecks, ShoppingCart, Users, Video } from "lucide-react";
 
-
+// Instructor Info
 export const instructorInfo=[{
       avatarSrc:'',
       avatarFallback:'CN',
@@ -9,6 +9,7 @@ export const instructorInfo=[{
       role:'Instructor'
 }]
 
+// Student Info
 export const studentInfo=[{
       avatarSrc:'',
       avatarFallback:'CN',
@@ -17,6 +18,7 @@ export const studentInfo=[{
 
 }]
 
+// Instructor SideBar
 const ins = "/Instructor";
 export const InstructorLinks = [
   { icon: Home, name: "Home", href: `${ins}Dashboard` },
@@ -25,6 +27,7 @@ export const InstructorLinks = [
   { icon: Users, name: "Community", href: "/community" },
 ];
 
+// Student SideBar
 const stu = "/Student";
 export const StudentsLinks = [
   { icon: Home, name: "Home", href: `${stu}Dashboard` },
@@ -36,6 +39,7 @@ export const StudentsLinks = [
   { icon: ShoppingCart, name: "Cart", href: `${stu}Cart` }
 ]; 
 
+// SideBar Tools
 export const ToolsLinks=[
   {icon:Bell,name:'Notification',href:"/notification"},
   {icon:Bookmark,name:'Saved',href:"/saved"}
