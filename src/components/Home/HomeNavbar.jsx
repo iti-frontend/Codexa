@@ -1,149 +1,112 @@
-"use client";
-
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
 import Link from "next/link";
+import { ArrowUpRight, LogOut, Menu } from "lucide-react";
+
+import { Button } from "../ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTrigger,
+} from "../ui/sheet";
 import { ModeToggle } from "../ui/mode-toggle";
 import { LanguageToggle } from "../ui/language-toggle";
-import { UserMenu } from "../shared/user-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import HomeNavMenu from "./HomeNavMenu";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 
-function HomeNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
+export default function HomeNavbar() {
   return (
-    <header
-      className={cn(
-        "w-full shadow-xs font-inter bg-primary/10 sticky top-0 duration-300 z-20",
-        isScrolled ? "bg-white shadow-md" : "bg-primary/10"
-      )}
-    >
-      <div className="container mx-auto flex items-center justify-between h-16 px-6">
-        {/* ===== Logo ===== */}
-        <Link href="/" className="text-2xl font-bold text-primary">
-          Codexa
-        </Link>
+    <nav className="h-16 bg-background border-b">
+      <div className="h-full flex items-center justify-between container mx-auto px-4 sm:px-6 lg:px-8">
+        <Logo />
 
-        {/* ===== Navigation Menu ===== */}
-        <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="flex gap-6">
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <a
-                  href="#community"
-                  className="text-gray-700 hover:text-primary transition text-lg"
-                >
-                  Community
-                </a>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+        {/* Desktop Menu */}
+        <HomeNavMenu className="hidden lg:flex flex-row items-center gap-4" />
 
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <a
-                  href="#about"
-                  className="text-gray-700 hover:text-primary transition text-lg"
-                >
-                  About
-                </a>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-3">
+          {/* Toggles */}
+          <div className="space-x-3 hidden lg:flex">
+            <ModeToggle />
+            <LanguageToggle />
+          </div>
 
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <a
-                  href="#reviews"
-                  className="text-gray-700 hover:text-primary transition text-lg"
-                >
-                  Reviews
-                </a>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+          {/* Get Start Button */}
+          <Button className="group" asChild>
+            <Link href="/login">
+              <ArrowUpRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              Get Started
+            </Link>
+          </Button>
 
-        {/* ===== Action Button ===== */}
-        <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className={"flex gap-2"}>
-            {/* Theme Toggle */}
-            <NavigationMenuItem>
-              <ModeToggle />
-            </NavigationMenuItem>
+          {/* User Button */}
+          <UserAvatar className="hidden lg:flex" />
 
-            {/* Language Toggle */}
-            <NavigationMenuItem>
-              <LanguageToggle />
-            </NavigationMenuItem>
-
-            {/* User Menu */}
-            <NavigationMenuItem>
-              <UserMenu />
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="cursor-pointer text-muted-foreground"
-              >
-                <Menu className="h-8 w-8 text-2xl " />
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent side="top" className="w-full p-3">
-              <h3 className="sr-only">Main Navigation</h3>
-              <nav className="flex flex-col gap-6 text-lg">
-                <Link
-                  href="/"
-                  className="font-bold text-primary text-xl border-b border-gray-300"
-                >
-                  Codexa
-                </Link>
-                <a href="#community" className="hover:text-primary transition">
-                  Community
-                </a>
-                <a href="#about" className="hover:text-primary transition">
-                  {" "}
-                  About
-                </a>
-                <a href="#reviews" className="hover:text-primary transition">
-                  {" "}
-                  Reviews
-                </a>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          {/* Mobile Menu */}
+          <div className="lg:hidden">
+            <NavigationSheet />
+          </div>
         </div>
       </div>
-    </header>
+    </nav>
   );
 }
 
-export default HomeNavbar;
+function NavigationSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon">
+          <Menu />
+        </Button>
+      </SheetTrigger>
+
+      <SheetContent className="pt-7 flex flex-col gap-6">
+        {/* Sheet header */}
+        <SheetHeader className="flex flex-row items-center justify-between border-b pb-3">
+          <Logo />
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            <LanguageToggle />
+          </div>
+        </SheetHeader>
+
+        {/* Mobile nav */}
+        <HomeNavMenu className="flex flex-col gap-2 px-3" />
+
+        {/* Sheet Footer */}
+        <SheetFooter className="border-t gap-5">
+          <UserAvatar />
+
+          {/* Logout Button */}
+          <Button
+            asChild
+            variant="outline"
+            className="bg-transparent text-red-500 hover:text-red-500"
+          >
+            <Link href="/login">
+              <LogOut /> Sign out
+            </Link>
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function Logo() {
+  return <h3 className="text-xl font-bold text-primary">Codexa</h3>;
+}
+
+function UserAvatar({ className }) {
+  return (
+    <Link href="/" className={cn("flex gap-2 items-center", className)}>
+      <Avatar>
+        <AvatarImage src="" />
+        <AvatarFallback>AB</AvatarFallback>
+      </Avatar>
+      <span className="lg:hidden">Abanoub Abdelmessih</span>
+    </Link>
+  );
+}
