@@ -35,8 +35,8 @@ export default function HomeNavbar() {
           {/* Get Start Button */}
           <Button className="group" asChild>
             <Link href="/login">
-              <ArrowUpRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               Get Started
+              <ArrowUpRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
           </Button>
 
