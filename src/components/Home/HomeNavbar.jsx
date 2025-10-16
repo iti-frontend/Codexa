@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 export default function HomeNavbar() {
   return (
-    <nav className="h-16 bg-background border-b">
+    <nav className="h-16 bg-background border-b sticky top-0 z-30">
       <div className="h-full flex items-center justify-between container mx-auto px-4 sm:px-6 lg:px-8">
         <Logo />
 
@@ -31,14 +31,6 @@ export default function HomeNavbar() {
             <ModeToggle />
             <LanguageToggle />
           </div>
-
-          {/* Get Start Button */}
-          <Button className="group" asChild>
-            <Link href="/login">
-              Get Started
-              <ArrowUpRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </Link>
-          </Button>
 
           {/* User Button */}
           <UserAvatar className="hidden lg:flex" />

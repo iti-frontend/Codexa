@@ -4,12 +4,12 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 function HomeFeatures() {
   return (
-    <section className="flex flex-col items-center justify-center p-5">
+    <section className="flex flex-col items-center justify-center py-10 border-y">
       <HomeHeading
         title="Why Choose Codexa ?"
         desc="Codexa offers a unique blend of learning and teaching, fostering a collaborative environment for growth"
       />
-      <main className="flex flex-col md:flex-row items-center justify-center flex-wrap gap-8 mt-8">
+      <main className="flex flex-col md:flex-row items-center justify-center flex-wrap gap-8 mt-5">
         {featuresData.map((feature, index) => (
           <FeaturesCard
             key={index}
