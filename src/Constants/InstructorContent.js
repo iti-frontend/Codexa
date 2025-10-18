@@ -1,10 +1,10 @@
 import {
-  Bell,
-  BellRing,
   BookOpen,
   ChartArea,
   DollarSign,
+  Megaphone,
   Star,
+  Upload,
   Users,
   Video,
 } from "lucide-react";
@@ -44,8 +44,8 @@ export const ActiveCourses = [
 
 // Instructor QuickLinks
 export const quickLinks = [
-  { text: "Create New Courses", icon: Video },
-  { text: "New Announcement", icon: BellRing },
+  { text: "Create New Courses", icon: Upload },
+  { text: "New Announcement", icon: Megaphone },
   { text: "View Analytics", icon: ChartArea },
 ];
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, LogOut, Menu } from "lucide-react";
-
+import { LogOut, Menu } from "lucide-react";
+import { navItems } from "@/Constants/Home-data";
 import { Button } from "../ui/button";
 import {
   Sheet,
@@ -12,7 +12,6 @@ import {
 import { ModeToggle } from "../ui/mode-toggle";
 import { LanguageToggle } from "../ui/language-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import HomeNavMenu from "./HomeNavMenu";
 import { cn } from "@/lib/utils";
 
 export default function HomeNavbar() {
@@ -84,6 +83,30 @@ function NavigationSheet() {
         </SheetFooter>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function HomeNavMenu(props) {
+  return (
+    <div {...props}>
+      {navItems.map((item) => {
+        const Icon = item.icon;
+
+        return (
+          <Button
+            asChild
+            variant={"primary"}
+            className={"!rounded-md justify-start"}
+            key={item.href}
+          >
+            <a key={item.href} href={item.href}>
+              <Icon className="w-4 h-4 lg:hidden" />
+              <span className="block">{item.label}</span>
+            </a>
+          </Button>
+        );
+      })}
+    </div>
   );
 }
 

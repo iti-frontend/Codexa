@@ -8,7 +8,7 @@ import Link from "next/link";
 function HomeCourses() {
   return (
     <section
-      className="flex flex-col items-center justify-center py-10 bg-background"
+      className="flex flex-col items-center justify-center py-10 bg-background px-5"
       id="courses"
     >
       <HomeHeading
