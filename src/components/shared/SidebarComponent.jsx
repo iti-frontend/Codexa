@@ -14,6 +14,7 @@ import { SettingsMenu } from "./settings-menu";
 import { ToolsLinks } from "@/Constants/sidebar-links";
 import { ModeToggle } from "../ui/mode-toggle";
 import { LanguageToggle } from "../ui/language-toggle";
+import { Bot, LogOut } from "lucide-react";
 
 function SidebarComponent({ Links }) {
   const pathName = usePathname();
@@ -59,9 +60,42 @@ function SidebarComponent({ Links }) {
           </Button>
         ))}
       </SidebarContent>
-      <SidebarFooter className="p-5 flex-row">
-        <ModeToggle />
-        <LanguageToggle />
+      <SidebarFooter className="p-5">
+        {/* AI Button */}
+        <Button
+          variant="ghost"
+          className="
+    group/button relative flex items-center justify-start
+    w-fit overflow-hidden
+    transition-all duration-300 ease-in-out
+    hover:w-full
+  "
+        >
+          <Bot className="shrink-0" />
+
+          <span
+            className="
+      inline-block
+      opacity-0 translate-x-[-0.5rem]
+      group-hover/button:opacity-100 group-hover/button:translate-x-0
+      transition-all duration-300 ease-in-out
+      whitespace-nowrap
+    "
+          >
+            Codexa AI
+          </span>
+        </Button>
+
+        {/* Logout Button */}
+        <Button
+          asChild
+          variant="outline"
+          className="bg-transparent text-red-500 hover:text-red-500 w-full"
+        >
+          <Link href="/login">
+            <LogOut /> Sign out
+          </Link>
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );

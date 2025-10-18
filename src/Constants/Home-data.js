@@ -1,17 +1,37 @@
 import {
   Home,
   BookOpen,
-  Info,
   GraduationCap,
   Users,
   Share2,
+  Video,
+  MessageSquareMore,
+  Target,
 } from "lucide-react";
 
 export const navItems = [
   { label: "Home", href: "#", icon: Home },
-  { label: "Community", href: "#community", icon: BookOpen },
-  { label: "Courses", href: "#courses", icon: Info },
-  { label: "Testimonials", href: "#testimonials", icon: Info },
+  { label: "Community", href: "#community", icon: Users },
+  { label: "Courses", href: "#courses", icon: Video },
+  { label: "Testimonials", href: "#testimonials", icon: MessageSquareMore },
+];
+
+export const HeroData = [
+  {
+    icon: BookOpen,
+    title: "Expert Courses",
+    description: "Learn from industry professionals.",
+  },
+  {
+    icon: Users,
+    title: "Community",
+    description: "Connect with fellow learners.",
+  },
+  {
+    icon: Target,
+    title: "Track Progress",
+    description: "Monitor your learning journey.",
+  },
 ];
 
 export const featuresData = [
