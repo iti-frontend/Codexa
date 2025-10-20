@@ -29,6 +29,9 @@ function RegisterPage() {
         </div>
 
         <div className="space-y-4">
+          {/* Role */}
+          <RoleSelect />
+
           <div className="flex flex-col lg:flex-row gap-4">
             {/* first name */}
             <FormInput
@@ -60,9 +63,6 @@ function RegisterPage() {
             icon={Mail}
             error={form.formState.errors.email}
           />
-
-          {/* Role */}
-          <RoleSelect />
 
           {/* Password */}
 

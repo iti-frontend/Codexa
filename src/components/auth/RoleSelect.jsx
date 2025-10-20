@@ -15,14 +15,14 @@ const RoleSelect = () => {
         className="text-foreground py-2 dark:group-hover:bg-input/50 block px-3 text-xs font-medium border-b bg-background
         "
       >
-        Select Your Role
+        Role Selection
       </label>
-      <Select>
+      <Select defaultValue="1">
         <SelectTrigger
           id={"role"}
           className=" w-full rounded-t-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer"
         >
-          <SelectValue placeholder="Select Your Role" />
+          <SelectValue placeholder="Choose your role" />
         </SelectTrigger>
         <SelectContent className="w-[--radix-select-trigger-width] min-w-[var(--radix-select-trigger-width)]">
           <SelectItem value="1">

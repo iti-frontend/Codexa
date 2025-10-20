@@ -1,4 +1,4 @@
-import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 export const SOCIAL_PROVIDERS = [
   {
@@ -10,10 +10,5 @@ export const SOCIAL_PROVIDERS = [
     name: "GitHub",
     icon: FaGithub,
     onClick: () => console.log("GitHub login"),
-  },
-  {
-    name: "Facebook",
-    icon: FaFacebook,
-    onClick: () => console.log("Facebook login"),
   },
 ];
