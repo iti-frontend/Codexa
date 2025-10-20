@@ -9,7 +9,7 @@ const HomeHero = () => {
   return (
     <section className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-5xl mx-auto space-y-8">
           {/* Badge */}
           <div className="flex justify-center">
             <Badge
@@ -50,7 +50,7 @@ const HomeHero = () => {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid sm:grid-cols-3 gap-4 pt-8">
+          <div className="grid sm:grid-cols-3 gap-8 pt-8">
             {HeroData.map((item, index) => (
               <HeroCard
                 key={index}

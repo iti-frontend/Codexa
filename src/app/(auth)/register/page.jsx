@@ -1,6 +1,7 @@
 "use client";
 
 import { FormInput } from "@/components/auth/FormInput";
+import RoleSelect from "@/components/auth/RoleSelect";
 import { SocialButtons } from "@/components/auth/SocialButtons";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
@@ -59,6 +60,9 @@ function RegisterPage() {
             icon={Mail}
             error={form.formState.errors.email}
           />
+
+          {/* Role */}
+          <RoleSelect />
 
           {/* Password */}
 
