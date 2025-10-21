@@ -35,12 +35,12 @@ export default function RoleSelect({ children }) {
       <Stepper value={step} className="w-full space-y-6">
         {/* --- Step Navigation --- */}
         <StepperNav>
-          {[1, 2].map((s) => (
-            <StepperItem key={s} step={s}>
+          {[1, 2].map((step) => (
+            <StepperItem key={step} step={step}>
               <StepperTrigger>
-                <StepperIndicator>{s}</StepperIndicator>
+                <StepperIndicator>{step}</StepperIndicator>
               </StepperTrigger>
-              {s === 1 && (
+              {step === 1 && (
                 <StepperSeparator className="group-data-[state=completed]/step:bg-primary" />
               )}
             </StepperItem>
@@ -76,7 +76,6 @@ export default function RoleSelect({ children }) {
                 variant="outline"
                 size={"lg"}
                 className={"w-full h-12 py-3 text-xl flex-1"}
-                // className="flex items-center justify-center gap-2 border border-border bg-accent cursor-pointer hover:bg-accent/50 duration-300 flex-1 h-24 rounded-md text-xl py-3"
                 onClick={() => handleSelectRole("instructor")}
               >
                 <PiChalkboardTeacher />
