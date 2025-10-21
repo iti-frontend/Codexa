@@ -1,51 +1,30 @@
 "use client";
 
 import { FormInput } from "@/components/auth/FormInput";
+import { RememberForgot } from "@/components/auth/RememberForgot";
 import { SocialButtons } from "@/components/auth/SocialButtons";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
 import { Form } from "@/components/ui/form";
-import { useRegister } from "@/hooks/userRegister";
-import { Lock, Mail, User } from "lucide-react";
+import { useLogin } from "@/hooks/useLogin";
+import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 
-function RegisterPage() {
-  const { form, onSubmit, isSubmitting } = useRegister();
+function LoginPage() {
+  const { form, onSubmit, isSubmitting } = useLogin();
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
         {/* Heading */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold text-primary">Create an account</h1>
-          <p className="text-muted-foreground text-sm">
-            Enter your details to register
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold text-primary">Welcome Back!</h2>
+          <p className="text-gray-600 text-sm">
+            Sign in to your account to continue
           </p>
         </div>
 
         <div className="space-y-4">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {/* first name */}
-            <FormInput
-              control={form.control}
-              name="firstName"
-              label="First Name"
-              placeholder="Jhon"
-              icon={User}
-              error={form.formState.errors.firstName}
-            />
-
-            {/* last name */}
-            <FormInput
-              control={form.control}
-              name="lastName"
-              label="Last Name"
-              placeholder="Doe"
-              icon={User}
-              error={form.formState.errors.lastName}
-            />
-          </div>
-
-          {/* Email */}
           <FormInput
             control={form.control}
             name="email"
@@ -54,8 +33,6 @@ function RegisterPage() {
             icon={Mail}
             error={form.formState.errors.email}
           />
-
-          {/* Password */}
 
           <FormInput
             control={form.control}
@@ -68,12 +45,15 @@ function RegisterPage() {
           />
         </div>
 
+        {/* Remember me and forgot password*/}
+        <RememberForgot control={form.control} />
+
         <Button
           type="submit"
           className="w-full cursor-pointer bg-primary text-white py-2 rounded-lg shadow-md"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Signing up..." : "Sign Up"}
+          {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
 
         <Divider>Or continue with</Divider>
@@ -81,16 +61,16 @@ function RegisterPage() {
         <SocialButtons />
 
         <div className="text-center text-sm">
-          already have account?{" "}
+          Don't have an account?{" "}
           <Link
-            href="/login"
+            href="/register"
             className="text-primary font-medium hover:underline transition-colors"
           >
-            Login
+            Sign up
           </Link>
         </div>
       </form>
     </Form>
   );
 }
-export default RegisterPage;
+export default LoginPage;

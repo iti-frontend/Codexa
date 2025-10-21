@@ -1,23 +1,35 @@
 "use client";
 
 import * as React from "react";
-
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "lucide-react";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 export function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <User className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+        <Button
+          variant="ghost"
+          className="gap-3 rounded-2xl justify-start px-5 py-6 mt-5 border-b border-border"
+          size="lg"
+        >
+          {/* User Image */}
+          <Avatar className="relative">
+            <AvatarImage src="/auth/login.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          {/* User Details */}
+          <div className="space-y-1 flex flex-col items-start justify-start">
+            <h5>Codexa</h5>
+            <h6 className="text-foreground/50 text-xs">Instructor</h6>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
