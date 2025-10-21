@@ -1,41 +1,112 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PiChalkboardTeacher, PiStudent } from "react-icons/pi";
+"use client";
 
-const RoleSelect = () => {
+import {
+  Stepper,
+  StepperContent,
+  StepperIndicator,
+  StepperItem,
+  StepperNav,
+  StepperPanel,
+  StepperSeparator,
+  StepperTrigger,
+} from "@/components/ui/stepper";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { PiChalkboardTeacher, PiStudent } from "react-icons/pi";
+import { useRoleStore } from "@/store/useRoleStore";
+import { ArrowLeft } from "lucide-react";
+
+export default function RoleSelect({ children }) {
+  const [step, setStep] = useState(1);
+  const { role, setRole } = useRoleStore();
+
+  const handleSelectRole = (selectedRole) => {
+    setRole(selectedRole);
+    setStep(2);
+  };
+
+  const handleBack = () => {
+    setRole("");
+    setStep(1);
+  };
+
   return (
-    <div className="border-input group bg-sidebar focus-within:border-ring focus-within:ring-ring/50 has-aria-invalid:ring-destructive/20 overflow-hidden dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive relative w-full rounded-md border shadow-xs transition-[color,box-shadow] outline-none focus-within:ring-[3px] has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50 has-[input:is(:disabled)]:*:pointer-events-none">
-      <label
-        htmlFor={"role"}
-        className="text-foreground py-2 dark:group-hover:bg-input/50 block px-3 text-xs font-medium border-b bg-background
-        "
-      >
-        Select Your Role
-      </label>
-      <Select>
-        <SelectTrigger
-          id={"role"}
-          className=" w-full rounded-t-none border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer"
-        >
-          <SelectValue placeholder="Select Your Role" />
-        </SelectTrigger>
-        <SelectContent className="w-[--radix-select-trigger-width] min-w-[var(--radix-select-trigger-width)]">
-          <SelectItem value="1">
-            <PiStudent /> Student
-          </SelectItem>
-          <SelectItem value="2">
-            <PiChalkboardTeacher />
-            Teacher
-          </SelectItem>
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col items-center w-full">
+      <Stepper value={step} className="w-full space-y-6">
+        {/* --- Step Navigation --- */}
+        <StepperNav>
+          {[1, 2].map((s) => (
+            <StepperItem key={s} step={s}>
+              <StepperTrigger>
+                <StepperIndicator>{s}</StepperIndicator>
+              </StepperTrigger>
+              {s === 1 && (
+                <StepperSeparator className="group-data-[state=completed]/step:bg-primary" />
+              )}
+            </StepperItem>
+          ))}
+        </StepperNav>
+
+        {/* --- Step Content --- */}
+        <StepperPanel>
+          {/* Step 1: Role Selection */}
+          <StepperContent
+            value={1}
+            className="flex flex-col items-center justify-center gap-6 w-full"
+          >
+            <div className="flex flex-col items-center gap-2 text-center">
+              <h2 className="text-xl font-semibold">Choose Your Role</h2>
+              <p className="text-muted-foreground text-sm">
+                Select how you'll be using the platform
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+              <Button
+                variant="outline"
+                size={"lg"}
+                className="w-full h-12 py-3 text-xl flex-1"
+                onClick={() => handleSelectRole("student")}
+              >
+                <PiStudent />
+                <span>Student</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                size={"lg"}
+                className={"w-full h-12 py-3 text-xl flex-1"}
+                // className="flex items-center justify-center gap-2 border border-border bg-accent cursor-pointer hover:bg-accent/50 duration-300 flex-1 h-24 rounded-md text-xl py-3"
+                onClick={() => handleSelectRole("instructor")}
+              >
+                <PiChalkboardTeacher />
+                <span>Instructor</span>
+              </Button>
+            </div>
+          </StepperContent>
+
+          {/* Step 2: Form */}
+          <StepperContent
+            value={2}
+            className="flex flex-col items-center justify-center gap-4 w-full"
+          >
+            <div className="flex flex-col items-center gap-2 text-center mb-2">
+              <h2 className="text-xl font-semibold">
+                <span className="capitalize">{role}</span> Registration
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Fill in your information to get started
+              </p>
+            </div>
+
+            {children}
+
+            <Button variant="outline" size="lg" onClick={handleBack}>
+              <ArrowLeft /> Change role
+            </Button>
+          </StepperContent>
+        </StepperPanel>
+      </Stepper>
     </div>
   );
-};
-
-export default RoleSelect;
+}
