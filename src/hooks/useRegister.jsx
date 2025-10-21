@@ -1,35 +1,45 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { loginSchema } from "@/schemas/auth-schemas";
+import { registerSchema } from "@/schemas/auth-schemas";
 import { useRoleStore } from "@/store/useRoleStore";
-import { useRouter } from "next/navigation";
-import { API_BASE_URL, ENDPOINTS } from "@/Constants/api";
 import axios from "axios";
+import { API_BASE_URL, ENDPOINTS } from "@/Constants/api";
+import { useRouter } from "next/navigation";
 
-export const useLogin = () => {
+export const useRegister = () => {
   // Hooks
   const form = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      role: "student",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
-      remember: false,
     },
     mode: "onBlur",
   });
   const { role } = useRoleStore();
   const router = useRouter();
 
+  // On Submit Function
   const onSubmit = async (values) => {
     try {
       // Detect Role
       const RoleInstructor = role === "instructor";
       const endpoint = RoleInstructor
-        ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
-        : ENDPOINTS.STUDENT_AUTH.LOGIN;
+        ? ENDPOINTS.INSTRUCTOR_AUTH.REGISTER
+        : ENDPOINTS.STUDENT_AUTH.REGISTER;
 
-      await axios.post(`${API_BASE_URL}${endpoint}`, values, {
+      // Payload Data
+      const payload = {
+        name: `${values.firstName} ${values.lastName}`.trim(),
+        email: values.email,
+        password: values.password,
+      };
+
+      await axios.post(`${API_BASE_URL}${endpoint}`, payload, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -38,8 +48,8 @@ export const useLogin = () => {
 
       form.reset();
 
-      toast.success("Login Successful", {
-        description: `Welcome back, ${values.email}`,
+      toast.success("Registration Successful", {
+        description: `Welcome, ${values.email}`,
         duration: 3000,
       });
 
@@ -48,8 +58,13 @@ export const useLogin = () => {
         ? router.push("/InstructorDashboard")
         : router.push("/StudentDashboard");
     } catch (error) {
-      toast.error("Login Failed", {
-        description: "Please check your credentials and try again",
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Please check your credentials and try again";
+
+      toast.error("Registration Failed", {
+        description: errorMessage,
       });
     }
   };
