@@ -1,14 +1,13 @@
-// Base URL
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 // API End points
 export const ENDPOINTS = {
   INSTRUCTOR_AUTH: {
     LOGIN: "/instructors/login",
     REGISTER: "/instructors/register",
+    REGISTER_SOCIAL: "/instructors/social-login",
   },
   STUDENT_AUTH: {
     LOGIN: "/students/login",
     REGISTER: "/students/register",
+    REGISTER_SOCIAL: "/students/social-login",
   },
 };

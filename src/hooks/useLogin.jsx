@@ -4,8 +4,8 @@ import { toast } from "sonner";
 import { loginSchema } from "@/schemas/auth-schemas";
 import { useRoleStore } from "@/store/useRoleStore";
 import { useRouter } from "next/navigation";
-import { API_BASE_URL, ENDPOINTS } from "@/Constants/api";
-import axios from "axios";
+import { ENDPOINTS } from "@/Constants/api-endpoints";
+import api from "@/lib/axios";
 
 export const useLogin = () => {
   // Hooks
@@ -29,12 +29,7 @@ export const useLogin = () => {
         ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
         : ENDPOINTS.STUDENT_AUTH.LOGIN;
 
-      await axios.post(`${API_BASE_URL}${endpoint}`, values, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await api.post(endpoint, values);
 
       form.reset();
 

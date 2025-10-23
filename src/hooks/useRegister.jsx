@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { registerSchema } from "@/schemas/auth-schemas";
 import { useRoleStore } from "@/store/useRoleStore";
-import axios from "axios";
-import { API_BASE_URL, ENDPOINTS } from "@/Constants/api";
+import { ENDPOINTS } from "@/Constants/api-endpoints";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 export const useRegister = () => {
   // Hooks
@@ -39,12 +39,7 @@ export const useRegister = () => {
         password: values.password,
       };
 
-      await axios.post(`${API_BASE_URL}${endpoint}`, payload, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await api.post(endpoint, payload);
 
       form.reset();
 
