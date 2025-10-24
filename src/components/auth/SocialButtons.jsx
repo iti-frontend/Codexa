@@ -10,12 +10,15 @@ import { useRouter } from "next/navigation";
 import { useRoleStore } from "@/store/useRoleStore";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
 import api from "@/lib/axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export const SocialButtons = () => {
   const router = useRouter();
   const { role } = useRoleStore();
+  // need to refactor from store * 1
+  const { handleAuth, userInfo, setErr } = useAuthStore();
   const [loading, setLoading] = useState({});
-
+  //this function need to be converted into hook like the other login methods for not distraction * 2
   const handleSocialLogin = async (providerName) => {
     try {
       setLoading((prev) => ({ ...prev, [providerName]: true }));
@@ -55,6 +58,8 @@ export const SocialButtons = () => {
         throw new Error("No token returned from backend.");
       }
 
+      handleAuth(data);
+      console.log(data.student);
       // Success message
       toast.success(`Welcome ${user.displayName || "User"}!`);
 

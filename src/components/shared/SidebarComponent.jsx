@@ -10,13 +10,12 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { SettingsMenu } from "./settings-menu";
 import { ToolsLinks } from "@/Constants/sidebar-links";
-import { ModeToggle } from "../ui/mode-toggle";
-import { LanguageToggle } from "../ui/language-toggle";
 import { Bot, LogOut } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 function SidebarComponent({ Links }) {
+  const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   return (
     <Sidebar className="!border-0">
@@ -50,7 +49,7 @@ function SidebarComponent({ Links }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
@@ -92,7 +91,7 @@ function SidebarComponent({ Links }) {
           variant="outline"
           className="bg-transparent text-red-500 hover:text-red-500 w-full"
         >
-          <Link href="/login">
+          <Link href="/login" onClick={handleLogout}>
             <LogOut /> Sign out
           </Link>
         </Button>
