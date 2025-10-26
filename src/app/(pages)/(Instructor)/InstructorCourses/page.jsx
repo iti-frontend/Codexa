@@ -2,9 +2,11 @@
 import CreateCourseDialog from "@/components/Dashboard/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useInstructorCourse } from "@/hooks/useInstructorCourse";
+import { useCoursesStore } from "@/store/useCoursesStore";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tabs = [
   {
@@ -51,9 +53,14 @@ const tabs = [
 
 function InstructorCourses() {
   const [open, setOpen] = useState(false);
+  const { courses } = useCoursesStore();
+  const { fetchInstructorCourses } = useInstructorCourse();
+
+  useEffect(() => {
+    fetchInstructorCourses();
+  }, []);
   return (
     <>
-      {/* Courses Header */}
       <header className="flex items-start justify-between p-5">
         <div>
           <h1 className="text-xl lg:text-3xl font-bold mb-1">My Courses</h1>
@@ -70,61 +77,67 @@ function InstructorCourses() {
         </Button>
       </header>
 
-      {/* Tab List */}
+      {/* Tabs */}
       <Tabs defaultValue="active" className="gap-4 p-0">
         <div className="border-b px-5">
           <TabsList className="bg-background rounded-none p-0 space-x-5">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className="data-[state=active]:dark:bg-background data-[state=active]:text-primary data-[state=active]:dark:text-primary data-[state=active]:border-primary p-0 dark:data-[state=active]:border-primary h-full rounded-none border-0 border-b-2 border-transparent data-[state=active]:shadow-none"
-              >
-                {tab.name}
-              </TabsTrigger>
-            ))}
+            <TabsTrigger
+              value="active"
+              className="data-[state=active]:text-primary border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              Active
+            </TabsTrigger>
           </TabsList>
         </div>
 
-        {/* Tab Content */}
-        {tabs.map((tab) => (
-          <TabsContent
-            key={tab.value}
-            value={tab.value}
-            className="space-y-4 px-3 pb-3 md:px-5"
-          >
-            {tab.content}
-          </TabsContent>
-        ))}
+        <TabsContent value="active" className="space-y-4 px-3 pb-3 md:px-5">
+          {courses.length > 0 ? (
+            courses.map((course) => (
+              <CourseCard
+                key={course._id}
+                title={course.title}
+                desc={course.description}
+                price={course.price}
+                instructor={course.instructor?.name}
+              />
+            ))
+          ) : (
+            <p className="text-muted-foreground text-center mt-6">
+              No courses found.
+            </p>
+          )}
+        </TabsContent>
       </Tabs>
 
-      {/* Dialog */}
+      {/* Create Course Dialog */}
       <CreateCourseDialog open={open} onOpenChange={setOpen} />
     </>
   );
 }
 export default InstructorCourses;
 
-function CourseCard({ title, desc }) {
+function CourseCard({ title, desc, price, instructor }) {
   return (
     <div className="bg-sidebar p-3 rounded-3xl border border-border flex flex-col md:flex-row gap-4">
-      {/* Course Image */}
       <div className="relative w-full md:w-64 md:h-36 lg:w-72 xl:w-80 h-40 shrink-0">
         <Image
           src={"/auth/login.png"}
-          alt=""
+          alt="course thumbnail"
           fill
           className="rounded-md object-cover"
         />
       </div>
 
-      {/* Course Details */}
       <div className="flex flex-col gap-4 md:gap-0 justify-between max-w-lg">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <h4 className="font-bold text-lg md:text-2xl">{title}</h4>
           <p className="text-foreground/70 text-sm line-clamp-2">{desc}</p>
+          <p className="text-sm text-muted-foreground">
+            Instructor: {instructor || "Unknown"}
+          </p>
+          <p className="font-semibold">${price}</p>
         </div>
-        <Button className={"w-fit"}>Manage Course</Button>
+        <Button className="w-fit">Manage Course</Button>
       </div>
     </div>
   );

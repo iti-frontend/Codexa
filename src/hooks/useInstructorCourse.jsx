@@ -1,5 +1,6 @@
 import api from "@/lib/axios";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useCoursesStore } from "@/store/useCoursesStore";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -11,6 +12,7 @@ export function useInstructorCourse() {
     formState: { errors, isSubmitting },
   } = useForm();
   const { userToken } = useAuthStore();
+  const { setCourses, addCourse } = useCoursesStore();
 
   // Get Instructor Courses
   async function fetchInstructorCourses() {
@@ -20,6 +22,10 @@ export function useInstructorCourse() {
           Authorization: `Bearer ${userToken}`,
         },
       });
+
+      //   save the courses in state
+      setCourses(res.data);
+      console.log("getting Courses");
       return res.data;
     } catch (error) {
       console.error("Failed to fetch instructor courses:", error);
@@ -44,6 +50,9 @@ export function useInstructorCourse() {
           Authorization: `Bearer ${userToken}`,
         },
       });
+
+      //   add the new course
+      addCourse(res.data);
 
       // Show Message
       toast.success("Course added successfully!");
