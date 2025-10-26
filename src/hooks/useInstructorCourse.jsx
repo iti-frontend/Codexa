@@ -12,7 +12,7 @@ export function useInstructorCourse() {
     formState: { errors, isSubmitting },
   } = useForm();
   const { userToken } = useAuthStore();
-  const { setCourses, addCourse } = useCoursesStore();
+  const { setCourses, addCourse, courses } = useCoursesStore();
 
   // Get Instructor Courses
   async function fetchInstructorCourses() {
@@ -71,5 +71,6 @@ export function useInstructorCourse() {
     reset,
     errors,
     isSubmitting,
+    courses,
   };
 }

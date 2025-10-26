@@ -3,7 +3,6 @@ import CreateCourseDialog from "@/components/Dashboard/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInstructorCourse } from "@/hooks/useInstructorCourse";
-import { useCoursesStore } from "@/store/useCoursesStore";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -53,8 +52,7 @@ const tabs = [
 
 function InstructorCourses() {
   const [open, setOpen] = useState(false);
-  const { courses } = useCoursesStore();
-  const { fetchInstructorCourses } = useInstructorCourse();
+  const { fetchInstructorCourses, courses } = useInstructorCourse();
 
   useEffect(() => {
     fetchInstructorCourses();
