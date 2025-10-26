@@ -1,7 +1,10 @@
+"use client";
+import CreateCourseDialog from "@/components/Dashboard/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 const tabs = [
   {
@@ -47,6 +50,7 @@ const tabs = [
 ];
 
 function InstructorCourses() {
+  const [open, setOpen] = useState(false);
   return (
     <>
       {/* Courses Header */}
@@ -57,8 +61,12 @@ function InstructorCourses() {
             Manage and organize your courses
           </h5>
         </div>
-        <Button className="text-xs md:text-base">
-          <Plus /> New Course
+
+        <Button
+          className="text-xs md:text-base flex items-center gap-2"
+          onClick={() => setOpen(true)}
+        >
+          <Plus size={16} /> New Course
         </Button>
       </header>
 
@@ -89,6 +97,9 @@ function InstructorCourses() {
           </TabsContent>
         ))}
       </Tabs>
+
+      {/* Dialog */}
+      <CreateCourseDialog open={open} onOpenChange={setOpen} />
     </>
   );
 }
