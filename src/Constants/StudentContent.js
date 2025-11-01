@@ -67,3 +67,30 @@ export const TodosCards = [
     { text: "Completed ", number: "5", icon: BookCheck },
     { text: "Pending", number: "4", icon: LoaderCircle },
 ];
+
+export const tasksData = [
+  {
+    id: 1,
+    title: "Design landing page",
+    status: "In Progress",
+    priority: "High",
+    completed: false,
+    date: new Date(2025, 10, 1),
+  },
+  {
+    id: 2,
+    title: "Complete Next Js Course",
+    status: "Pending",
+    priority: "Medium",
+    completed: false,
+    date: new Date(2025, 10, 2),
+  },
+  {
+    id: 3,
+    title: "Write documentation",
+    status: "Done",
+    priority: "Low",
+    completed: true,
+    date: new Date(2025, 10, 3),
+  },
+];
