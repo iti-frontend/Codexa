@@ -10,7 +10,7 @@ export default function Error({ error, reset }) {
     return (
         <div className="h-screen flex flex-col justify-center items-center text-center">
             <h1 className="text-3xl font-bold text-red-600">Something went wrong </h1>
-            <p className="text-gray-50 mt-2">{error.message}</p>
+            <p className="text-red-500 mt-2">{error.message}</p>
 
             <button
                 onClick={() => reset()} 
