@@ -1,5 +1,5 @@
 "use client";
-import {  Bell, Bookmark, BookmarkIcon, ChartLine, Grid2x2X, Home, ListChecks, ShoppingCart, Users, Video } from "lucide-react";
+import {  Award, Bell, Bookmark, BookmarkIcon, ChartLine, CheckCircleIcon, CheckIcon, Grid2x2X, Home, ListChecks, ShoppingCart, Users, Video } from "lucide-react";
 
 // Instructor Info
 export const instructorInfo=[{
@@ -34,8 +34,9 @@ export const StudentsLinks = [
   { icon: Video, name: "My Courses", href: `${stu}Courses` },
   { icon: Grid2x2X, name: "Explore More", href: `${stu}Explore` },
   { icon: ListChecks , name: "Tasks", href: `${stu}Tasks` },
+  { icon: Award , name: "Certifications", href: `${stu}Certifications` },
   { icon: Users, name: "Community", href: "/community" },
-  { icon: BookmarkIcon, name: "Saved", href: "/saved" },
+  { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
   { icon: ShoppingCart, name: "Cart", href: `${stu}Cart` }
 ]; 
 

@@ -5,7 +5,7 @@ import { InstructorLinks, StudentsLinks } from "@/Constants/sidebar-links";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 function PagesLayout({ children }) {
-  const role = "instructor";
+  const role = "student";
   return (
     <SidebarProvider>
       {/* The Main Side bar */}
