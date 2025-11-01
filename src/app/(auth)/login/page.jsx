@@ -25,16 +25,6 @@ export default function LoginPage() {
   const renderForm = () => (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
-        {/* Heading */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-primary">
-            {role === "instructor" ? "Instructor Login" : "Student Login"}
-          </h2>
-          <p className="text-gray-600 text-sm">
-            Sign in to your {role} account to continue
-          </p>
-        </div>
-
         <div className="space-y-4">
           <FormInput
             control={form.control}
@@ -91,6 +81,13 @@ export default function LoginPage() {
         onValueChange={(value) => setRole(value)}
         className="w-full"
       >
+        {/* Heading */}
+        <div className="text-center space-y-2 mb-3">
+          <h2 className="text-2xl font-bold text-primary">Welcome Back</h2>
+          <p className="text-gray-600 text-sm">
+            Sign in to your {role} account to continue
+          </p>
+        </div>
         <TabsList className="grid grid-cols-2 w-full">
           <TabsTrigger value="student">Student</TabsTrigger>
           <TabsTrigger value="instructor">Instructor</TabsTrigger>
