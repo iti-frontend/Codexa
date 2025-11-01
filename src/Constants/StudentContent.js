@@ -61,3 +61,9 @@ export const followingUsers = [
     role:"Mentor"
   },
 ];
+
+export const TodosCards = [
+    { text: "Total Tasks", number: "9", icon: BookOpen },
+    { text: "Completed ", number: "5", icon: BookCheck },
+    { text: "Pending", number: "4", icon: LoaderCircle },
+];

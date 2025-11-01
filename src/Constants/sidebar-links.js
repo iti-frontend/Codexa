@@ -36,7 +36,7 @@ export const StudentsLinks = [
   { icon: ListChecks , name: "Tasks", href: `${stu}Tasks` },
   { icon: Award , name: "Certifications", href: `${stu}Certifications` },
   { icon: Users, name: "Community", href: "/community" },
-  { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
+  { icon: CheckCircleIcon, name: "Todos", href: `${stu}Todos` },
   { icon: ShoppingCart, name: "Cart", href: `${stu}Cart` }
 ]; 
 
