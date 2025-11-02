@@ -190,7 +190,7 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
 
   return (
     <div className="mt-6 space-y-6">
-      <div>
+      <div className="space-y-3">
         <Label>Upload Video(s)</Label>
         <Input
           type="file"

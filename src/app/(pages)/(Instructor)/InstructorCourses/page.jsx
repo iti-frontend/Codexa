@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInstructorCourse } from "@/hooks/useInstructorCourse";
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function InstructorCourses() {
@@ -39,6 +40,7 @@ function InstructorCourses() {
             <CourseCard
               key={course._id}
               title={course.title}
+              id={course._id}
               desc={course.description}
               price={course.price}
               instructor={course.instructor?.name}
@@ -58,7 +60,7 @@ function InstructorCourses() {
 }
 export default InstructorCourses;
 
-function CourseCard({ title, desc, price, instructor }) {
+function CourseCard({ id, title, desc, price, instructor }) {
   return (
     <div className="bg-sidebar p-3 rounded-3xl border border-border flex flex-col md:flex-row gap-4">
       <div className="relative w-full md:w-64 md:h-36 lg:w-72 xl:w-80 h-40 shrink-0">
@@ -79,7 +81,10 @@ function CourseCard({ title, desc, price, instructor }) {
           </p>
           <p className="font-semibold">${price}</p>
         </div>
-        <Button className="w-fit">Manage Course</Button>
+
+        <Button asChild className="w-fit">
+          <Link href={`/InstructorCourses/${id}`}>Manage Course</Link>
+        </Button>
       </div>
     </div>
   );
