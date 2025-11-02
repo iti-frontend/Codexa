@@ -7,49 +7,6 @@ import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const tabs = [
-  {
-    name: "Active",
-    value: "active",
-    content: (
-      <>
-        <CourseCard
-          title="JavaScript"
-          desc="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis facere, dolores aliquam non voluptate vero pariatur tempora temporibus dolore, consectetur reprehenderit nostrum in impedit ut voluptates aut molestiae molestias sunt."
-        />
-        <CourseCard
-          title="React"
-          desc="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis facere, dolores aliquam non voluptate vero pariatur tempora temporibus dolore, consectetur reprehenderit nostrum in impedit ut voluptates aut molestiae molestias sunt."
-        />
-      </>
-    ),
-  },
-  {
-    name: "Drafts",
-    value: "drafts",
-    content: (
-      <>
-        <CourseCard
-          title="Node.js"
-          desc="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis facere, dolores aliquam non voluptate vero pariatur tempora temporibus dolore, consectetur reprehenderit nostrum in impedit ut voluptates aut molestiae molestias sunt."
-        />
-      </>
-    ),
-  },
-  {
-    name: "Archived",
-    value: "archived",
-    content: (
-      <>
-        <CourseCard
-          title="TypeScript"
-          desc="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis facere, dolores aliquam non voluptate vero pariatur tempora temporibus dolore, consectetur reprehenderit nostrum in impedit ut voluptates aut molestiae molestias sunt."
-        />
-      </>
-    ),
-  },
-];
-
 function InstructorCourses() {
   const [open, setOpen] = useState(false);
   const { fetchInstructorCourses, courses } = useInstructorCourse();
@@ -75,37 +32,24 @@ function InstructorCourses() {
         </Button>
       </header>
 
-      {/* Tabs */}
-      <Tabs defaultValue="active" className="gap-4 p-0">
-        <div className="border-b px-5">
-          <TabsList className="bg-background rounded-none p-0 space-x-5">
-            <TabsTrigger
-              value="active"
-              className="data-[state=active]:text-primary border-b-2 border-transparent data-[state=active]:border-primary"
-            >
-              Active
-            </TabsTrigger>
-          </TabsList>
-        </div>
-
-        <TabsContent value="active" className="space-y-4 px-3 pb-3 md:px-5">
-          {courses.length > 0 ? (
-            courses.map((course) => (
-              <CourseCard
-                key={course._id}
-                title={course.title}
-                desc={course.description}
-                price={course.price}
-                instructor={course.instructor?.name}
-              />
-            ))
-          ) : (
-            <p className="text-muted-foreground text-center mt-6">
-              No courses found.
-            </p>
-          )}
-        </TabsContent>
-      </Tabs>
+      {/* Courses */}
+      <div className="p-5 space-y-3">
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <CourseCard
+              key={course._id}
+              title={course.title}
+              desc={course.description}
+              price={course.price}
+              instructor={course.instructor?.name}
+            />
+          ))
+        ) : (
+          <p className="text-muted-foreground text-center mt-6">
+            No courses found.
+          </p>
+        )}
+      </div>
 
       {/* Create Course Dialog */}
       <CreateCourseDialog open={open} onOpenChange={setOpen} />

@@ -1,3 +1,5 @@
+// useInstructorCourse.js
+
 import api from "@/lib/axios";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCoursesStore } from "@/store/useCoursesStore";
@@ -11,54 +13,70 @@ export function useInstructorCourse() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
-  const { userToken } = useAuthStore();
-  const { setCourses, addCourse, courses } = useCoursesStore();
 
-  // Get Instructor Courses
+  const { userToken } = useAuthStore();
+  const { setCourses, addCourse, updateCourse, courses } = useCoursesStore();
+
+  // ✅ Get Instructor Courses
   async function fetchInstructorCourses() {
     try {
-      const res = await api.get("/courses", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
+      const res = await api.get("/courses/my-courses", {
+        headers: { Authorization: `Bearer ${userToken}` },
       });
-
-      //   save the courses in state
       setCourses(res.data);
-      console.log("getting Courses");
       return res.data;
     } catch (error) {
       console.error("Failed to fetch instructor courses:", error);
+      toast.error("Failed to fetch courses");
       throw error;
     }
   }
 
-  // add Course
+  // ✅ Create Course
   async function createCourse(courseData) {
     try {
-      const formData = new FormData();
-      formData.append("title", courseData.title);
-      formData.append("description", courseData.description);
-      formData.append("price", String(courseData.price));
-      formData.append("category", courseData.category);
-      if (courseData.video?.[0]) {
-        formData.append("video", courseData.video[0]);
-      }
-
-      const res = await api.post("/instructors/courses", formData, {
+      const res = await api.post("/courses", courseData, {
         headers: {
           Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
         },
       });
 
-      //   add the new course
       addCourse(res.data);
-
-      // Show Message
-      toast.success("Course added successfully!");
+      toast.success("Course created successfully!");
       return res.data;
     } catch (error) {
-      console.error("Failed to add course:", error);
+      console.error("Failed to create course:", error);
+      toast.error(error.response?.data?.message || "Failed to create course");
+      throw error;
+    }
+  }
+
+  // ✅ Upload Course Videos
+  async function uploadCourseVideos(courseId, videoFiles) {
+    try {
+      const formData = new FormData();
+
+      // Append all selected video files
+      for (const file of videoFiles) {
+        formData.append("videos", file);
+      }
+
+      const res = await api.post(`/courses/${courseId}/videos`, formData, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // optionally update store if API returns updated course
+      updateCourse && updateCourse(courseId, res.data);
+
+      toast.success("Videos uploaded successfully!");
+      return res.data;
+    } catch (error) {
+      console.error("Failed to upload videos:", error);
+      toast.error(error.response?.data?.message || "Failed to upload videos");
       throw error;
     }
   }
@@ -66,6 +84,7 @@ export function useInstructorCourse() {
   return {
     fetchInstructorCourses,
     createCourse,
+    uploadCourseVideos,
     register,
     handleSubmit,
     reset,
