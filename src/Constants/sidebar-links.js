@@ -22,8 +22,9 @@ export const studentInfo = [{
 const ins = "/instructor";
 export const InstructorLinks = [
   { icon: Home, name: "Home", href: `${ins}` },
-  { icon: Video, name: "Courses", href: `${ins}/${ins}-courses` },
-  { icon: ChartLine, name: "Analytics", href: `${ins}/${ins}-analytics` },
+  { icon: Video, name: "Courses", href: `${ins}/courses` },
+  { icon: ChartLine, name: "Analytics", href: `${ins}/analytics` },
+  { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
   { icon: Users, name: "Community", href: "/community" },
 ];
 
@@ -31,13 +32,13 @@ export const InstructorLinks = [
 const stu = "/student";
 export const StudentsLinks = [
   { icon: Home, name: "Home", href: `${stu}` },
-  { icon: Video, name: "My Courses", href: `${stu}/${stu}-courses` },
-  { icon: Grid2x2X, name: "Explore More", href: `${stu}/${stu}-explore` },
-  { icon: ListChecks, name: "Tasks", href: `${stu}/${stu}-tasks` },
-  { icon: Award, name: "Certifications", href: `${stu}/${stu}-certifications` },
+  { icon: Video, name: "My Courses", href: `${stu}/courses` },
+  { icon: Grid2x2X, name: "Explore More", href: `${stu}/explore` },
+  { icon: ListChecks, name: "Tasks", href: `${stu}/tasks` },
+  { icon: Award, name: "Certifications", href: `${stu}/certifications` },
   { icon: Users, name: "Community", href: "/community" },
   { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
-  { icon: ShoppingCart, name: "Cart", href: `${stu}/${stu}-cart` }
+  { icon: ShoppingCart, name: "Cart", href: `${stu}/cart` }
 ];
 
 // SideBar Tools
