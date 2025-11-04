@@ -37,14 +37,13 @@ export const useLogin = () => {
         console.log(res.data);
         form.reset();
         toast.success("Login Successful", {
-          description: `Welcome back, ${res.data.student.name}`,
+          description: `Welcome back, ${res.data.student.name}`, // here it deals with student only when sign with instructor it fails
           duration: 3000,
         });
-        console.log(userInfo);
         // Redirect to dashboard
         RoleInstructor
-          ? router.push("/InstructorDashboard")
-          : router.push("/StudentDashboard");
+          ? router.push("/instructor")
+          : router.push("/student");
       } else {
         toast.error("Missing Credentials", {
           description: 'Please check your credentials and try again.',

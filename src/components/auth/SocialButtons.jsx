@@ -64,7 +64,7 @@ export const SocialButtons = () => {
       toast.success(`Welcome ${user.displayName || "User"}!`);
 
       // Redirect to dashboard
-      router.push(isInstructor ? "/InstructorDashboard" : "/StudentDashboard");
+      router.push(isInstructor ? "/instructor" : "/student");
     } catch (error) {
       const message =
         error.response?.data?.message || error.message || "Login failed";

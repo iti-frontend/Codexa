@@ -46,7 +46,7 @@ export const useRegister = () => {
         handleAuth(res.data);
         console.log(userInfo);
         toast.success("Registration Successful", {
-          description: `Welcome, ${values.email}`,
+          description: `Welcome, ${values.email}`, //need here to update the ui to read from res
           duration: 3000,
         });
       }
