@@ -54,7 +54,7 @@ export const useRegister = () => {
       form.reset();
 
       toast.success("Registration Successful", {
-        description: `Welcome, ${newUser.email}`,
+        description: `Welcome, ${values.email}`,
         duration: 3000,
       });
 
