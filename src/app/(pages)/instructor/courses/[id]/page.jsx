@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +24,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   BookOpen,
@@ -38,6 +41,7 @@ import {
   Upload,
 } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function CourseDetailsPage() {
   const { id } = useParams();
@@ -153,7 +157,7 @@ export default function CourseDetailsPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-background p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-32 w-full" />
@@ -163,13 +167,13 @@ export default function CourseDetailsPage() {
 
   if (!course)
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
+      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
         Course not found
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <HeaderSection
         course={course}
         onEdit={() => setOpenEditDialog(true)}
@@ -225,14 +229,14 @@ export default function CourseDetailsPage() {
 // ----------------------------
 function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
   return (
-    <div className="bg-white border-b">
+    <div className="bg-card border-b">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-            <BookOpen className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <BookOpen className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-semibold text-card-foreground">
               {course.title}
             </h1>
             <div className="flex items-center gap-2 mt-1">
@@ -243,7 +247,7 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
               >
                 {course.status || "Draft"}
               </Badge>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted-foreground">
                 {course.category || "General"}
               </span>
             </div>
@@ -252,10 +256,12 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
 
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={onUpload}>
-            <Upload className="w-4 h-4 mr-1" /> Upload Videos
+            <Upload className="w-4 h-4 mr-2" />
+            Upload Videos
           </Button>
           <Button variant="outline" size="sm" onClick={onEdit}>
-            <Pencil className="w-4 h-4 mr-1" /> Edit
+            <Pencil className="w-4 h-4 mr-2" />
+            Edit
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -263,9 +269,10 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
                 variant="outline"
                 size="sm"
                 disabled={deleting}
-                className="gap-2 text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
               >
-                <Trash2 className="w-4 h-4" /> Delete
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -280,7 +287,7 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={onDelete}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
                   {deleting ? "Deleting..." : "Delete"}
                 </AlertDialogAction>
@@ -299,41 +306,50 @@ function StatsSection({ course }) {
       label: "Price",
       value: `$${course.price}`,
       icon: DollarSign,
-      color: "green",
+      color: "text-green-600",
+      bgColor: "bg-green-100 dark:bg-green-900/20",
     },
     {
       label: "Duration",
       value: course.duration || "N/A",
       icon: Clock,
-      color: "blue",
+      color: "text-blue-600",
+      bgColor: "bg-blue-100 dark:bg-blue-900/20",
     },
     {
       label: "Students",
       value: course.enrolledCount || 0,
       icon: Users,
-      color: "purple",
+      color: "text-purple-600",
+      bgColor: "bg-purple-100 dark:bg-purple-900/20",
     },
     {
       label: "Level",
       value: course.level || "All",
       icon: BarChart3,
-      color: "orange",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100 dark:bg-orange-900/20",
     },
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {stats.map(({ label, value, icon: Icon, color }) => (
-        <div key={label} className="bg-white rounded-lg p-5 border">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {stats.map(({ label, value, icon: Icon, color, bgColor }) => (
+        <div key={label} className="bg-card rounded-lg p-5 border shadow-sm">
           <div className="flex items-center gap-3">
             <div
-              className={`w-10 h-10 rounded-lg bg-${color}-100 flex items-center justify-center`}
+              className={cn(
+                "w-10 h-10 rounded-lg flex items-center justify-center",
+                bgColor
+              )}
             >
-              <Icon className={`w-5 h-5 text-${color}-600`} />
+              <Icon className={cn("w-5 h-5", color)} />
             </div>
             <div>
-              <p className="text-sm text-gray-500">{label}</p>
-              <p className="text-xl font-semibold text-gray-900">{value}</p>
+              <p className="text-sm text-muted-foreground">{label}</p>
+              <p className="text-xl font-semibold text-card-foreground">
+                {value}
+              </p>
             </div>
           </div>
         </div>
@@ -344,13 +360,19 @@ function StatsSection({ course }) {
 
 function InfoSection({ course }) {
   return (
-    <div className="grid grid-cols-3 gap-6">
-      <div className="col-span-2 bg-white rounded-lg p-6 border">
-        <h2 className="text-lg font-semibold mb-3">Description</h2>
-        <p className="text-gray-600">{course.description}</p>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 bg-card rounded-lg p-6 border shadow-sm">
+        <h2 className="text-lg font-semibold text-card-foreground mb-3">
+          Description
+        </h2>
+        <p className="text-muted-foreground leading-relaxed">
+          {course.description}
+        </p>
       </div>
-      <div className="bg-white rounded-lg p-6 border space-y-4">
-        <h2 className="text-lg font-semibold mb-3">Details</h2>
+      <div className="bg-card rounded-lg p-6 border shadow-sm space-y-4">
+        <h2 className="text-lg font-semibold text-card-foreground mb-3">
+          Details
+        </h2>
         <div className="space-y-3 text-sm">
           <DetailItem
             icon={Globe}
@@ -380,10 +402,10 @@ function InfoSection({ course }) {
 function DetailItem({ icon: Icon, label, value }) {
   return (
     <div className="flex items-center gap-3">
-      <Icon className="w-4 h-4 text-gray-400" />
+      <Icon className="w-4 h-4 text-muted-foreground" />
       <div>
-        <p className="text-xs text-gray-500">{label}</p>
-        <p className="font-medium text-gray-900">{value}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="font-medium text-card-foreground">{value}</p>
       </div>
     </div>
   );
@@ -392,12 +414,12 @@ function DetailItem({ icon: Icon, label, value }) {
 function VideosSection({ course, onPlay, onDelete }) {
   if (!course.videos?.length) {
     return (
-      <div className="bg-white rounded-lg p-6 border text-center">
-        <Video className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+      <div className="bg-card rounded-lg p-8 border shadow-sm text-center">
+        <Video className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+        <h3 className="text-lg font-medium text-card-foreground mb-2">
           No Videos Yet
         </h3>
-        <p className="text-gray-500 mb-4">
+        <p className="text-muted-foreground mb-4">
           Upload videos to get started with your course content.
         </p>
       </div>
@@ -405,37 +427,41 @@ function VideosSection({ course, onPlay, onDelete }) {
   }
 
   return (
-    <div className="bg-white rounded-lg p-6 border">
+    <div className="bg-card rounded-lg p-6 border shadow-sm">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-lg font-semibold">Course Content</h2>
+        <h2 className="text-lg font-semibold text-card-foreground">
+          Course Content
+        </h2>
         <Badge variant="secondary">{course.videos.length} videos</Badge>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {course.videos.map((video, i) => (
           <div
             key={video.id || i}
-            className="group relative rounded-lg border overflow-hidden hover:border-blue-500 transition-all"
+            className="group relative rounded-lg border overflow-hidden hover:border-primary/50 transition-all shadow-sm"
           >
-            <div className="relative aspect-video bg-gray-900">
+            <div className="relative aspect-video bg-muted">
               <video src={video.url} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button
                   onClick={() => onPlay(video)}
                   size="icon"
-                  className="bg-white/90 hover:bg-white"
+                  className="bg-background/90 hover:bg-background"
                 >
-                  <PlayCircle className="text-gray-800" />
+                  <PlayCircle className="w-5 h-5 text-foreground" />
                 </Button>
               </div>
             </div>
             <div className="p-4 flex justify-between items-center">
-              <p className="font-medium text-sm">{video.title}</p>
+              <p className="font-medium text-sm text-card-foreground truncate">
+                {video.title}
+              </p>
               <Button
                 size="icon"
                 variant="ghost"
                 onClick={() => onDelete(video)}
-                className="text-red-500 hover:text-red-600"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -460,40 +486,54 @@ function EditCourseDialog({
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit Course</DialogTitle>
+          <DialogDescription>
+            Make changes to your course information here.
+          </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3">
-          <input
-            className="w-full border rounded p-2"
-            placeholder="Title"
-            value={editData.title}
-            onChange={(e) =>
-              setEditData({ ...editData, title: e.target.value })
-            }
-          />
-          <textarea
-            className="w-full border rounded p-2"
-            rows={3}
-            placeholder="Description"
-            value={editData.description}
-            onChange={(e) =>
-              setEditData({ ...editData, description: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            className="w-full border rounded p-2"
-            placeholder="Price"
-            value={editData.price}
-            onChange={(e) =>
-              setEditData({ ...editData, price: e.target.value })
-            }
-          />
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Title</label>
+            <Input
+              placeholder="Course title"
+              value={editData.title}
+              onChange={(e) =>
+                setEditData({ ...editData, title: e.target.value })
+              }
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">
+              Description
+            </label>
+            <Textarea
+              rows={3}
+              placeholder="Course description"
+              value={editData.description}
+              onChange={(e) =>
+                setEditData({ ...editData, description: e.target.value })
+              }
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Price</label>
+            <Input
+              type="number"
+              placeholder="Course price"
+              value={editData.price}
+              onChange={(e) =>
+                setEditData({ ...editData, price: e.target.value })
+              }
+            />
+          </div>
         </div>
-        <div className="flex justify-end mt-4">
-          <Button onClick={onSave} disabled={loading}>
-            {loading ? "Saving..." : "Save"}
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
           </Button>
-        </div>
+          <Button onClick={onSave} disabled={loading}>
+            {loading ? "Saving..." : "Save Changes"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -518,7 +558,7 @@ function UploadVideosDialog({
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/40 transition-colors">
             <input
               type="file"
               multiple
@@ -528,24 +568,27 @@ function UploadVideosDialog({
               id="video-upload"
             />
             <label htmlFor="video-upload" className="cursor-pointer block">
-              <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">
+              <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">
                 Click to select video files
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Supports multiple files
               </p>
             </label>
           </div>
 
           {selectedFiles.length > 0 && (
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-sm font-medium text-foreground mb-2">
                 Selected files ({selectedFiles.length}):
               </p>
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {selectedFiles.map((file, index) => (
-                  <div key={index} className="text-xs text-gray-600 truncate">
+                  <div
+                    key={index}
+                    className="text-xs text-muted-foreground truncate"
+                  >
                     • {file.name}
                   </div>
                 ))}
@@ -554,7 +597,7 @@ function UploadVideosDialog({
           )}
         </div>
 
-        <div className="flex justify-end gap-2 mt-4">
+        <DialogFooter>
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
@@ -565,12 +608,11 @@ function UploadVideosDialog({
           <Button
             onClick={onUpload}
             disabled={loading || !selectedFiles.length}
-            className="gap-2"
           >
-            <Upload className="w-4 h-4" />
+            <Upload className="w-4 h-4 mr-2" />
             {loading ? "Uploading..." : "Upload Videos"}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -581,7 +623,9 @@ function VideoDialog({ video, onClose }) {
     <Dialog open={!!video} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>{video?.title}</DialogTitle>
+          <DialogTitle className="text-card-foreground">
+            {video?.title}
+          </DialogTitle>
           <DialogDescription>{video?.description}</DialogDescription>
         </DialogHeader>
         {video && (
@@ -589,7 +633,7 @@ function VideoDialog({ video, onClose }) {
             src={video.url}
             controls
             autoPlay
-            className="w-full rounded-lg"
+            className="w-full rounded-lg border"
           />
         )}
       </DialogContent>
@@ -610,7 +654,7 @@ function DeleteVideoDialog({ video, onCancel, onConfirm }) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             onClick={onConfirm}
           >
             Delete
