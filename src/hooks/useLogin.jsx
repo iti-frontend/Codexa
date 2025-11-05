@@ -30,14 +30,14 @@ export const useLogin = () => {
         ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
         : ENDPOINTS.STUDENT_AUTH.LOGIN;
 
+
       const res = await api.post(endpoint, values);
       if (res.status === 200) {
         handleAuth(res.data);
-        console.log(userInfo);
-        console.log(res.data);
+        const user = res.data.admin || res.data.student || res.data.instructor || null;
         form.reset();
         toast.success("Login Successful", {
-          description: `Welcome back, ${res.data.student.name}`, // here it deals with student only when sign with instructor it fails
+          description: `Welcome back, ${user.name}`, // here it deals with student only when sign with instructor it fails
           duration: 3000,
         });
         // Redirect to dashboard

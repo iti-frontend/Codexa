@@ -7,7 +7,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import Cookies from "js-cookie";
 function PagesLayout({ children }) {
-  // not a best practice at all but when i use zustand the value of role is null cause its an async
+  // not a best practice at all but when i use zustand the value of role is null cause its an async **
   const userInfo = Cookies.get("userInfo");
   const role = userInfo ? JSON.parse(userInfo).role : "";
   const isInstructor = role === "Instructor";
