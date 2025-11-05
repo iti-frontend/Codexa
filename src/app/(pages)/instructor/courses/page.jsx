@@ -83,7 +83,7 @@ function CourseCard({ id, title, desc, price, instructor }) {
         </div>
 
         <Button asChild className="w-fit">
-          <Link href={`/InstructorCourses/${id}`}>Manage Course</Link>
+          <Link href={`/instructor/courses/${id}`}>Manage Course</Link>
         </Button>
       </div>
     </div>

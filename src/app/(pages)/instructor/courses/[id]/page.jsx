@@ -103,7 +103,7 @@ export default function CourseDetailsPage() {
       setDeleting(true);
       await deleteCourse(id);
       toast.success("Course deleted");
-      router.push("/InstructorCourses");
+      router.push("/instructor/courses");
     } catch {
       toast.error("Failed to delete course");
     } finally {
