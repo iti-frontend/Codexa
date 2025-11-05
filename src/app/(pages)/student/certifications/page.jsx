@@ -1,12 +1,12 @@
 import CertificationCard from '@/components/Dashboard/CertificationCard'
 import React from 'react'
 
-function page() {
+function StudentCertifications() {
   return (
     <div>
-      <CertificationCard/>
+      <CertificationCard />
     </div>
   )
 }
 
-export default page
+export default StudentCertifications

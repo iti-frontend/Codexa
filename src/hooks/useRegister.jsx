@@ -44,9 +44,8 @@ export const useRegister = () => {
       const res = await api.post(endpoint, payload);
       if (res.status === 200) {
         handleAuth(res.data);
-        console.log(userInfo);
         toast.success("Registration Successful", {
-          description: `Welcome, ${values.email}`,
+          description: `Welcome, ${values.email}`, //need here to update the ui to read from res
           duration: 3000,
         });
       }
@@ -55,14 +54,14 @@ export const useRegister = () => {
       form.reset();
 
       toast.success("Registration Successful", {
-        description: `Welcome, ${values.email}`,
+        description: `Welcome, ${newUser.email}`,
         duration: 3000,
       });
 
       // Redirect to dashboard
       RoleInstructor
-        ? router.push("/InstructorDashboard")
-        : router.push("/StudentDashboard");
+        ? router.push("/instructor")
+        : router.push("/student");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||

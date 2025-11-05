@@ -30,21 +30,20 @@ export const useLogin = () => {
         ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
         : ENDPOINTS.STUDENT_AUTH.LOGIN;
 
+
       const res = await api.post(endpoint, values);
       if (res.status === 200) {
         handleAuth(res.data);
-        console.log(userInfo);
-        console.log(res.data);
+        const user = res.data.admin || res.data.student || res.data.instructor || null;
         form.reset();
         toast.success("Login Successful", {
-          description: `Welcome back, ${res.data.student.name}`,
+          description: `Welcome back, ${user.name}`, // here it deals with student only when sign with instructor it fails
           duration: 3000,
         });
-        console.log(userInfo);
         // Redirect to dashboard
         RoleInstructor
-          ? router.push("/InstructorDashboard")
-          : router.push("/StudentDashboard");
+          ? router.push("/instructor")
+          : router.push("/student");
       } else {
         toast.error("Missing Credentials", {
           description: 'Please check your credentials and try again.',

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SOCIAL_PROVIDERS } from "@/Constants/social-providers";
@@ -59,12 +58,11 @@ export const SocialButtons = () => {
       }
 
       handleAuth(data);
-      console.log(data.student);
       // Success message
       toast.success(`Welcome ${user.displayName || "User"}!`);
 
       // Redirect to dashboard
-      router.push(isInstructor ? "/InstructorDashboard" : "/StudentDashboard");
+      router.push(isInstructor ? "/instructor" : "/student");
     } catch (error) {
       const message =
         error.response?.data?.message || error.message || "Login failed";
