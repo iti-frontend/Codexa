@@ -8,6 +8,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -39,9 +46,17 @@ import {
   Globe,
   BarChart3,
   Upload,
+  Image as ImageIcon,
+  FileText,
+  TrendingUp,
+  CheckCircle2,
+  UserCheck,
+  Loader2,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
 
 export default function CourseDetailsPage() {
   const { id } = useParams();
@@ -50,6 +65,7 @@ export default function CourseDetailsPage() {
     fetchCourseById,
     deleteCourse,
     updateCourse,
+    updateCourseWithCoverImage,
     deleteCourseVideo,
     uploadNewVideoToCourse,
   } = useInstructorCourse();
@@ -64,11 +80,20 @@ export default function CourseDetailsPage() {
     title: "",
     description: "",
     price: "",
+    category: "",
+    level: "",
+    status: "",
+    prerequisites: "",
+    language: "",
   });
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [openImageDialog, setOpenImageDialog] = useState(false);
   const [videoToDelete, setVideoToDelete] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedCoverImage, setSelectedCoverImage] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -80,6 +105,11 @@ export default function CourseDetailsPage() {
             title: data.title || "",
             description: data.description || "",
             price: data.price || "",
+            category: data.category || "",
+            level: data.level || "",
+            status: data.status || "",
+            prerequisites: data.prerequisites || "",
+            language: data.language || "",
           });
         })
         .catch(console.error)
@@ -140,7 +170,6 @@ export default function CourseDetailsPage() {
       setOpenUploadDialog(false);
       setSelectedFiles([]);
 
-      // Refresh course data to show new videos
       const updated = await fetchCourseById(id);
       setCourse(updated);
     } catch (error) {
@@ -148,6 +177,65 @@ export default function CourseDetailsPage() {
     } finally {
       setUploading(false);
     }
+  };
+
+  const handleUploadCoverImage = async () => {
+    if (!selectedCoverImage) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+
+      // Use the updateCourseWithCoverImage function from the hook
+      await updateCourseWithCoverImage(id, {}, selectedCoverImage);
+
+      toast.success("Cover image updated successfully!");
+      setOpenImageDialog(false);
+      setSelectedCoverImage(null);
+      setImagePreview(null);
+
+      // Refresh course data
+      const updated = await fetchCourseById(id);
+      setCourse(updated);
+    } catch (error) {
+      console.error("Failed to upload cover image:", error);
+      toast.error("Failed to upload cover image");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleCoverImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
+    setSelectedCoverImage(file);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveSelectedImage = () => {
+    setSelectedCoverImage(null);
+    setImagePreview(null);
   };
 
   const handleFileSelect = (e) => {
@@ -158,8 +246,9 @@ export default function CourseDetailsPage() {
   if (loading)
     return (
       <div className="min-h-screen bg-background p-6">
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
           <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-64 w-full" />
           <Skeleton className="h-32 w-full" />
         </div>
       </div>
@@ -178,13 +267,28 @@ export default function CourseDetailsPage() {
         course={course}
         onEdit={() => setOpenEditDialog(true)}
         onUpload={() => setOpenUploadDialog(true)}
+        onUploadImage={() => setOpenImageDialog(true)}
         onDelete={handleDeleteCourse}
         deleting={deleting}
       />
 
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        <CoverImageSection
+          course={course}
+          onUploadImage={() => setOpenImageDialog(true)}
+        />
         <StatsSection course={course} />
-        <InfoSection course={course} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <InfoSection course={course} />
+            <PrerequisitesSection course={course} />
+          </div>
+          <div className="space-y-6">
+            <DetailsCard course={course} />
+            <InstructorCard course={course} />
+          </div>
+        </div>
+        <EnrollmentSection course={course} />
         <VideosSection
           course={course}
           onPlay={(video) => setSelectedVideo(video)}
@@ -199,6 +303,18 @@ export default function CourseDetailsPage() {
         setEditData={setEditData}
         onSave={handleUpdateCourse}
         loading={editing}
+      />
+
+      <UploadCoverImageDialog
+        open={openImageDialog}
+        setOpen={setOpenImageDialog}
+        selectedCoverImage={selectedCoverImage}
+        imagePreview={imagePreview}
+        onFileSelect={handleCoverImageSelect}
+        onRemoveImage={handleRemoveSelectedImage}
+        onUpload={handleUploadCoverImage}
+        loading={uploadingImage}
+        currentCoverImage={course.coverImage?.url}
       />
 
       <UploadVideosDialog
@@ -227,27 +343,33 @@ export default function CourseDetailsPage() {
 // ----------------------------
 // Sub Components
 // ----------------------------
-function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
+function HeaderSection({
+  course,
+  onEdit,
+  onUpload,
+  onUploadImage,
+  onDelete,
+  deleting,
+}) {
   return (
-    <div className="bg-card border-b">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-            <BookOpen className="w-5 h-5 text-primary" />
+    <div className="bg-card border-b shadow-sm">
+      <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center ring-2 ring-primary/20">
+            <BookOpen className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-card-foreground">
+            <h1 className="text-2xl font-bold text-card-foreground">
               {course.title}
             </h1>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-1.5">
               <Badge
-                variant={
-                  course.status === "published" ? "default" : "secondary"
-                }
+                variant={course.status === "public" ? "default" : "secondary"}
+                className="font-medium"
               >
                 {course.status || "Draft"}
               </Badge>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground font-medium">
                 {course.category || "General"}
               </span>
             </div>
@@ -272,24 +394,34 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
                 className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Delete
+                {deleting ? "Deleting..." : "Delete"}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete Course?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently delete the course. This action cannot be
-                  undone.
+                  This will permanently delete the course and all its content.
+                  This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel disabled={deleting}>
+                  Cancel
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={onDelete}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  disabled={deleting}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-2"
                 >
-                  {deleting ? "Deleting..." : "Delete"}
+                  {deleting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    "Delete"
+                  )}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -300,99 +432,236 @@ function HeaderSection({ course, onEdit, onUpload, onDelete, deleting }) {
   );
 }
 
+function CoverImageSection({ course, onUploadImage }) {
+  return (
+    <div className="relative w-full h-80 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background border shadow-lg group">
+      {course.coverImage?.url ? (
+        <>
+          <img
+            src={course.coverImage.url}
+            alt={course.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        </>
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <ImageIcon className="w-16 h-16 text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-muted-foreground font-medium">No cover image</p>
+          </div>
+        </div>
+      )}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+        <Button onClick={onUploadImage} size="lg" className="shadow-xl">
+          <ImageIcon className="w-5 h-5 mr-2" />
+          {course.coverImage?.url ? "Change Cover" : "Upload Cover"}
+        </Button>
+      </div>
+      {course.coverImage?.url && (
+        <div className="absolute bottom-6 left-6 right-6">
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+            {course.title}
+          </h2>
+          <p className="text-white/90 mt-2 text-lg drop-shadow-md">
+            {course.category}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StatsSection({ course }) {
   const stats = [
     {
       label: "Price",
       value: `$${course.price}`,
       icon: DollarSign,
-      color: "text-green-600",
-      bgColor: "bg-green-100 dark:bg-green-900/20",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+      borderColor: "border-emerald-200 dark:border-emerald-900",
     },
     {
       label: "Duration",
       value: course.duration || "N/A",
       icon: Clock,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100 dark:bg-blue-900/20",
+      color: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-950/30",
+      borderColor: "border-blue-200 dark:border-blue-900",
     },
     {
-      label: "Students",
-      value: course.enrolledCount || 0,
+      label: "Enrolled Students",
+      value: course.enrolledStudents?.length || 0,
       icon: Users,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100 dark:bg-purple-900/20",
+      color: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-50 dark:bg-purple-950/30",
+      borderColor: "border-purple-200 dark:border-purple-900",
     },
     {
       label: "Level",
-      value: course.level || "All",
+      value: course.level || "All Levels",
       icon: BarChart3,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100 dark:bg-orange-900/20",
+      color: "text-orange-600 dark:text-orange-400",
+      bgColor: "bg-orange-50 dark:bg-orange-950/30",
+      borderColor: "border-orange-200 dark:border-orange-900",
+    },
+    {
+      label: "Progress Tracking",
+      value: course.progress?.length || 0,
+      icon: TrendingUp,
+      color: "text-cyan-600 dark:text-cyan-400",
+      bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+      borderColor: "border-cyan-200 dark:border-cyan-900",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map(({ label, value, icon: Icon, color, bgColor }) => (
-        <div key={label} className="bg-card rounded-lg p-5 border shadow-sm">
-          <div className="flex items-center gap-3">
-            <div
-              className={cn(
-                "w-10 h-10 rounded-lg flex items-center justify-center",
-                bgColor
-              )}
-            >
-              <Icon className={cn("w-5 h-5", color)} />
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {stats.map(
+        ({ label, value, icon: Icon, color, bgColor, borderColor }) => (
+          <div
+            key={label}
+            className={cn(
+              "bg-card rounded-xl p-5 border-2 shadow-sm hover:shadow-md transition-all",
+              borderColor
+            )}
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div
+                className={cn(
+                  "w-11 h-11 rounded-lg flex items-center justify-center",
+                  bgColor
+                )}
+              >
+                <Icon className={cn("w-5 h-5", color)} />
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">{label}</p>
-              <p className="text-xl font-semibold text-card-foreground">
-                {value}
-              </p>
-            </div>
+            <p className="text-sm text-muted-foreground font-medium mb-1">
+              {label}
+            </p>
+            <p className="text-2xl font-bold text-card-foreground">{value}</p>
           </div>
-        </div>
-      ))}
+        )
+      )}
     </div>
   );
 }
 
 function InfoSection({ course }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 bg-card rounded-lg p-6 border shadow-sm">
-        <h2 className="text-lg font-semibold text-card-foreground mb-3">
-          Description
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <div className="flex items-center gap-2 mb-4">
+        <FileText className="w-5 h-5 text-primary" />
+        <h2 className="text-xl font-bold text-card-foreground">
+          Course Description
         </h2>
-        <p className="text-muted-foreground leading-relaxed">
-          {course.description}
-        </p>
       </div>
-      <div className="bg-card rounded-lg p-6 border shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-card-foreground mb-3">
-          Details
+      <p className="text-muted-foreground leading-relaxed text-base">
+        {course.description || "No description provided."}
+      </p>
+    </div>
+  );
+}
+
+function PrerequisitesSection({ course }) {
+  if (!course.prerequisites) return null;
+
+  return (
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <div className="flex items-center gap-2 mb-4">
+        <CheckCircle2 className="w-5 h-5 text-primary" />
+        <h2 className="text-xl font-bold text-card-foreground">
+          Prerequisites
         </h2>
-        <div className="space-y-3 text-sm">
-          <DetailItem
-            icon={Globe}
-            label="Language"
-            value={course.language || "English"}
+      </div>
+      <p className="text-muted-foreground leading-relaxed text-base">
+        {course.prerequisites}
+      </p>
+    </div>
+  );
+}
+
+function DetailsCard({ course }) {
+  return (
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
+        <BookOpen className="w-5 h-5 text-primary" />
+        Course Details
+      </h2>
+      <div className="space-y-4">
+        <DetailItem
+          icon={Globe}
+          label="Language"
+          value={course.language || "English"}
+        />
+        <DetailItem
+          icon={BarChart3}
+          label="Difficulty Level"
+          value={course.level || "All Levels"}
+        />
+        <DetailItem
+          icon={Video}
+          label="Total Videos"
+          value={`${course.videos?.length || 0} lessons`}
+        />
+        <DetailItem
+          icon={Calendar}
+          label="Created"
+          value={
+            course.createdAt
+              ? new Date(course.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
+        <DetailItem
+          icon={Calendar}
+          label="Last Updated"
+          value={
+            course.updatedAt
+              ? new Date(course.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
+function InstructorCard({ course }) {
+  if (!course.instructor) return null;
+
+  return (
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
+        <UserCheck className="w-5 h-5 text-primary" />
+        Instructor
+      </h2>
+      <div className="flex items-center gap-4">
+        {course.instructor.profileImage ? (
+          <img
+            src={course.instructor.profileImage}
+            alt={course.instructor.name}
+            className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
           />
-          <DetailItem
-            icon={Calendar}
-            label="Last Updated"
-            value={
-              course.updatedAt
-                ? new Date(course.updatedAt).toLocaleDateString()
-                : "N/A"
-            }
-          />
-          <DetailItem
-            icon={Video}
-            label="Videos"
-            value={`${course.videos?.length || 0} lessons`}
-          />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+            <UserCheck className="w-8 h-8 text-primary" />
+          </div>
+        )}
+        <div>
+          <p className="font-bold text-card-foreground text-lg">
+            {course.instructor.name}
+          </p>
+          <p className="text-sm text-muted-foreground">Course Instructor</p>
         </div>
       </div>
     </div>
@@ -401,12 +670,40 @@ function InfoSection({ course }) {
 
 function DetailItem({ icon: Icon, label, value }) {
   return (
-    <div className="flex items-center gap-3">
-      <Icon className="w-4 h-4 text-muted-foreground" />
-      <div>
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="font-medium text-card-foreground">{value}</p>
+    <div className="flex items-start gap-3 pb-4 border-b last:border-b-0 last:pb-0">
+      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <Icon className="w-4 h-4 text-primary" />
       </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+          {label}
+        </p>
+        <p className="font-semibold text-card-foreground">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function EnrollmentSection({ course }) {
+  const enrolledCount = course.enrolledStudents?.length || 0;
+
+  if (enrolledCount === 0) return null;
+
+  return (
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xl font-bold text-card-foreground flex items-center gap-2">
+          <Users className="w-5 h-5 text-primary" />
+          Enrolled Students
+        </h2>
+        <Badge variant="secondary" className="text-base px-3 py-1">
+          {enrolledCount} {enrolledCount === 1 ? "Student" : "Students"}
+        </Badge>
+      </div>
+      <p className="text-muted-foreground">
+        This course currently has {enrolledCount} enrolled{" "}
+        {enrolledCount === 1 ? "student" : "students"}.
+      </p>
     </div>
   );
 }
@@ -414,57 +711,76 @@ function DetailItem({ icon: Icon, label, value }) {
 function VideosSection({ course, onPlay, onDelete }) {
   if (!course.videos?.length) {
     return (
-      <div className="bg-card rounded-lg p-8 border shadow-sm text-center">
-        <Video className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
-        <h3 className="text-lg font-medium text-card-foreground mb-2">
+      <div className="bg-card rounded-xl p-12 border shadow-sm text-center">
+        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <Video className="w-10 h-10 text-primary" />
+        </div>
+        <h3 className="text-xl font-bold text-card-foreground mb-2">
           No Videos Yet
         </h3>
-        <p className="text-muted-foreground mb-4">
-          Upload videos to get started with your course content.
+        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+          Start building your course by uploading video lessons. Your students
+          will be able to access them once published.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-card rounded-lg p-6 border shadow-sm">
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="text-lg font-semibold text-card-foreground">
+    <div className="bg-card rounded-xl p-6 border shadow-sm">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-card-foreground flex items-center gap-2">
+          <Video className="w-5 h-5 text-primary" />
           Course Content
         </h2>
-        <Badge variant="secondary">{course.videos.length} videos</Badge>
+        <Badge variant="secondary" className="text-base px-3 py-1">
+          {course.videos.length}{" "}
+          {course.videos.length === 1 ? "Video" : "Videos"}
+        </Badge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {course.videos.map((video, i) => (
           <div
-            key={video.id || i}
-            className="group relative rounded-lg border overflow-hidden hover:border-primary/50 transition-all shadow-sm"
+            key={video._id || i}
+            className="group relative rounded-xl border-2 overflow-hidden hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
           >
             <div className="relative aspect-video bg-muted">
-              <video src={video.url} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              {video.url ? (
+                <video src={video.url} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Video className="w-12 h-12 text-muted-foreground/30" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button
                   onClick={() => onPlay(video)}
                   size="icon"
-                  className="bg-background/90 hover:bg-background"
+                  className="w-14 h-14 rounded-full shadow-xl"
                 >
-                  <PlayCircle className="w-5 h-5 text-foreground" />
+                  <PlayCircle className="w-7 h-7" />
+                </Button>
+              </div>
+              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
+                  size="icon"
+                  variant="destructive"
+                  onClick={() => onDelete(video)}
+                  className="rounded-full shadow-lg"
+                >
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             </div>
-            <div className="p-4 flex justify-between items-center">
-              <p className="font-medium text-sm text-card-foreground truncate">
-                {video.title}
+            <div className="p-4 bg-card">
+              <p className="font-semibold text-sm text-card-foreground truncate">
+                {video.title || `Lesson ${i + 1}`}
               </p>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => onDelete(video)}
-                className="text-destructive hover:text-destructive hover:bg-destructive/10"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
+              <p className="text-xs text-muted-foreground mt-1">
+                Video {i + 1} of {course.videos.length}
+              </p>
             </div>
           </div>
         ))}
@@ -481,57 +797,338 @@ function EditCourseDialog({
   onSave,
   loading,
 }) {
+  const handleInputChange = (field, value) => {
+    setEditData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-3xl! max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Course</DialogTitle>
+          <DialogTitle>Edit Course Information</DialogTitle>
           <DialogDescription>
-            Make changes to your course information here.
+            Update your course details. All fields are optional - only updated
+            fields will be changed.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Title</label>
-            <Input
-              placeholder="Course title"
-              value={editData.title}
-              onChange={(e) =>
-                setEditData({ ...editData, title: e.target.value })
-              }
-            />
+
+        <div className="space-y-6 py-4">
+          {/* Basic Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground border-b pb-2">
+              Basic Information
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="title" className="text-sm font-medium">
+                  Course Title *
+                </Label>
+                <Input
+                  id="title"
+                  placeholder="Enter course title"
+                  value={editData.title}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="price" className="text-sm font-medium">
+                  Price ($) *
+                </Label>
+                <Input
+                  id="price"
+                  type="number"
+                  placeholder="0.00"
+                  value={editData.price}
+                  onChange={(e) => handleInputChange("price", e.target.value)}
+                  className="w-full"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description" className="text-sm font-medium">
+                Description *
+              </Label>
+              <Textarea
+                id="description"
+                placeholder="Describe what students will learn in this course..."
+                value={editData.description}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
+                rows={4}
+                className="resize-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="category" className="text-sm font-medium">
+                  Category *
+                </Label>
+                <Input
+                  id="category"
+                  placeholder="e.g., Web Development"
+                  value={editData.category}
+                  onChange={(e) =>
+                    handleInputChange("category", e.target.value)
+                  }
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="language" className="text-sm font-medium">
+                  Language
+                </Label>
+                <Input
+                  id="language"
+                  placeholder="e.g., English, Arabic"
+                  value={editData.language}
+                  onChange={(e) =>
+                    handleInputChange("language", e.target.value)
+                  }
+                  className="w-full"
+                />
+              </div>
+            </div>
           </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">
-              Description
-            </label>
-            <Textarea
-              rows={3}
-              placeholder="Course description"
-              value={editData.description}
-              onChange={(e) =>
-                setEditData({ ...editData, description: e.target.value })
-              }
-            />
+
+          {/* Course Settings */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground border-b pb-2">
+              Course Settings
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="level" className="text-sm font-medium">
+                  Difficulty Level
+                </Label>
+                <Select
+                  value={editData.level}
+                  onValueChange={(value) => handleInputChange("level", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="beginner">Beginner</SelectItem>
+                    <SelectItem value="intermediate">Intermediate</SelectItem>
+                    <SelectItem value="advanced">Advanced</SelectItem>
+                    <SelectItem value="all levels">All Levels</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="status" className="text-sm font-medium">
+                  Course Status
+                </Label>
+                <Select
+                  value={editData.status}
+                  onValueChange={(value) => handleInputChange("status", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="public">Public</SelectItem>
+                    <SelectItem value="private">Private</SelectItem>
+                    <SelectItem value="draft">Draft</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Price</label>
-            <Input
-              type="number"
-              placeholder="Course price"
-              value={editData.price}
-              onChange={(e) =>
-                setEditData({ ...editData, price: e.target.value })
-              }
-            />
+
+          {/* Additional Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground border-b pb-2">
+              Additional Information
+            </h3>
+
+            <div className="space-y-2">
+              <Label htmlFor="prerequisites" className="text-sm font-medium">
+                Prerequisites
+              </Label>
+              <Textarea
+                id="prerequisites"
+                placeholder="What should students know before taking this course? (Optional)"
+                value={editData.prerequisites}
+                onChange={(e) =>
+                  handleInputChange("prerequisites", e.target.value)
+                }
+                rows={3}
+                className="resize-none"
+              />
+              <p className="text-xs text-muted-foreground">
+                List any required knowledge, skills, or tools students should
+                have
+              </p>
+            </div>
           </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+
+        <DialogFooter className="flex flex-col sm:flex-row gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={loading}
+            className="w-full sm:w-auto"
+          >
             Cancel
           </Button>
-          <Button onClick={onSave} disabled={loading}>
-            {loading ? "Saving..." : "Save Changes"}
+          <Button
+            onClick={onSave}
+            disabled={
+              loading ||
+              !editData.title ||
+              !editData.description ||
+              !editData.price ||
+              !editData.category
+            }
+            className="w-full sm:w-auto"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              "Save Changes"
+            )}
+          </Button>
+        </DialogFooter>
+
+        {/* Required Fields Note */}
+        <div className="text-xs text-muted-foreground border-t pt-3">
+          <p>* Required fields: Title, Description, Price, and Category</p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function UploadCoverImageDialog({
+  open,
+  setOpen,
+  selectedCoverImage,
+  imagePreview,
+  onFileSelect,
+  onRemoveImage,
+  onUpload,
+  loading,
+  currentCoverImage,
+}) {
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Upload Cover Image</DialogTitle>
+          <DialogDescription>
+            Choose a new cover image for your course. Recommended: 1280x720
+            pixels, max 5MB.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          {/* Current Cover Image Preview */}
+          {currentCoverImage && (
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Current Cover</Label>
+              <div className="border rounded-lg overflow-hidden">
+                <img
+                  src={currentCoverImage}
+                  alt="Current cover"
+                  className="w-full h-32 object-cover"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* File Upload Area */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">New Cover Image</Label>
+            {!selectedCoverImage ? (
+              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/40 transition-colors">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={onFileSelect}
+                  className="hidden"
+                  id="cover-image-upload"
+                />
+                <label
+                  htmlFor="cover-image-upload"
+                  className="cursor-pointer block"
+                >
+                  <ImageIcon className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Click to select an image
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    PNG, JPG, JPEG up to 5MB
+                  </p>
+                </label>
+              </div>
+            ) : (
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-medium">Selected Image</Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={onRemoveImage}
+                    className="h-8 w-8 p-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="border rounded-lg overflow-hidden">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-40 object-cover"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground truncate">
+                  {selectedCoverImage.name}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
+          <Button onClick={onUpload} disabled={loading || !selectedCoverImage}>
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Upload className="w-4 h-4 mr-2" />
+                Upload Cover
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -626,7 +1223,6 @@ function VideoDialog({ video, onClose }) {
           <DialogTitle className="text-card-foreground">
             {video?.title}
           </DialogTitle>
-          <DialogDescription>{video?.description}</DialogDescription>
         </DialogHeader>
         {video && (
           <video
@@ -648,7 +1244,8 @@ function DeleteVideoDialog({ video, onCancel, onConfirm }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete this video?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently remove the selected video.
+            This action will permanently remove "{video?.title}" from the
+            course.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
