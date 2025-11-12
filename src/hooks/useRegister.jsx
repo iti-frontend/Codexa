@@ -6,6 +6,7 @@ import { useRoleStore } from "@/store/useRoleStore";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export const useRegister = () => {
   // Hooks
@@ -21,6 +22,7 @@ export const useRegister = () => {
     mode: "onBlur",
   });
   const { role } = useRoleStore();
+  const { handleAuth, setErr, userInfo } = useAuthStore();
   const router = useRouter();
 
   // On Submit Function
@@ -39,7 +41,15 @@ export const useRegister = () => {
         password: values.password,
       };
 
-      await api.post(endpoint, payload);
+      const res = await api.post(endpoint, payload);
+      if (res.status === 200) {
+        handleAuth(res.data);
+        toast.success("Registration Successful", {
+          description: `Welcome, ${values.email}`, //need here to update the ui to read from res
+          duration: 3000,
+        });
+      }
+      console.log(res.data);
 
       form.reset();
 
@@ -50,8 +60,8 @@ export const useRegister = () => {
 
       // Redirect to dashboard
       RoleInstructor
-        ? router.push("/InstructorDashboard")
-        : router.push("/StudentDashboard");
+        ? router.push("/instructor")
+        : router.push("/student");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||

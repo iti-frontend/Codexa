@@ -6,6 +6,7 @@ import { useRoleStore } from "@/store/useRoleStore";
 import { useRouter } from "next/navigation";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
 import api from "@/lib/axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export const useLogin = () => {
   // Hooks
@@ -19,8 +20,8 @@ export const useLogin = () => {
     mode: "onBlur",
   });
   const { role } = useRoleStore();
+  const { handleAuth, userInfo, setErr } = useAuthStore();
   const router = useRouter();
-
   const onSubmit = async (values) => {
     try {
       // Detect Role
@@ -29,22 +30,29 @@ export const useLogin = () => {
         ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
         : ENDPOINTS.STUDENT_AUTH.LOGIN;
 
-      await api.post(endpoint, values);
 
-      form.reset();
-
-      toast.success("Login Successful", {
-        description: `Welcome back, ${values.email}`,
-        duration: 3000,
-      });
-
-      // Redirect to dashboard
-      RoleInstructor
-        ? router.push("/InstructorDashboard")
-        : router.push("/StudentDashboard");
+      const res = await api.post(endpoint, values);
+      if (res.status === 200) {
+        handleAuth(res.data);
+        const user = res.data.admin || res.data.student || res.data.instructor || null;
+        form.reset();
+        toast.success("Login Successful", {
+          description: `Welcome back, ${user.name}`, // here it deals with student only when sign with instructor it fails
+          duration: 3000,
+        });
+        // Redirect to dashboard
+        RoleInstructor
+          ? router.push("/instructor")
+          : router.push("/student");
+      } else {
+        toast.error("Missing Credentials", {
+          description: 'Please check your credentials and try again.',
+        });
+      }
     } catch (error) {
+      console.log(error.response.data.message);
       toast.error("Login Failed", {
-        description: "Please check your credentials and try again",
+        description: setErr(error.response.data.message),
       });
     }
   };

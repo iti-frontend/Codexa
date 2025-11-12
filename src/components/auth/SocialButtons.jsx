@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SOCIAL_PROVIDERS } from "@/Constants/social-providers";
@@ -10,12 +9,15 @@ import { useRouter } from "next/navigation";
 import { useRoleStore } from "@/store/useRoleStore";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
 import api from "@/lib/axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export const SocialButtons = () => {
   const router = useRouter();
   const { role } = useRoleStore();
+  // need to refactor from store * 1
+  const { handleAuth, userInfo, setErr } = useAuthStore();
   const [loading, setLoading] = useState({});
-
+  //this function need to be converted into hook like the other login methods for not distraction * 2
   const handleSocialLogin = async (providerName) => {
     try {
       setLoading((prev) => ({ ...prev, [providerName]: true }));
@@ -55,11 +57,12 @@ export const SocialButtons = () => {
         throw new Error("No token returned from backend.");
       }
 
+      handleAuth(data);
       // Success message
       toast.success(`Welcome ${user.displayName || "User"}!`);
 
       // Redirect to dashboard
-      router.push(isInstructor ? "/InstructorDashboard" : "/StudentDashboard");
+      router.push(isInstructor ? "/instructor" : "/student");
     } catch (error) {
       const message =
         error.response?.data?.message || error.message || "Login failed";
