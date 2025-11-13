@@ -36,7 +36,11 @@ function InstructorsActivity() {
             <div className="flex gap-4 items-start w-full sm:w-auto">
               <div className="relative shrink-0">
                 <img
-                  src={course.coverImage.url != null ? course.coverImage.url : "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"}
+                  src={
+                    course.coverImage.url != null
+                      ? course.coverImage.url
+                      : "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
+                  }
                   alt={course.title}
                   className="w-14 h-14 object-cover rounded-xl border border-border shadow-sm shrink-0"
                 />
@@ -48,13 +52,15 @@ function InstructorsActivity() {
                   {course.title}
                 </h3>
                 <p className="text-sm text-foreground/60 mt-0.5">
-                  {course.num}
+                  {course.description}
                 </p>
               </div>
             </div>
 
             <Button asChild className="w-fit">
-              <Link href={`/instructor/courses/${course._id}`}>Manage Course</Link>
+              <Link href={`/instructor/courses/${course._id}`}>
+                Manage Course
+              </Link>
             </Button>
           </motion.div>
         ))}

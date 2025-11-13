@@ -66,7 +66,10 @@ function CourseCard({ id, title, desc, price, instructor, coverImage }) {
     <div className="bg-sidebar p-3 rounded-3xl border border-border flex flex-col md:flex-row gap-4">
       <div className="relative w-full md:w-64 md:h-36 lg:w-72 xl:w-80 h-40 shrink-0">
         <Image
-          src={coverImage.url || ""}
+          src={
+            coverImage.url ||
+            "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
+          }
           alt="course thumbnail"
           fill
           className="rounded-md object-cover"

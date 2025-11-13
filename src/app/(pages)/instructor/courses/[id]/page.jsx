@@ -648,7 +648,7 @@ function InstructorCard({ course }) {
       <div className="flex items-center gap-4">
         {course.instructor.profileImage ? (
           <img
-            src={course.instructor.profileImage}
+            src={"/auth/login.png"}
             alt={course.instructor.name}
             className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
           />
