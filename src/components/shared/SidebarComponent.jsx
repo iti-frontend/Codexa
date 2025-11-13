@@ -93,13 +93,11 @@ function SidebarComponent({ Links }) {
 
         {/* Logout Button */}
         <Button
-          asChild
           variant="outline"
+          onClick={logOut}
           className="bg-transparent text-red-500 hover:text-red-500 w-full"
         >
-          <Link href="/login" onClick={logOut}>
-            <LogOut /> Sign out
-          </Link>
+          <LogOut /> Sign out
         </Button>
       </SidebarFooter>
     </Sidebar>
