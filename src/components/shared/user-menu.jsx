@@ -14,8 +14,14 @@ import Cookies from "js-cookie";
 
 export function UserMenu() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState({ name: "", role: "", profileImage: "/auth/login.png" });
+  const [user, setUser] = useState({
+    name: "",
+    role: "",
+    profileImage: "/auth/login.png",
+  });
+
   const userInfo = Cookies.get("userInfo");
+
   useEffect(() => {
     try {
       if (userInfo) {
@@ -23,7 +29,7 @@ export function UserMenu() {
         setUser({
           name: userData.name || "",
           role: userData.role?.toLowerCase() || "",
-          profileImage: userData.profileImage || "/auth/login.png"
+          profileImage: userData.profileImage || "/auth/login.png",
         });
       }
     } catch (error) {
@@ -32,10 +38,8 @@ export function UserMenu() {
   }, []);
 
 
-  const profileLink =
-    user.role === "student"
-      ? "/student/profile"
-      : "/instructor/profile";
+  //  Dynamic PROFILE ROUTE
+  const profileLink = "/profile";
 
   return (
     <>

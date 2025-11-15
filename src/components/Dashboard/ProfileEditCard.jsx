@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import useProfile from "@/hooks/useProfile";
+import api from "@/lib/axios";
+import { ENDPOINTS } from "@/Constants/api-endpoints";
 
-export default function ProfileEditCard({ editEndpoint }) {
+export default function ProfileEditCard() {
     const router = useRouter();
     const { profile, loading } = useProfile();
 
@@ -79,50 +81,71 @@ export default function ProfileEditCard({ editEndpoint }) {
             minute: "2-digit",
         });
     };
-
-    // ----------- Handle Form Submit -----------
+    // ----------- Handle Submit -----------
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
+
         try {
-            const token = document.cookie.split("; ").find((r) => r.startsWith("token="))?.split("=")[1];
+            const token = document.cookie
+                .split("; ")
+                .find((r) => r.startsWith("token="))
+                ?.split("=")[1];
+
             if (!token) return toast.error("Token missing");
 
+            // Prepare FormData
             const data = new FormData();
-            if (formData.name) data.append("name", formData.name);
-            if (formData.bio) data.append("bio", formData.bio);
-            const validLinks = formData.links.filter((l) => l.label && l.url);
-            if (validLinks.length) data.append("links", JSON.stringify(validLinks));
-            if (formData.profileImage) data.append("profileImage", formData.profileImage);
+            data.append("name", formData.name);
+            data.append("bio", formData.bio);
 
-            const res = await fetch(editEndpoint, {
-                method: "PUT",
-                headers: { Authorization: `Bearer ${token}` },
-                body: data,
+            const validLinks = formData.links.filter((l) => l.label && l.url);
+            data.append("links", JSON.stringify(validLinks));
+
+            if (formData.profileImage) {
+                data.append("profileImage", formData.profileImage);
+            }
+
+            // ⭐ Correct axios request (your old one was invalid!)
+            const res = await api.put(ENDPOINTS.INSTRUCTOR_EDIT_PROFILE, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
             });
 
-            if (!res.ok) throw new Error("Failed to update");
+            if (!res || !res.data) throw new Error("Invalid response");
 
-            // ----------- Update cookie and add updatedAt -----------
-            const updated = { ...profile, ...formData, links: validLinks, updatedAt: new Date().toISOString() };
-            if (imagePreview) updated.profileImage = imagePreview;
-            document.cookie = `userInfo=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=2592000`;
+            // Backend should return updated user
+            const updatedUser =
+                res.data.user ||
+                res.data.student ||
+                res.data.instructor ||
+                res.data.admin ||
+                res.data;
 
-            toast.success(`Profile updated at ${formatDate(updated.updatedAt)}`);
+            // Update cookie safely
+            document.cookie = `userInfo=${encodeURIComponent(
+                JSON.stringify(updatedUser)
+            )}; path=/; max-age=2592000`;
 
-            // ----------- Redirect based on role -----------
-            if (profile.role?.toLowerCase() === "instructor") {
-                router.push("/instructor/profile");
+            toast.success("Profile updated!");
+
+            // Redirect based on role
+            const role = updatedUser.role?.toLowerCase();
+            if (role === "instructor") {
+                router.push("/profile");
             } else {
-                router.push("/student/profile");
+                router.push("/profile");
             }
         } catch (err) {
-            console.error(err);
-            toast.error("Update error");
+            console.error("Update error:", err);
+            toast.error("Update failed");
         } finally {
             setSaving(false);
         }
     };
+
 
     if (loading) return <div>Loading...</div>;
     if (!profile) return <div>No profile found</div>;
