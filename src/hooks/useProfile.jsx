@@ -1,37 +1,49 @@
 "use client";
-import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { useState, useEffect, useCallback } from "react";
 
 export default function useProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const loadProfile = () => {
+  const loadProfile = useCallback(() => {
+    setLoading(true);
     try {
-      const userInfoCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("userInfo="))
-        ?.split("=")[1];
+      const cookie = Cookies.get("userInfo");
 
-      if (userInfoCookie) {
-        const user = JSON.parse(decodeURIComponent(userInfoCookie));
-        setProfile(user);
-      } else {
+      if (!cookie) {
         setProfile(null);
+        return;
       }
+
+      const parsed = JSON.parse(cookie);
+      setProfile(parsed);
+
     } catch (error) {
-      console.error("Error loading profile:", error);
+      console.error("Error parsing userInfo cookie:", error);
       setProfile(null);
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => loadProfile(), []);
-  useEffect(() => {
-    const handleFocus = () => loadProfile();
-    window.addEventListener("focus", handleFocus);
-    return () => window.removeEventListener("focus", handleFocus);
   }, []);
 
-  return { profile, loading, reload: loadProfile };
+  // Load once on mount
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  // Reload when the tab becomes active
+  useEffect(() => {
+    const onFocus = () => loadProfile();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [loadProfile]);
+
+  return {
+    profile,
+    loading,
+    reload: loadProfile,
+    isLoggedIn: !!profile,
+    role: profile?.role?.toLowerCase() || "",
+  };
 }

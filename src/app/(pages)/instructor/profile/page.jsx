@@ -6,5 +6,5 @@ export default function InstructorProfileView() {
   const { profile, loading } = useProfile();
   if (loading) return <div>Loading...</div>;
   if (!profile) return <div>No profile found</div>;
-  return <ProfileCard profile={profile} editLink="/instructor/profile/edit" />;
+  return <ProfileCard profile={profile} editLink="profile/edit" />;
 }

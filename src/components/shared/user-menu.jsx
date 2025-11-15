@@ -1,7 +1,5 @@
 "use client";
-
-
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,20 +10,16 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import ChangePasswordDialog from "../auth/ChangePasswordDialog";
+import Cookies from "js-cookie";
 
 export function UserMenu() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState({ name: "", role: "",profileImage: "/auth/login.png" });
-
+  const [user, setUser] = useState({ name: "", role: "", profileImage: "/auth/login.png" });
+  const userInfo = Cookies.get("userInfo");
   useEffect(() => {
     try {
-      const userInfoCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("userInfo="))
-        ?.split("=")[1];
-
-      if (userInfoCookie) {
-        const userData = JSON.parse(decodeURIComponent(userInfoCookie));
+      if (userInfo) {
+        const userData = JSON.parse(userInfo);
         setUser({
           name: userData.name || "",
           role: userData.role?.toLowerCase() || "",
@@ -36,6 +30,7 @@ export function UserMenu() {
       console.error("Error reading user info from cookies:", error);
     }
   }, []);
+
 
   const profileLink =
     user.role === "student"
@@ -52,7 +47,7 @@ export function UserMenu() {
             size="lg"
           >
             <Avatar className="relative">
-              <AvatarImage src={user.profileImage} />
+              <AvatarImage src={user.profileImage} alt={user.name} />
               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1 flex flex-col items-start justify-start">
@@ -70,9 +65,6 @@ export function UserMenu() {
             Change Password
           </DropdownMenuItem>
           <hr />
-          <DropdownMenuItem asChild>
-            <Link href="/login">Sign In</Link>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
