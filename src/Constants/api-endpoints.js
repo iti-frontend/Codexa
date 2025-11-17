@@ -13,4 +13,8 @@ export const ENDPOINTS = {
   // Profile
   INSTRUCTOR_EDIT_PROFILE: "/instructors/profile",
   STUDENT_EDIT: "/students/profile",
+
+  // Analytics
+  INSTRUCTOR_ANALYTICS: "/analytics/instructor",
+  STUDENT_ANALYTICS: "/analytics/student",
 };

@@ -1,8 +1,18 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { StatsCards } from "@/Constants/StudentContent";
+import { useStudentAnalytics } from "@/hooks/useStudentAnaltycs";
 
 function StudentActivity() {
+    const { analytics, loading } = useStudentAnalytics();
+
+    if (loading) return <div>Loading stats...</div>;
+    if (!analytics) return <div>No analytics found.</div>;
+
+    const dynamicStats = StatsCards.map((item) => ({
+        ...item,
+        number: analytics[item.key] ?? 0,
+    }));
     return (
         <motion.div
             initial={{ opacity: 0, y: -50 }}
@@ -16,7 +26,7 @@ function StudentActivity() {
 
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 w-full">
-                {StatsCards.map((card, index) => {
+                {dynamicStats.map((card, index) => {
                     const Icon = card.icon;
                     return (
                         <motion.div
