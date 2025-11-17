@@ -4,9 +4,7 @@ import { StatsCards } from "@/Constants/StudentContent";
 import { useStudentAnalytics } from "@/hooks/useStudentAnaltycs";
 
 function StudentActivity() {
-    const { analytics, loading } = useStudentAnalytics();
-
-    if (loading) return <div>Loading stats...</div>;
+    const { analytics } = useStudentAnalytics();
     if (!analytics) return <div>No analytics found.</div>;
 
     const dynamicStats = StatsCards.map((item) => ({

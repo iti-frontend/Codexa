@@ -18,32 +18,12 @@ export const StatsCards = [
   { text: "Todo Pending", key: "todoPending", icon: CircleSlash },
 ];
 
-export const CourseInfo = [
-  {
-    TrackName: 'Front-End',
-    title: "The Ultimate React Course 2025 ",
-    InstructorImage: "",
-    InstructorName: "Jonas Schmedtmann",
-  },
-  {
-    TrackName: "Full-Stack",
-    title: "The Complete Full-Stack Web Development Bootcamp ",
-    InstructorImage: "",
-    InstructorName: "Angela Yu",
-  },
-  {
-    TrackName: "Back-End",
-    title: "NodeJs-The Complete Guide(MVC,Rest,APIs,GraphQl)",
-    InstructorImage: "",
-    InstructorName: "Maximilian Schwarzmuller",
-  },
-  {
-    TrackName: "Front-End",
-    title: "The Ultimate React Course 2025 ",
-    InstructorImage: "",
-    InstructorName: "Jonas Schmedtmann",
-  },
-];
+export const CourseInfo = {
+  trackKey: "category",       // The field that represents course track
+  titleKey: "title",
+  instructorNameKey: "instructor.name",
+  instructorImageKey: "instructor.profileImage",
+};
 
 export const followingUsers = [
   {

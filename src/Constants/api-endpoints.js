@@ -17,4 +17,11 @@ export const ENDPOINTS = {
   // Analytics
   INSTRUCTOR_ANALYTICS: "/analytics/instructor",
   STUDENT_ANALYTICS: "/analytics/student",
+
+  // Courses
+  CREATE_COURSE: "/courses",
+  ENROLL_COURSE: "/enroll/{courseId}",
+
+  // get Student Courses
+  GET_STUDENT_COURSES: "students/my-courses",
 };
