@@ -1,41 +1,26 @@
 "use client";
-import { useFavourites } from "@/hooks/useFavourites";
 import { useState, useEffect } from "react";
+import { useFavouritesStore } from "@/store/useFavouritesStore";
+import Link from "next/link";
 
 export default function Saved() {
-  const [favourites, setFavourites] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: 10,
-    total: 0,
-  });
 
-  const { getFavourites } = useFavourites();
-
-  const loadFavourites = async (page = 1) => {
-    try {
-      setLoading(true);
-      const data = await getFavourites(page, pagination.limit);
-
-      setFavourites(data.items);
-      setPagination({
-        page: data.page,
-        limit: data.pageSize,
-        total: data.total,
-      });
-    } catch (error) {
-      console.error("Failed to load favourites:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    favourites,
+    loading: storeLoading,
+    initialized,
+    initializeFavourites,
+  } = useFavouritesStore();
 
   useEffect(() => {
-    loadFavourites();
-  }, []);
+    if (!initialized) {
+      initializeFavourites();
+    }
+    setLoading(false);
+  }, [initialized, initializeFavourites]);
 
-  if (loading) {
+  if (loading || storeLoading) {
     return <div className="p-4">Loading...</div>;
   }
 
@@ -50,51 +35,44 @@ export default function Saved() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {favourites.map((fav) => (
-            <div key={fav._id} className="border rounded-lg p-4 shadow-sm">
-              <img
-                src={fav.course.coverImage?.url || "/auth/login.png"}
-                alt={fav.course.title}
-                className="w-full h-40 object-cover rounded mb-3"
-                onError={(e) => {
-                  e.target.src = "/auth/login.png";
-                }}
-              />
-              <h3 className="font-semibold text-lg mb-2">{fav.course.title}</h3>
-              <p className="text-gray-600 mb-2">
-                Price: {fav.course.price} EGP
-              </p>
-              <p className="text-sm text-gray-500">Level: {fav.course.level}</p>
-              <p className="text-sm text-gray-500">
-                Added: {new Date(fav.createdAt).toLocaleDateString("en-US")}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+            <Link
+              href={`student/explore/${fav.course._id}`}
+              key={fav._id}
+              className="border rounded-lg p-4 shadow-sm"
+            >
+              {/* Course Image - Handle null case */}
+              <div className="w-full h-40 bg-gray-200 rounded mb-3 flex items-center justify-center">
+                {fav.course?.coverImage?.url ? (
+                  <img
+                    src={fav.course.coverImage.url}
+                    alt={fav.course.title}
+                    className="w-full h-full object-cover rounded"
+                  />
+                ) : (
+                  <span className="text-gray-500">No Image</span>
+                )}
+              </div>
 
-      {/* Pagination */}
-      {pagination.total > pagination.limit && (
-        <div className="flex justify-center mt-6 space-x-2">
-          <button
-            onClick={() => loadFavourites(pagination.page - 1)}
-            disabled={pagination.page === 1}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2">
-            Page {pagination.page} of{" "}
-            {Math.ceil(pagination.total / pagination.limit)}
-          </span>
-          <button
-            onClick={() => loadFavourites(pagination.page + 1)}
-            disabled={
-              pagination.page >= Math.ceil(pagination.total / pagination.limit)
-            }
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
+              <h3 className="font-semibold text-lg mb-2">
+                {fav.course?.title}
+              </h3>
+              <p className="text-gray-600 mb-2">
+                Price: {fav.course?.price} EGP
+              </p>
+              <p className="text-sm text-gray-500 capitalize mb-1">
+                Level: {fav.course?.level}
+              </p>
+              <p className="text-sm text-gray-500 capitalize mb-1">
+                Status: {fav.course?.status}
+              </p>
+              <p className="text-sm text-gray-500 mb-1">
+                Videos: {fav.course?.videos?.length || 0}
+              </p>
+              <p className="text-sm text-gray-500">
+                Saved: {new Date(fav.createdAt).toLocaleDateString("en-US")}
+              </p>
+            </Link>
+          ))}
         </div>
       )}
     </div>
