@@ -42,15 +42,11 @@ export default function Saved() {
             >
               {/* Course Image - Handle null case */}
               <div className="w-full h-40 bg-gray-200 rounded mb-3 flex items-center justify-center">
-                {fav.course?.coverImage?.url ? (
-                  <img
-                    src={fav.course.coverImage.url}
-                    alt={fav.course.title}
-                    className="w-full h-full object-cover rounded"
-                  />
-                ) : (
-                  <span className="text-gray-500">No Image</span>
-                )}
+                <img
+                  src={fav.course.coverImage.url || "/auth/login.png"}
+                  alt={fav.course.title}
+                  className="w-full h-full object-cover rounded"
+                />
               </div>
 
               <h3 className="font-semibold text-lg mb-2">
