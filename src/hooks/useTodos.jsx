@@ -78,7 +78,7 @@ export default function useTodos() {
             setTodos(prev =>
                 prev.map(t => (t._id === tempId ? { ...newTodo, _id: newTodo._id || newTodo.id } : t))
             );
-            
+
             return { success: true, data: newTodo };
         } catch (err) {
             // Rollback on error
@@ -101,8 +101,8 @@ export default function useTodos() {
         console.log(`Toggling todo ${id} from ${currentStatus} to ${newStatus}`);
 
         // Optimistic update - update UI immediately
-        setTodos(prev => 
-            prev.map(t => 
+        setTodos(prev =>
+            prev.map(t =>
                 (t._id === id || t.id === id) ? { ...t, isDone: newStatus } : t
             )
         );
@@ -112,21 +112,21 @@ export default function useTodos() {
             console.log("Calling API to update todo status...");
             await toggleTodoDone(id, newStatus);
             console.log("API update successful");
-            
+
             return { success: true };
         } catch (err) {
             console.error("Failed to update todo status in API:", err);
-            
+
             // Rollback on error
-            setTodos(prev => 
-                prev.map(t => 
+            setTodos(prev =>
+                prev.map(t =>
                     (t._id === id || t.id === id) ? { ...t, isDone: currentStatus } : t
                 )
             );
-            
-            return { 
-                success: false, 
-                message: err.response?.data?.message || "Failed to toggle todo" 
+
+            return {
+                success: false,
+                message: err.response?.data?.message || "Failed to toggle todo"
             };
         }
     };
@@ -155,8 +155,8 @@ export default function useTodos() {
         const originalTodo = todos.find(t => t._id === id || t.id === id);
 
         // Instant update
-        setTodos(prev => 
-            prev.map(t => 
+        setTodos(prev =>
+            prev.map(t =>
                 (t._id === id || t.id === id) ? { ...t, ...updates } : t
             )
         );
@@ -167,8 +167,8 @@ export default function useTodos() {
         } catch (err) {
             // Rollback on error
             if (originalTodo) {
-                setTodos(prev => 
-                    prev.map(t => 
+                setTodos(prev =>
+                    prev.map(t =>
                         (t._id === id || t.id === id) ? originalTodo : t
                     )
                 );

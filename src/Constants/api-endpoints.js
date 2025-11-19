@@ -24,7 +24,6 @@ export const ENDPOINTS = {
 
   // get Student Courses
   GET_STUDENT_COURSES: "students/my-courses",
-};
   // Todos
   TODOS: {
     BASE: "/todos",
