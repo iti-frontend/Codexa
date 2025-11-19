@@ -14,7 +14,6 @@ export default function ProfileCard({ profile, editLink }) {
   return (
     <div className="min-h-screen py-10 px-4 text-gray-200">
       <div className="max-w-4xl mx-auto">
-
         {/* TOP HEADER */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -109,8 +108,12 @@ export default function ProfileCard({ profile, editLink }) {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-200 truncate">{link.label}</p>
-                      <p className="text-sm text-gray-400 truncate">{link.url}</p>
+                      <p className="font-medium text-gray-200 truncate">
+                        {link.label}
+                      </p>
+                      <p className="text-sm text-gray-400 truncate">
+                        {link.url}
+                      </p>
                     </div>
                   </motion.a>
                 ))}
@@ -125,13 +128,17 @@ export default function ProfileCard({ profile, editLink }) {
             transition={{ duration: 0.9 }}
             className="mt-8 bg-[#161b22] p-6 rounded-xl shadow-md"
           >
-            <h3 className="text-lg font-semibold text-white mb-4">Account Details</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Account Details
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
               <div>
                 <span className="text-gray-500 text-sm">Member Since</span>
                 <p className="font-medium">
-                  {profile.createdAt ? new Date(profile.createdAt).toLocaleDateString() : "-"}
+                  {profile.createdAt
+                    ? new Date(profile.createdAt).toLocaleDateString()
+                    : "-"}
                 </p>
               </div>
 
@@ -142,14 +149,20 @@ export default function ProfileCard({ profile, editLink }) {
 
               <div>
                 <span className="text-gray-500 text-sm">Account Status</span>
-                <p className={`font-medium ${profile.isActive ? "text-green-400" : "text-red-500"}`}>
+                <p
+                  className={`font-medium ${
+                    profile.isActive ? "text-green-400" : "text-red-500"
+                  }`}
+                >
                   {profile.isActive ? "Active" : "Inactive"}
                 </p>
               </div>
 
               <div>
                 <span className="text-gray-500 text-sm">Auth Provider</span>
-                <p className="font-medium capitalize">{profile.authProvider || "email"}</p>
+                <p className="font-medium capitalize">
+                  {profile.authProvider || "email"}
+                </p>
               </div>
             </div>
           </motion.div>

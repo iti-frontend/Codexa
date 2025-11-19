@@ -25,3 +25,11 @@ export const ENDPOINTS = {
   // get Student Courses
   GET_STUDENT_COURSES: "students/my-courses",
 };
+  // Todos
+  TODOS: {
+    BASE: "/todos",
+    BY_ID: (id) => `/todos/${id}`,
+    MARK_DONE: (id) => `/todos/${id}/done`,
+    STATS: "/todos/stats/summary",
+  },
+};

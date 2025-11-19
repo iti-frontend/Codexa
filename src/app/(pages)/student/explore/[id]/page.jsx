@@ -29,6 +29,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/lib/axios";
+import { useFavouritesStore } from "@/store/useFavouritesStore";
+import { cn } from "@/lib/utils";
 
 export default function CourseDetails() {
   const params = useParams();
@@ -36,6 +38,24 @@ export default function CourseDetails() {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [togglingFavourite, setTogglingFavourite] = useState(false);
+
+  // Use the favourites store directly
+  const {
+    toggleFavourite: toggleFavouriteInStore,
+    isCourseFavourite,
+    initializeFavourites,
+    initialized,
+  } = useFavouritesStore();
+
+  const isFavourite = course ? isCourseFavourite(course._id) : false;
+
+  useEffect(() => {
+    // Initialize favourites if not already done
+    if (!initialized) {
+      initializeFavourites();
+    }
+  }, [initialized, initializeFavourites]);
 
   useEffect(() => {
     if (params?.id) {
@@ -59,6 +79,30 @@ export default function CourseDetails() {
       console.error("Error fetching course:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleFavourite = async () => {
+    if (!course || togglingFavourite) return;
+
+    try {
+      setTogglingFavourite(true);
+      const result = await toggleFavouriteInStore(course._id);
+
+      if (result.success) {
+        // State is automatically updated via the store
+        console.log(
+          `Course ${
+            result.status === "added" ? "added to" : "removed from"
+          } favourites`
+        );
+      } else {
+        console.error("Failed to toggle favourite:", result.error);
+      }
+    } catch (error) {
+      console.error("Error toggling favourite:", error);
+    } finally {
+      setTogglingFavourite(false);
     }
   };
 
@@ -171,12 +215,35 @@ export default function CourseDetails() {
                   <Badge variant="secondary">Public</Badge>
                 )}
               </div>
+
+              {/* Favourite badge on image */}
+              <div className="absolute top-4 right-4">
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={handleToggleFavourite}
+                  disabled={togglingFavourite}
+                  className="bg-background/80 backdrop-blur-sm hover:bg-background"
+                >
+                  <Heart
+                    className={`h-5 w-5 ${
+                      isFavourite ? "fill-red-500 text-red-500" : ""
+                    }`}
+                  />
+                </Button>
+              </div>
             </div>
 
             {/* Course Title & Category */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Badge variant="outline">{course.category}</Badge>
+                {isFavourite && (
+                  <Badge variant="default" className="bg-red-500 text-white">
+                    <Heart className="h-3 w-3 mr-1 fill-white" />
+                    Favourited
+                  </Badge>
+                )}
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight">
@@ -338,9 +405,29 @@ export default function CourseDetails() {
                 <Button className="w-full" size="lg">
                   Enroll Now
                 </Button>
-                <Button className="w-full" variant="outline" size="lg">
-                  Add to Wishlist
-                  <Heart className="h-4 w-4 ml-2" />
+
+                {/* Favourite Button */}
+                <Button
+                  className={cn(
+                    "w-full",
+                    isFavourite && "bg-red-500! text-white!"
+                  )}
+                  variant={isFavourite ? "default" : "outline"}
+                  size="lg"
+                  onClick={handleToggleFavourite}
+                  disabled={togglingFavourite}
+                >
+                  {isFavourite ? (
+                    <>
+                      <Heart className="h-4 w-4 mr-2 fill-white" />
+                      Remove from Favourites
+                    </>
+                  ) : (
+                    <>
+                      <Heart className="h-4 w-4 mr-2" />
+                      Add to Favourites
+                    </>
+                  )}
                 </Button>
 
                 <Separator />
