@@ -11,10 +11,29 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { CourseInfo } from "@/Constants/StudentContent";
+import { useStudentCourses } from "@/hooks/useStudentCourses";
+import EmptyCourses from "./EmptyCourses";
 
 
 export default function ContinueWatching() {
+    const { courses, loading } = useStudentCourses();
+
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm text-muted-foreground mt-3">
+                    Loading courses...
+                </p>
+            </div>
+        );
+    }
+    if (!courses.length) {
+        return (
+            <EmptyCourses courses={courses} />
+        );
+    }
+
     return (
         <section className="w-full mb-3">
             <h2 className="text-xl font-bold  ">Continue <span className="text-primary">Watching</span></h2>
@@ -27,7 +46,7 @@ export default function ContinueWatching() {
                 className="w-full py-4 "
             >
                 <CarouselContent className="-ml-2 md:-ml-4 bg-transparent ">
-                    {CourseInfo.map((course, index) => (
+                    {courses.map((course, index) => (
                         <CarouselItem
                             key={index}
                             className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
@@ -63,11 +82,11 @@ export default function ContinueWatching() {
                                     <CardFooter className="flex items-center gap-3 py-2 px-3 border border-t-2">
                                         <img
                                             src="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
-                                            alt={course.InstructorName}
+                                            alt={course.instructor.name}
                                             className="w-9 h-9 rounded-full object-cover"
                                         />
                                         <span className="text-sm text-primary font-medium">
-                                            {course.InstructorName}
+                                            {course.instructor.name}
                                         </span>
                                     </CardFooter>
                                 </Card>
@@ -79,7 +98,7 @@ export default function ContinueWatching() {
                 <CarouselPrevious className=" left-1" />
                 <CarouselNext className="right-1" />
             </Carousel>
-            
+
         </section>
     );
 }

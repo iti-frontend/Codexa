@@ -13,6 +13,18 @@ export const ENDPOINTS = {
   // Profile
   INSTRUCTOR_EDIT_PROFILE: "/instructors/profile",
   STUDENT_EDIT: "/students/profile",
+
+  // Analytics
+  INSTRUCTOR_ANALYTICS: "/analytics/instructor",
+  STUDENT_ANALYTICS: "/analytics/student",
+
+  // Courses
+  CREATE_COURSE: "/courses",
+  ENROLL_COURSE: "/enroll/{courseId}",
+
+  // get Student Courses
+  GET_STUDENT_COURSES: "students/my-courses",
+};
   // Todos
   TODOS: {
     BASE: "/todos",
