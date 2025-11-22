@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, MessageCircle, Heart, Share } from "lucide-react";
+import { CreatePostDialog } from "@/components/community/CreatePostDialog";
 
 export default function Community() {
   const { posts, loading, error, refetch } = useCommunity();
@@ -34,6 +35,10 @@ export default function Community() {
     });
   };
 
+  const handlePostCreated = () => {
+    refetch();
+  };
+
   if (error) {
     return (
       <div className="container mx-auto p-6">
@@ -58,12 +63,15 @@ export default function Community() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
           Community
         </h1>
-        <Button onClick={refetch} disabled={loading} variant="outline">
-          <RefreshCw
-            className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
-          />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={refetch} disabled={loading} variant="outline">
+            <RefreshCw
+              className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </Button>
+          <CreatePostDialog onPostCreated={handlePostCreated} />
+        </div>
       </div>
 
       {loading ? (
