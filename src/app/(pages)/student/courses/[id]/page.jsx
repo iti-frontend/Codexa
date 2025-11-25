@@ -73,10 +73,8 @@ export default function StudentCourseDetails() {
     );
 }
 
-/* ------------------------------------------------------ */
-/* ----------------------- HEADER ----------------------- */
-/* ------------------------------------------------------ */
 
+/* ----------------------- HEADER ----------------------- */
 function HeaderSection({ course }) {
     return (
         <div className="bg-card border-b shadow-sm">
@@ -98,10 +96,8 @@ function HeaderSection({ course }) {
     );
 }
 
-/* ------------------------------------------------------ */
-/* -------------------- COVER IMAGE --------------------- */
-/* ------------------------------------------------------ */
 
+/* -------------------- COVER IMAGE --------------------- */
 function CoverImageSection({ cover, title }) {
     return (
         <div className="relative w-full h-72 rounded-xl overflow-hidden border shadow">
@@ -162,34 +158,27 @@ function InstructorCard({ instructor }) {
     if (!instructor) return null;
 
     return (
-        <div className="bg-card border rounded-xl p-6 shadow-sm h-fit">
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-primary" />
-                Instructor
-            </h2>
-
-            <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full overflow-hidden border">
                 <Image
                     src={instructor.profileImage}
                     alt={instructor.name}
-                    width={60}
-                    height={60}
-                    className="rounded-full object-cover border"
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
                 />
+            </div>
 
-                <div>
-                    <p className="font-semibold">{instructor.name}</p>
-                    <p className="text-xs text-muted-foreground">{instructor.email}</p>
-                </div>
+            <div>
+                <p className="font-semibold">{instructor.name}</p>
+                <p className="text-xs text-muted-foreground">{instructor.email}</p>
             </div>
         </div>
+
     );
 }
 
-/* ------------------------------------------------------ */
 /* ------------------------ VIDEOS ---------------------- */
-/* ------------------------------------------------------ */
-
 function VideosSection({ videos, onPlay }) {
     if (!videos?.length)
         return (
@@ -243,22 +232,27 @@ function VideosSection({ videos, onPlay }) {
     );
 }
 
-/* ------------------------------------------------------ */
-/* ----------------------- PLAYER ----------------------- */
-/* ------------------------------------------------------ */
 
+/* ----------------------- PLAYER ----------------------- */
 function VideoPlayer({ video, onClose }) {
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="bg-card rounded-xl p-4 max-w-3xl w-full">
-                <div className="flex justify-between items-center mb-2">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+            <div className="bg-card rounded-xl p-4 w-full max-w-3xl">
+                <div className="flex justify-between items-center mb-3">
                     <h3 className="font-semibold">{video.title}</h3>
                     <Button variant="ghost" onClick={onClose}>
                         Close
                     </Button>
                 </div>
 
-                <video src={video.url} controls autoPlay className="w-full rounded-lg" />
+                <div className="w-full h-[500px] md:h-[450px] lg:h-[420px] flex items-center justify-center bg-black rounded-lg overflow-hidden">
+                    <video
+                        src={video.url}
+                        controls
+                        autoPlay
+                        className="max-h-full max-w-full object-contain"
+                    />
+                </div>
             </div>
         </div>
     );

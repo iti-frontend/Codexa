@@ -13,6 +13,7 @@ import {
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { useStudentCourses } from "@/hooks/useStudentCourses";
 import EmptyCourses from "./EmptyCourses";
+import Link from "next/link";
 
 
 export default function ContinueWatching() {
@@ -61,35 +62,39 @@ export default function ContinueWatching() {
                                 }}
                             >
                                 <Card className="h-full shadow-lg rounded-2xl py-0 overflow-hidden transition-transform ">
-                                    <CardHeader className="relative w-full h-40 ">
-                                        <Image
-                                            src="/auth/login.png"
-                                            alt=""
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </CardHeader>
+                                    <Link href={`/student/courses/${course._id}`}>
+                                        <CardHeader className="relative w-full h-40 ">
+                                            <Image
+                                                src="/auth/login.png"
+                                                alt=""
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </CardHeader>
 
-                                    <CardContent className="space-y-2  px-4">
-                                        <span className="text-primary text-sm block">
-                                            {course.TrackName}
-                                        </span>
-                                        <h3 className="font-semibold text-card-foreground sm:line-clamp-1 text-base line-clamp-2">
-                                            {course.title}
-                                        </h3>
-                                    </CardContent>
+                                        <CardContent className="space-y-2  px-4">
+                                            <span className="text-primary text-sm block">
+                                                {course.TrackName}
+                                            </span>
+                                            <h3 className="font-semibold text-card-foreground sm:line-clamp-1 text-base line-clamp-2">
+                                                {course.title}
+                                            </h3>
+                                        </CardContent>
 
-                                    <CardFooter className="flex items-center gap-3 py-2 px-3 border border-t-2">
-                                        <img
-                                            src="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
-                                            alt={course.instructor.name}
-                                            className="w-9 h-9 rounded-full object-cover"
-                                        />
-                                        <span className="text-sm text-primary font-medium">
-                                            {course.instructor.name}
-                                        </span>
-                                    </CardFooter>
+                                        <CardFooter className="flex items-center gap-3 py-2 px-3 border border-t-2">
+                                            <img
+                                                src="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
+                                                alt={course.instructor.name}
+                                                className="w-9 h-9 rounded-full object-cover"
+                                            />
+                                            <span className="text-sm text-primary font-medium">
+                                                {course.instructor.name}
+                                            </span>
+                                        </CardFooter>
+                                    </Link>
+
                                 </Card>
+
                             </motion.div>
                         </CarouselItem>
                     ))}
