@@ -14,7 +14,6 @@ export function useCommunity() {
     try {
       setLoading(true);
       setError(null);
-
       const res = await api.get("/community");
       setPosts(res.data);
     } catch (err) {
@@ -27,9 +26,12 @@ export function useCommunity() {
     }
   };
 
-  const createPost = async (postData) => {
+  const createPost = async (content) => {
     try {
-      console.log("Sending post data:", postData); // Debug log
+      const postData = {
+        type: "text",
+        content: content,
+      };
 
       const res = await api.post("/community", postData, {
         headers: {
@@ -37,10 +39,9 @@ export function useCommunity() {
         },
       });
 
-      console.log("Post created successfully:", res.data); // Debug log
       return res.data;
     } catch (error) {
-      console.error("Create post error:", error.response?.data); // More detailed error
+      console.error("Create post error:", error.response?.data);
       throw new Error(error.response?.data?.message || "Failed to create post");
     }
   };
