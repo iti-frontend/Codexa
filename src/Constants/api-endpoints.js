@@ -10,6 +10,9 @@ export const ENDPOINTS = {
     REGISTER: "/students/register",
     REGISTER_SOCIAL: "/students/social-login",
   },
+  ADMIN_AUTH: {
+    LOGIN: "/admin/login",
+  },
   // Profile
   INSTRUCTOR_EDIT_PROFILE: "/instructors/profile",
   STUDENT_EDIT: "/students/profile",
