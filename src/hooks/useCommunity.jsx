@@ -1,64 +1,35 @@
 // hooks/useCommunity.js
 "use client";
+import { useEffect } from "react";
+import { useCommunityStore } from "@/store/useCommunityStore";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useState, useEffect } from "react";
-import api from "@/lib/axios";
 
 export function useCommunity() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { posts, loading, error, fetchPosts, createPost } = useCommunityStore();
   const { userToken } = useAuthStore();
-
-  const fetchPosts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await api.get("/community");
-      setPosts(res.data);
-    } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || err.message || "Failed to fetch posts";
-      setError(errorMessage);
-      console.error("Error fetching community posts:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const createPost = async (content) => {
-    try {
-      const postData = {
-        type: "text",
-        content: content,
-      };
-
-      const res = await api.post("/community", postData, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      return res.data;
-    } catch (error) {
-      console.error("Create post error:", error.response?.data);
-      throw new Error(error.response?.data?.message || "Failed to create post");
-    }
-  };
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+    console.log("Posts:", posts);
 
-  const refetch = () => {
-    fetchPosts();
+  }, [fetchPosts]);
+
+  const handleCreatePost = async (content) => {
+    return await createPost(
+      {
+        type: "text",
+        content: content,
+      },
+      userToken
+    );
   };
 
   return {
     posts,
     loading,
     error,
-    refetch,
-    createPost,
+    refetch: fetchPosts,
+    createPost: handleCreatePost,
   };
 }
+
