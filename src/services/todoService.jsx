@@ -42,13 +42,13 @@ export const toggleTodoDone = async (id, isDone) => {
   console.log("=== Toggle Todo Request ===");
   console.log("ID:", id);
   console.log("New isDone status:", isDone);
-  
+
   try {
     // Try PUT first with the main endpoint
     const response = await api.put(
       ENDPOINTS.TODOS.BY_ID(id),
       { isDone },
-      { 
+      {
         headers: getAuthHeader(),
         timeout: 10000
       }
@@ -58,13 +58,13 @@ export const toggleTodoDone = async (id, isDone) => {
   } catch (error) {
     console.log("PUT failed, trying PATCH fallback...");
     console.log("Error:", error.response?.data || error.message);
-    
+
     // Fallback to PATCH
     try {
-      const response = await api.patch(
+      const response = await api.put(
         ENDPOINTS.TODOS.MARK_DONE(id),
         { isDone },
-        { 
+        {
           headers: getAuthHeader(),
           timeout: 10000
         }
