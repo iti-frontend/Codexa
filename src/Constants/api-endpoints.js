@@ -21,6 +21,7 @@ export const ENDPOINTS = {
   // Courses
   CREATE_COURSE: "/courses",
   ENROLL_COURSE: "/enroll/{courseId}",
+  ENROLL_STUDENT: (courseId) => `/students/enroll/${courseId}`,
 
   // get Student Courses
   GET_STUDENT_COURSES: "students/my-courses",

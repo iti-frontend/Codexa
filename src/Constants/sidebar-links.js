@@ -37,7 +37,7 @@ export const StudentsLinks = [
   { icon: Award, name: "Certifications", href: `${stu}/certifications` },
   { icon: Users, name: "Community", href: "/community" },
   { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
-  { icon: ShoppingCart, name: "Cart", href: `${stu}/cart` }
+  { icon: ShoppingCart, name: "Cart", href: `/cart` }
 ];
 
 // SideBar Tools
