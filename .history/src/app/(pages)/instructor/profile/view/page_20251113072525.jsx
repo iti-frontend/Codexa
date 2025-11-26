@@ -1,0 +1,1 @@
+app/instructor/profile/view/page.jsx

@@ -8,7 +8,7 @@ import {
 } from "../ui/sidebar";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ToolsLinks } from "@/Constants/sidebar-links";
 import { Bot, LogOut } from "lucide-react";
@@ -17,6 +17,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 function SidebarComponent({ Links }) {
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
+  const router = useRouter();
+
+  const logOut = () => {
+    handleLogout();
+    router.push("/login");
+  };
   return (
     <Sidebar className="!border-0">
       <SidebarHeader>
@@ -49,7 +55,7 @@ function SidebarComponent({ Links }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
@@ -87,13 +93,11 @@ function SidebarComponent({ Links }) {
 
         {/* Logout Button */}
         <Button
-          asChild
           variant="outline"
+          onClick={logOut}
           className="bg-transparent text-red-500 hover:text-red-500 w-full"
         >
-          <Link href="/login" onClick={handleLogout}>
-            <LogOut /> Sign out
-          </Link>
+          <LogOut /> Sign out
         </Button>
       </SidebarFooter>
     </Sidebar>

@@ -34,7 +34,6 @@ export const StudentsLinks = [
   { icon: Home, name: "Home", href: `${stu}` },
   { icon: Video, name: "My Courses", href: `${stu}/courses` },
   { icon: Grid2x2X, name: "Explore More", href: `${stu}/explore` },
-  { icon: ListChecks, name: "Tasks", href: `${stu}/tasks` },
   { icon: Award, name: "Certifications", href: `${stu}/certifications` },
   { icon: Users, name: "Community", href: "/community" },
   { icon: CheckCircleIcon, name: "Todos", href: "/todo" },

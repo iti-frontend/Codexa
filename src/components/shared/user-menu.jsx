@@ -1,6 +1,5 @@
 "use client";
-
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,36 +9,70 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import ChangePasswordDialog from "../auth/ChangePasswordDialog";
+import Cookies from "js-cookie";
 
 export function UserMenu() {
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState({
+    name: "",
+    role: "",
+    profileImage: "/auth/login.png",
+  });
+
+  const userInfo = Cookies.get("userInfo");
+
+  useEffect(() => {
+    try {
+      if (userInfo) {
+        const userData = JSON.parse(userInfo);
+        setUser({
+          name: userData.name || "",
+          role: userData.role?.toLowerCase() || "",
+          profileImage: userData.profileImage || "/auth/login.png",
+        });
+      }
+    } catch (error) {
+      console.error("Error reading user info from cookies:", error);
+    }
+  }, []);
+
+
+  //  Dynamic PROFILE ROUTE
+  const profileLink = "/profile";
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="gap-3 rounded-2xl justify-start px-5 py-6 mt-5 border-b border-border"
-          size="lg"
-        >
-          {/* User Image */}
-          <Avatar className="relative">
-            <AvatarImage src="/auth/login.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          {/* User Details */}
-          <div className="space-y-1 flex flex-col items-start justify-start">
-            <h5>Codexa</h5>
-            <h6 className="text-foreground/50 text-xs">Instructor</h6>
-          </div>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Change Password</DropdownMenuItem>
-        <hr />
-        <DropdownMenuItem asChild>
-          <Link href="/login">Sign In</Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="gap-3 rounded-2xl justify-start px-5 py-6 mt-5 border-b border-border"
+            size="lg"
+          >
+            <Avatar className="relative">
+              <AvatarImage src={user.profileImage} alt={user.name} />
+              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="space-y-1 flex flex-col items-start justify-start">
+              <h5>{user.name || "User"}</h5>
+              <h6 className="text-foreground/50 text-xs">{user.role || ""}</h6>
+            </div>
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href={profileLink}>Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpen(true)}>
+            Change Password
+          </DropdownMenuItem>
+          <hr />
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <ChangePasswordDialog open={open} onOpenChange={setOpen} />
+    </>
   );
 }
