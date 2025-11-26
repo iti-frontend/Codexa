@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
-import api from "@/lib/axios";
-import { ENDPOINTS } from "@/Constants/api-endpoints";
-import { useAuthStore } from "@/store/useAuthStore";
 import { useStudentCourses } from "@/hooks/useStudentCourses";
 import EmptyCourses from "@/components/Dashboard/EmptyCourses";
+import Link from "next/link";
 
 function StudentCourses() {
     const { courses, loading } = useStudentCourses();
@@ -56,7 +53,7 @@ function StudentCourses() {
             </header>
 
             {/* Tabs */}
-            <Tabs defaultValue="completed" className="gap-4 p-0">
+            <Tabs defaultValue="all-courses" className="gap-4 p-0">
                 <div className="border-b px-5">
                     <TabsList className="bg-background rounded-none p-0 space-x-5">
                         {tabs.map((tab) => (
@@ -84,6 +81,7 @@ function StudentCourses() {
                             tab.list.map((course) => (
                                 <CourseCard
                                     key={course._id}
+                                    id={course._id}
                                     title={course.title}
                                     desc={course.description}
                                     image={course.coverImage?.url}
@@ -96,7 +94,7 @@ function StudentCourses() {
         </>
     );
 }
-function CourseCard({ title, desc, image }) {
+function CourseCard({ id, title, desc, image }) {
     return (
         <div className="bg-sidebar p-3 rounded-3xl border border-border flex flex-col md:flex-row gap-4">
             {/* Image */}
@@ -115,9 +113,13 @@ function CourseCard({ title, desc, image }) {
                     <h4 className="font-bold text-lg md:text-2xl">{title}</h4>
                     <p className="text-foreground/70 text-sm line-clamp-2 mb-3">{desc}</p>
                 </div>
-                <Button className="w-fit">Manage Course</Button>
+
+                <Button asChild className="w-fit">
+                    <Link href={`/student/courses/${id}`}>Open Course</Link>
+                </Button>
             </div>
         </div>
     );
 }
+
 export default StudentCourses;
