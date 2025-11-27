@@ -19,40 +19,60 @@ export const useLogin = () => {
     },
     mode: "onBlur",
   });
-  const { role } = useRoleStore();
-  const { handleAuth, userInfo, setErr } = useAuthStore();
+
+  const { role } = useRoleStore(); // student | instructor | admin
+  const { handleAuth, setErr } = useAuthStore();
   const router = useRouter();
+
   const onSubmit = async (values) => {
     try {
       // Detect Role
-      const RoleInstructor = role === "instructor";
-      const endpoint = RoleInstructor
-        ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
-        : ENDPOINTS.STUDENT_AUTH.LOGIN;
+      const isInstructor = role === "instructor";
+      const isAdmin = role === "admin";
 
+      // Endpoint based on role
+      const endpoint = isAdmin
+        ? ENDPOINTS.ADMIN_AUTH.LOGIN
+        : isInstructor
+          ? ENDPOINTS.INSTRUCTOR_AUTH.LOGIN
+          : ENDPOINTS.STUDENT_AUTH.LOGIN;
 
       const res = await api.post(endpoint, values);
+
       if (res.status === 200) {
         handleAuth(res.data);
-        const user = res.data.admin || res.data.student || res.data.instructor || null;
+
+        // Detect returned user object
+        const user =
+          res.data.admin ||
+          res.data.instructor ||
+          res.data.student ||
+          null;
+
         form.reset();
+
         toast.success("Login Successful", {
-          description: `Welcome back, ${user.name}`, // here it deals with student only when sign with instructor it fails
+          description: `Welcome back, ${user?.name || "User"}`,
           duration: 3000,
         });
-        // Redirect to dashboard
-        RoleInstructor
-          ? router.push("/instructor")
-          : router.push("/student");
+
+        // Redirect based on role
+        if (isAdmin) {
+          router.push("/admin");
+        } else if (isInstructor) {
+          router.push("/instructor");
+        } else {
+          router.push("/student");
+        }
       } else {
         toast.error("Missing Credentials", {
-          description: 'Please check your credentials and try again.',
+          description: "Please check your credentials and try again.",
         });
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error.response?.data?.message);
       toast.error("Login Failed", {
-        description: setErr(error.response.data.message),
+        description: setErr(error.response?.data?.message),
       });
     }
   };
