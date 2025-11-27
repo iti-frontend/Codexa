@@ -81,8 +81,6 @@ export const AdminLinks = [
   { icon: Users, name: "Students", href: `${adm}/students` },
   { icon: UserCheck, name: "Instructors", href: `${adm}/instructors` },
   { icon: Video, name: "Courses", href: `${adm}/courses` },
-  { icon: BarChart3, name: "Analytics", href: `${adm}/analytics` },
-  { icon: Settings, name: "Settings", href: `${adm}/settings` },
 ];
 
 //  Tools SideBar Links
