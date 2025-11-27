@@ -2,7 +2,6 @@
 
 import {
     Users,
-    GraduationCap,
     Video,
     DollarSign,
     ArrowUpRight,
@@ -19,26 +18,20 @@ import {
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
+import { AdminStatsCards, ChartData } from "@/Constants/AdminContent";
 
 export default function AdminDashboard() {
-    // ===================== STATIC DATA (Replace later with API) =====================
-    const stats = [
-        { title: "Total Students", value: "1,240", icon: Users },
-        { title: "Instructors", value: "88", icon: GraduationCap },
-        { title: "Courses", value: "154", icon: Video },
-        { title: "Revenue", value: "$23,400", icon: DollarSign },
-    ];
+    // Admin Analytics
+    const { analytics, loading } = useAdminAnalytics();
 
-    const chartData = [
-        { month: "Jan", revenue: 1200 },
-        { month: "Feb", revenue: 1600 },
-        { month: "Mar", revenue: 2200 },
-        { month: "Apr", revenue: 1900 },
-        { month: "May", revenue: 2600 },
-        { month: "Jun", revenue: 3100 },
-    ];
+    if (loading) return <div>Loading analytics...</div>;
+    if (!analytics) return <div>No analytics found.</div>;
 
-    // =================================================================================
+    const dynamicStats = AdminStatsCards.map((item) => ({
+        ...item,
+        number: analytics[item.key] ?? 0,
+    }));
 
     return (
         <div className="p-6 space-y-8">
@@ -52,7 +45,7 @@ export default function AdminDashboard() {
 
             {/* ================= ANALYTICS CARDS ================= */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((item, i) => (
+                {dynamicStats.map((item, i) => (
                     <Card
                         key={i}
                         className="hover:shadow-lg transition-all border border-border rounded-xl"
@@ -62,21 +55,27 @@ export default function AdminDashboard() {
                                 {item.title}
                             </CardTitle>
 
-                            {/* Icon uses chart colors */}
+                            {/* Icon using theme chart colors */}
                             <item.icon
                                 className="w-6 h-6"
-                                style={{ color: `var(--chart-${i + 1})` }}
+                                style={{ color: `var(--chart-${(i % 5) + 1})` }}
                             />
                         </CardHeader>
 
                         <CardContent>
-                            <div className="text-3xl font-bold">{item.value}</div>
+                            <div className="text-3xl font-bold">
+                                {item.key === "totalRevenue"
+                                    ? `$${item.number ?? 0}`
+                                    : item.number ?? 0}
+                            </div>
+
                             <p className="text-xs text-muted-foreground flex items-center gap-1">
                                 <ArrowUpRight size={14} /> Updated now
                             </p>
                         </CardContent>
                     </Card>
                 ))}
+
             </div>
 
             <Separator />
@@ -92,7 +91,7 @@ export default function AdminDashboard() {
 
                 <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={chartData}>
+                        <BarChart data={ChartData}>
                             <XAxis
                                 dataKey="month"
                                 tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
@@ -104,7 +103,7 @@ export default function AdminDashboard() {
                             />
 
                             <Bar dataKey="revenue" radius={[6, 6, 0, 0]}>
-                                {chartData.map((_, index) => (
+                                {ChartData.map((_, index) => (
                                     <Cell
                                         key={index}
                                         fill={`color-mix(in srgb, var(--chart-${(index % 5) + 1}) 50%, transparent)`}

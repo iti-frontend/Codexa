@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import useProfile from "@/hooks/useProfile";
 import api from "@/lib/axios";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
+import Cookies from "js-cookie";
+
 
 export default function ProfileEditCard() {
     const router = useRouter();
@@ -87,12 +89,26 @@ export default function ProfileEditCard() {
         setSaving(true);
 
         try {
-            const token = document.cookie
-                .split("; ")
-                .find((r) => r.startsWith("token="))
-                ?.split("=")[1];
-
+            // Get token safely
+            const token = Cookies.get("token");
             if (!token) return toast.error("Token missing");
+
+            // Read user from cookies
+            const userInfo = Cookies.get("userInfo");
+            const parsedUser = userInfo ? JSON.parse(userInfo) : null;
+            const role = parsedUser?.role?.toLowerCase();
+
+            // Determine correct endpoint
+            let endpoint = "";
+            if (role === "instructor") {
+                endpoint = ENDPOINTS.INSTRUCTOR_EDIT_PROFILE;
+            } else if (role === "student") {
+                endpoint = ENDPOINTS.STUDENT_EDIT;
+            } else if (role === "admin") {
+                endpoint = ENDPOINTS.ADMIN_EDIT_PROFILE; // تأكد انه موجود
+            } else {
+                return toast.error("Unknown role");
+            }
 
             // Prepare FormData
             const data = new FormData();
@@ -106,8 +122,8 @@ export default function ProfileEditCard() {
                 data.append("profileImage", formData.profileImage);
             }
 
-            // ⭐ Correct axios request (your old one was invalid!)
-            const res = await api.put(ENDPOINTS.INSTRUCTOR_EDIT_PROFILE, data, {
+            // Make request
+            const res = await api.put(endpoint, data, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
@@ -116,7 +132,7 @@ export default function ProfileEditCard() {
 
             if (!res || !res.data) throw new Error("Invalid response");
 
-            // Backend should return updated user
+            // Determine updated user
             const updatedUser =
                 res.data.user ||
                 res.data.student ||
@@ -124,20 +140,21 @@ export default function ProfileEditCard() {
                 res.data.admin ||
                 res.data;
 
-            // Update cookie safely
-            document.cookie = `userInfo=${encodeURIComponent(
-                JSON.stringify(updatedUser)
-            )}; path=/; max-age=2592000`;
+            // Save updated user in cookies
+            Cookies.set("userInfo", JSON.stringify(updatedUser), {
+                expires: 30,
+                path: "/",
+            });
 
-            toast.success("Profile updated!");
+            toast.success("Profile updated successfully!");
 
-            // Redirect based on role
-            const role = updatedUser.role?.toLowerCase();
-            if (role === "instructor") {
-                router.push("/profile");
+            // Redirect correctly
+            if (role === "admin") {
+                router.push("/admin");
             } else {
                 router.push("/profile");
             }
+
         } catch (err) {
             console.error("Update error:", err);
             toast.error("Update failed");
@@ -145,6 +162,7 @@ export default function ProfileEditCard() {
             setSaving(false);
         }
     };
+
 
 
     if (loading) return <div>Loading...</div>;
