@@ -31,6 +31,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/lib/axios";
 import { useFavouritesStore } from "@/store/useFavouritesStore";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function CourseDetails() {
   const params = useParams();
@@ -62,6 +63,34 @@ export default function CourseDetails() {
       fetchCourseDetails();
     }
   }, [params?.id]);
+  const [addingToCart, setAddingToCart] = useState(false);
+
+  const moveToCart = async (courseId) => {
+    try {
+      setAddingToCart(true);
+      
+      console.log("🛒 Adding to cart:", { courseId });
+      
+      const response = await api.post("/cart", { courseId });
+
+      console.log("✅ Cart API Response:", response.data);
+      
+      alert("Course added to cart successfully!");
+      
+      // Optional: Redirect to cart page to see the updated cart
+      // router.push("/cart");
+    } catch (error) {
+      console.error("❌ Error moving to cart:", error);
+      console.error("Error details:", error.response?.data);
+      alert(
+        error.response?.data?.message ||
+          "Failed to add course to cart. Please try again."
+      );
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
 
   const fetchCourseDetails = async () => {
     try {
@@ -402,8 +431,13 @@ export default function CourseDetails() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button className="w-full" size="lg">
-                  Enroll Now
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={() => moveToCart(course._id)}
+                  disabled={addingToCart}
+                >
+                  {addingToCart ? "Adding to Cart..." : "Add to Cart"}
                 </Button>
 
                 {/* Favourite Button */}
