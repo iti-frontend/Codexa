@@ -2,7 +2,7 @@
 import React from "react";
 import SidebarComponent from "@/components/shared/SidebarComponent";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { InstructorLinks, StudentsLinks } from "@/Constants/sidebar-links";
+import { AdminLinks, InstructorLinks, StudentsLinks } from "@/Constants/sidebar-links";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import Cookies from "js-cookie";
@@ -11,12 +11,25 @@ function PagesLayout({ children }) {
   const userInfo = Cookies.get("userInfo");
   const role = userInfo ? JSON.parse(userInfo).role : "";
   const isInstructor = role === "Instructor";
-  const selectedRole = isInstructor ? "Instructor" : "Student";
+  const isStudent = role === "Student";
+  const isAdmin = role === "Admin";
+
+  const selectedRole = isAdmin
+    ? "Admin"
+    : isInstructor
+      ? "Instructor"
+      : "Student";
   return (
     <SidebarProvider>
       {/* The Main Side bar */}
       <SidebarComponent
-        Links={selectedRole === "Instructor" ? InstructorLinks : StudentsLinks}
+        Links={
+          selectedRole === "Admin"
+            ? AdminLinks
+            : selectedRole === "Instructor"
+              ? InstructorLinks
+              : StudentsLinks
+        }
       />
 
       {/* The Main Content */}

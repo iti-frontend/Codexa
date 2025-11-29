@@ -9,6 +9,8 @@ import {
   Star,
   ChevronRight,
   X,
+  ShoppingCart,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +35,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Explore() {
   const [courses, setCourses] = useState([]);
@@ -40,6 +43,7 @@ export default function Explore() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [addingToCart, setAddingToCart] = useState({}); // Track loading state per course
   const router = useRouter();
 
   useEffect(() => {
@@ -59,6 +63,35 @@ export default function Explore() {
       console.error("Error fetching courses:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const addToCart = async (courseId, event) => {
+    // Prevent card click event from firing
+    event.stopPropagation();
+    
+    try {
+      setAddingToCart(prev => ({ ...prev, [courseId]: true }));
+      
+      await api.post("/cart", { courseId });
+      
+      // Show success toast
+      toast.success("Added to cart!", {
+        description: "Course has been added to your cart successfully.",
+        duration: 3000,
+      });
+      
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      const errorMessage = error.response?.data?.message || "Failed to add course to cart";
+      
+      // Show error toast
+      toast.error("Failed to add to cart", {
+        description: errorMessage,
+        duration: 4000,
+      });
+    } finally {
+      setAddingToCart(prev => ({ ...prev, [courseId]: false }));
     }
   };
 
@@ -374,7 +407,32 @@ export default function Explore() {
                   <div className="flex items-baseline gap-1">
                     <span className="text-2xl font-bold">${course.price}</span>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                  
+                  <div className="flex items-center gap-2">
+                    {/* Add to Cart Button */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
+                      onClick={(e) => addToCart(course._id, e)}
+                      disabled={addingToCart[course._id]}
+                    >
+                      {addingToCart[course._id] ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span className="hidden sm:inline">Adding...</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="h-4 w-4" />
+                          <span className="hidden sm:inline">Add to Cart</span>
+                        </>
+                      )}
+                    </Button>
+                    
+                    {/* View Details Arrow */}
+                    <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                  </div>
                 </CardFooter>
               </Card>
             ))}
