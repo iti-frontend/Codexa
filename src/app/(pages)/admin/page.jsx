@@ -20,6 +20,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
 import { AdminStatsCards, ChartData } from "@/Constants/AdminContent";
+import AdminRecentActivity from "@/components/Dashboard/AdminRecentActivity";
 
 export default function AdminDashboard() {
     // Admin Analytics
@@ -118,50 +119,7 @@ export default function AdminDashboard() {
             </Card>
 
             {/* ================= RECENT ACTIVITY ================= */}
-            <Card className="rounded-xl border">
-                <CardHeader>
-                    <CardTitle>Recent Activity</CardTitle>
-                </CardHeader>
-
-                <CardContent className="space-y-5">
-                    <ActivityItem
-                        icon={<Users className="text-blue-500" />}
-                        title="New student registered"
-                        desc="Ahmed El Sayed joined the platform"
-                    />
-
-                    <ActivityItem
-                        icon={<Video className="text-green-500" />}
-                        title="New course added"
-                        desc="React Advanced Course published by Omar"
-                    />
-
-                    <ActivityItem
-                        icon={<DollarSign className="text-emerald-500" />}
-                        title="Payment received"
-                        desc="New purchase: Fullstack Bootcamp"
-                    />
-                </CardContent>
-            </Card>
-        </div>
-    );
-}
-
-
-/* ======================== Reusable Activity Item ========================= */
-
-
-function ActivityItem({ icon, title, desc }) {
-    return (
-        <div className="flex items-start gap-4 p-3 rounded-lg hover:bg-muted/60 transition-all">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-muted">
-                {icon}
-            </div>
-
-            <div>
-                <p className="font-medium">{title}</p>
-                <p className="text-sm text-muted-foreground">{desc}</p>
-            </div>
+            <AdminRecentActivity />
         </div>
     );
 }
