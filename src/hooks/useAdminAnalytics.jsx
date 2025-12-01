@@ -31,3 +31,32 @@ export function useAdminAnalytics() {
 
     return { analytics, loading, fetchAnalytics };
 }
+
+export function useAdminActivity() {
+    const [activity, setActivity] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const { userToken } = useAuthStore();
+
+    const fetchActivity = async () => {
+        try {
+            const res = await api.get(ENDPOINTS.ADMIN_ACTIVITY, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+
+            setActivity(res.data);
+        } catch (err) {
+            console.error("Failed to fetch admin activity:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchActivity();
+    }, []);
+
+    return { activity, loading };
+}

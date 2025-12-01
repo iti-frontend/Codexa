@@ -38,6 +38,7 @@ export const ENDPOINTS = {
   },
   // admin Endpoints
   ADMIN_ANALYTICS: "/admin/stats",
+  ADMIN_ACTIVITY: "/admin/activity",
   ADMIN_STUDENTS: "/admin/students",
   ADMIN_STUDENT_BY_ID: "/admin/students/{studentId}",
   ADMIN_COURSES: "/admin/courses",
