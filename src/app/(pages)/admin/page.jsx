@@ -17,7 +17,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
 import { AdminStatsCards, ChartData } from "@/Constants/AdminContent";
-import AdminRecentActivity from "@/components/Dashboard/AdminRecentActivity";
+import AdminRecentActivity from "@/components/adminComponents/AdminRecentActivity";
 
 export default function AdminDashboard() {
     // Admin Analytics

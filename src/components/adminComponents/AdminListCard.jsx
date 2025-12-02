@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useMemo } from "react";
 import {
     Search,
@@ -12,7 +11,6 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 import {
     DropdownMenu,
@@ -20,10 +18,11 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-
+import { useAdminDeleteUsers } from "@/hooks/useAdminDeleteUsers";
+import { toast } from "sonner";
+import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 
 export default function AdminListCard({
-    title = "List",
     items = [],
     itemKey = "name",
     itemImageKey = "profileImage",
@@ -31,25 +30,75 @@ export default function AdminListCard({
 
     // Callbacks
     onView = () => { },
-    onDelete = () => { },
-    onDeleteMany = () => { },
-
-    // Optional filters → ["Student", "Instructor"]
-    filters = [],
+    onRefetch = () => { },
+    role = "",
 }) {
     const [search, setSearch] = useState("");
-    const [activeFilter, setActiveFilter] = useState("all");
     const [selected, setSelected] = useState([]);
+    const [pendingDeleteIds, setPendingDeleteIds] = useState([]); // NEW
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+    const { deleteUsers, loading: deleting } = useAdminDeleteUsers(role);
+
+    // ------------------------------
+    // Delete flow
+    // ------------------------------
+    // Open delete dialog for many (bulk)
+    function openBulkDelete() {
+        if (selected.length === 0) return;
+        setPendingDeleteIds(selected);
+        setShowDeleteDialog(true);
+    }
+
+    // Open delete dialog for single item (from dropdown)
+    function openSingleDelete(id) {
+        setPendingDeleteIds([id]);
+        setShowDeleteDialog(true);
+    }
+
+    async function confirmDelete() {
+        if (!pendingDeleteIds || pendingDeleteIds.length === 0) {
+            // nothing to delete
+            setShowDeleteDialog(false);
+            return;
+        }
+
+        try {
+            const ok = await deleteUsers(pendingDeleteIds);
+
+            if (ok) {
+                const count = pendingDeleteIds.length;
+                toast.success(
+                    count === 1
+                        ? "User deleted successfully."
+                        : `${count} users deleted successfully.`
+                );
+
+                // remove deleted ids locally so UI updates instantly (optional)
+                setSelected((prev) => prev.filter((id) => !pendingDeleteIds.includes(id)));
+
+                // clear pending
+                setPendingDeleteIds([]);
+
+                // refetch parent data
+                if (onRefetch) onRefetch();
+            } else {
+                toast.error("Failed to delete user(s).");
+            }
+        } catch (err) {
+            console.error("Delete error:", err);
+            toast.error("Failed to delete user(s).");
+        } finally {
+            // always close dialog and stop any local busy states
+            setShowDeleteDialog(false);
+        }
+    }
 
     // ------------------------------
     // Filter + Search Logic
     // ------------------------------
     const filteredItems = useMemo(() => {
         let result = [...items];
-
-        if (activeFilter !== "all") {
-            result = result.filter((i) => i.role === activeFilter);
-        }
 
         if (search.trim()) {
             result = result.filter((i) =>
@@ -58,7 +107,7 @@ export default function AdminListCard({
         }
 
         return result;
-    }, [items, search, activeFilter]);
+    }, [items, search, itemKey]);
 
     // ------------------------------
     // Selection Logic
@@ -77,13 +126,6 @@ export default function AdminListCard({
         }
     };
 
-    const clearFilters = () => {
-        setSearch("");
-        setActiveFilter("all");
-    };
-
-    const hasActiveFilters = search || activeFilter !== "all";
-
     // ------------------------------
     // UI Rendering
     // ------------------------------
@@ -100,25 +142,21 @@ export default function AdminListCard({
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="
-                pl-12 pr-12
-                h-12
-                text-base
-                rounded-xl
-                border border-border
-                bg-background/60
-                focus:ring-2 focus:ring-primary/50
-                transition-all
-            "
-                    />
-
+                                    pl-12 pr-12
+                                    h-12
+                                    text-base
+                                    rounded-xl
+                                    border border-border
+                                    bg-background/60
+                                    focus:ring-2 focus:ring-primary/50
+                                    transition-all"/>
                     {search && (
                         <X
                             className="
-                    absolute right-4 top-1/2 -translate-y-1/2
-                    h-5 w-5
-                    text-muted-foreground cursor-pointer
-                    hover:text-foreground transition
-                "
+                                        absolute right-4 top-1/2 -translate-y-1/2
+                                        h-5 w-5
+                                        text-muted-foreground cursor-pointer
+                                        hover:text-foreground transition "
                             onClick={() => setSearch("")}
                         />
                     )}
@@ -131,15 +169,15 @@ export default function AdminListCard({
                     <Button
                         variant="destructive"
                         className="
-                flex items-center gap-2 px-4 py-2 text-sm
-                bg-red-600 hover:bg-red-700
-                hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
-                transition-all duration-200
-            "
-                        onClick={() => onDeleteMany(selected)}
+                                    flex items-center gap-2 px-4 py-2 text-sm
+                                    bg-red-600 hover:bg-red-700
+                                    hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
+                                    transition-all duration-200"
+                        onClick={openBulkDelete}
+                        disabled={deleting}
                     >
                         <Trash size={14} />
-                        Delete Permanently ({selected.length})
+                        {deleting ? `Deleting...` : `Delete Permanently (${selected.length})`}
                     </Button>
                 )}
             </div>
@@ -168,7 +206,6 @@ export default function AdminListCard({
                         className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/40 transition"
                     >
                         <div className="flex items-center gap-3">
-
                             <input
                                 type="checkbox"
                                 checked={selected.includes(item._id)}
@@ -209,7 +246,7 @@ export default function AdminListCard({
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     className="text-red-500"
-                                    onClick={() => onDelete(item)}
+                                    onClick={() => openSingleDelete(item._id)}
                                 >
                                     Delete
                                 </DropdownMenuItem>
@@ -218,6 +255,16 @@ export default function AdminListCard({
                     </div>
                 ))}
             </CardContent>
+
+            <DeleteConfirmDialog
+                open={showDeleteDialog}
+                onClose={() => {
+                    setShowDeleteDialog(false);
+                    setPendingDeleteIds([]); // clear pending when dialog closed
+                }}
+                onConfirm={confirmDelete}
+                count={pendingDeleteIds.length}
+            />
         </Card>
     );
 }

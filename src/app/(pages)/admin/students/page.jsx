@@ -1,15 +1,14 @@
 "use client";
 
-import AdminListCard from "@/components/Dashboard/AdminListCard";
-import UserDetailsDrawer from "@/components/Dashboard/UserDetailsDrawer";
+import AdminListCard from "@/components/adminComponents/AdminListCard";
+import UserDetailsDrawer from "@/components/adminComponents/UserDetailsDrawer";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useAdminUserDetails } from "@/hooks/useAdminUserDetails"; // <-- ADD THIS
 import { useState } from "react";
 
 export default function StudentsPage() {
-    const { loading, data: students, count } = useAdminUsers("students");
+    const { loading, data: students, count, refetch } = useAdminUsers("students");
     const [viewUser, setViewUser] = useState(null);
-
     // ===== Fetch selected user details =====
     const {
         data: userDetails,
@@ -41,16 +40,19 @@ export default function StudentsPage() {
                         itemImageKey="image"
                         itemSubKey="email"
                         onView={(s) => setViewUser(s)}
-                        onDelete={(s) => console.log("Delete student:", s)}
+                        onRefetch={refetch}          // Pass explicitly
+                        role="students"
                     />
+
 
                     <UserDetailsDrawer
                         open={!!viewUser}
                         onClose={() => setViewUser(null)}
-                        user={userDetails}          // <-- USE REAL DETAILS
-                        loading={userLoading}       // <-- OPTIONAL: show loading inside drawer
+                        user={userDetails}
+                        loading={userLoading}
                         error={userError}
-                        onDelete={(u) => handleDelete(u)}
+                        onRefetch={refetch}
+                        role="students"
                     />
                 </>
             )}

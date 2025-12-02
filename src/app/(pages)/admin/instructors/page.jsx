@@ -1,12 +1,12 @@
 "use client";
-import AdminListCard from "@/components/Dashboard/AdminListCard";
-import UserDetailsDrawer from "@/components/Dashboard/UserDetailsDrawer";
+import AdminListCard from "@/components/adminComponents/AdminListCard";
+import UserDetailsDrawer from "@/components/adminComponents/UserDetailsDrawer";
 import { useAdminUserDetails } from "@/hooks/useAdminUserDetails";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useState } from "react";
 
 export default function InstructorsPage() {
-    const { loading, data: instructors, count } = useAdminUsers("instructors");
+    const { loading, data: instructors, count, refetch } = useAdminUsers("instructors");
     const [viewUser, setViewUser] = useState(null);
     // ===== Fetch selected user details =====
     const {
@@ -36,21 +36,22 @@ export default function InstructorsPage() {
 
 
                     <AdminListCard
-                        // title="instructors"
                         items={instructors}
                         itemKey="name"
                         itemImageKey="image"
                         itemSubKey="email"
                         onView={(s) => setViewUser(s)}
-                        onDelete={(s) => console.log("Delete instructor:", s)}
+                        onRefetch={refetch}
+                        role="instructors"
                     />
                     <UserDetailsDrawer
                         open={!!viewUser}
                         onClose={() => setViewUser(null)}
-                        user={userDetails}          // <-- USE REAL DETAILS
-                        loading={userLoading}       // <-- OPTIONAL: show loading inside drawer
+                        user={userDetails}
+                        loading={userLoading}
                         error={userError}
-                        onDelete={(u) => handleDelete(u)}
+                        onRefetch={refetch}
+                        role="instructors"
                     />
                 </>
             )}
