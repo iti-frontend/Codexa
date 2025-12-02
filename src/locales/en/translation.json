@@ -1,0 +1,55 @@
+{
+    "community": {
+        "title": "Community",
+        "refresh": "Refresh",
+        "createPost": "Create Post",
+        "tryAgain": "Try Again",
+        "errorLoading": "Error loading community posts",
+        "emptyState": {
+            "title": "No posts yet",
+            "message": "Be the first to share something with the community!",
+            "button": "Create Post"
+        },
+        "post": {
+            "anonymous": "Anonymous",
+            "editPost": "Edit Post",
+            "deletePost": "Delete Post",
+            "deleteConfirm": "Are you sure you want to delete this post?",
+            "editPlaceholder": "What's on your mind?",
+            "cancel": "Cancel",
+            "saveChanges": "Save Changes",
+            "share": "Share"
+        },
+        "createDialog": {
+            "title": "Create New Post",
+            "placeholder": "What's on your mind?",
+            "posting": "Posting...",
+            "post": "Post",
+            "cancel": "Cancel"
+        },
+        "comments": {
+            "title": "Comments",
+            "addComment": "Write a comment...",
+            "reply": "Reply",
+            "edit": "Edit",
+            "delete": "Delete",
+            "save": "Save",
+            "cancel": "Cancel",
+            "deleteConfirm": "Are you sure you want to delete this comment?",
+            "noComments": "No comments yet. Be the first to comment!",
+            "viewReplies": "View replies",
+            "hideReplies": "Hide replies"
+        },
+        "toast": {
+            "pleaseLogin": "Please login to {{action}}",
+            "postCreated": "Post created successfully",
+            "postUpdated": "Post updated successfully",
+            "postDeleted": "Post deleted successfully",
+            "linkCopied": "Link copied to clipboard!",
+            "emptyContent": "Post content cannot be empty",
+            "commentAdded": "Comment added successfully",
+            "commentUpdated": "Comment updated successfully",
+            "commentDeleted": "Comment deleted successfully"
+        }
+    }
+}
