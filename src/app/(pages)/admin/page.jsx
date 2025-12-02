@@ -1,9 +1,6 @@
 "use client";
 
 import {
-    Users,
-    Video,
-    DollarSign,
     ArrowUpRight,
 } from "lucide-react";
 
@@ -20,13 +17,19 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
 import { AdminStatsCards, ChartData } from "@/Constants/AdminContent";
-import AdminRecentActivity from "@/components/Dashboard/AdminRecentActivity";
+import AdminRecentActivity from "@/components/adminComponents/AdminRecentActivity";
 
 export default function AdminDashboard() {
     // Admin Analytics
     const { analytics, loading } = useAdminAnalytics();
 
-    if (loading) return <div>Loading analytics...</div>;
+    if (loading) {
+        return (
+            <div className="min-h-screen flex  justify-center bg-[#0d1117]">
+                <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
+            </div>
+        );
+    }
     if (!analytics) return <div>No analytics found.</div>;
 
     const dynamicStats = AdminStatsCards.map((item) => ({
