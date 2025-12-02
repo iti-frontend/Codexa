@@ -1,11 +1,19 @@
 "use client";
 import AdminListCard from "@/components/Dashboard/AdminListCard";
+import UserDetailsDrawer from "@/components/Dashboard/UserDetailsDrawer";
+import { useAdminUserDetails } from "@/hooks/useAdminUserDetails";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useState } from "react";
 
 export default function InstructorsPage() {
     const { loading, data: instructors, count } = useAdminUsers("instructors");
     const [viewUser, setViewUser] = useState(null);
+    // ===== Fetch selected user details =====
+    const {
+        data: userDetails,
+        loading: userLoading,
+        error: userError,
+    } = useAdminUserDetails(viewUser?._id, "instructor");
 
     return (
         <div className="p-6 space-y-6">
@@ -39,7 +47,9 @@ export default function InstructorsPage() {
                     <UserDetailsDrawer
                         open={!!viewUser}
                         onClose={() => setViewUser(null)}
-                        user={viewUser}
+                        user={userDetails}          // <-- USE REAL DETAILS
+                        loading={userLoading}       // <-- OPTIONAL: show loading inside drawer
+                        error={userError}
                         onDelete={(u) => handleDelete(u)}
                     />
                 </>
