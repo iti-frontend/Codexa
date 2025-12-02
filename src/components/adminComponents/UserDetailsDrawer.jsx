@@ -152,25 +152,6 @@ export default function UserDetailsDrawer({
                                 value={new Date(user.createdAt).toLocaleDateString()}
                             />
                         </div>
-
-                        {/* EXTRA SECTION: ENROLLED COURSES */}
-                        <div className="border rounded-xl p-4 bg-muted/20 space-y-3">
-                            <div className="flex items-center gap-2">
-                                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                                <span className="font-medium">Enrolled Courses</span>
-                            </div>
-
-                            {user.enrolledCourses?.length > 0 ? (
-                                <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                    {user.enrolledCourses.map((c, i) => (
-                                        <li key={i}>{c}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p className="text-sm text-muted-foreground">No courses enrolled.</p>
-                            )}
-                        </div>
-
                         {/* ACTIONS */}
                         <div className="flex justify-between pt-4">
                             <Button variant="outline" onClick={onClose}>
