@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { useState } from "react";
-import { useAdminDeleteUsers } from "@/hooks/useAdminDeleteUsers";
+import { useAdminDeleteUsers } from "@/hooks/useAdminDelete";
 import { toast } from "sonner";
 
 export default function UserDetailsDrawer({
