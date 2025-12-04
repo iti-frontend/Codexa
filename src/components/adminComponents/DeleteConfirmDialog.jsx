@@ -10,18 +10,35 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
-export function DeleteConfirmDialog({ open, onClose, onConfirm, count = 1 }) {
+export function DeleteConfirmDialog({
+    open,
+    onClose,
+    onConfirm,
+    type = "item",     // "course", "user"
+    name = "",         // item name
+    count = 1,
+}) {
+    const label = count > 1
+        ? `${count} ${type}s`
+        : name
+            ? `"${name}"`
+            : `this ${type}`;
+
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-sm rounded-xl">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-semibold">
-                        Delete {count > 1 ? `${count} users` : "user"}?
+                        Delete {label}?
                     </DialogTitle>
 
-                    <DialogDescription>
-                        This action <span className="font-semibold text-red-500">cannot be undone</span>.
-                        The user{count > 1 ? "s will" : " will"} be permanently removed from the system.
+                    <DialogDescription className="text-sm leading-relaxed">
+                        This action{" "}
+                        <span className="font-semibold text-red-500">
+                            cannot be undone
+                        </span>. <br />
+                        The {type} {name && <span className="font-semibold">"{name}"</span>}
+                        will be permanently removed from the system.
                     </DialogDescription>
                 </DialogHeader>
 

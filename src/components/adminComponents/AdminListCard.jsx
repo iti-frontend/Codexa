@@ -18,7 +18,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useAdminDeleteUsers } from "@/hooks/useAdminDeleteUsers";
+import { useAdminDeleteUsers } from "@/hooks/useAdminDelete";
 import { toast } from "sonner";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 

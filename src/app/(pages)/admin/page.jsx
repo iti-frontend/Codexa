@@ -25,7 +25,7 @@ export default function AdminDashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex  justify-center bg-[#0d1117]">
+            <div className="min-h-screen flex  justify-center bg-background">
                 <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
             </div>
         );

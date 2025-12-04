@@ -58,3 +58,45 @@ export function useAdminDeleteUsers(role = "students") {
 
     return { deleteUsers, loading, error, success };
 }
+
+export function useAdminDeleteCourse() {
+    const { userToken } = useAuthStore();
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    async function deleteCourse(courseId) {
+        if (!courseId) {
+            setError("Invalid course ID");
+            return false;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            const res = await api.delete(
+                `${ENDPOINTS.ADMIN_COURSES}/${courseId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    },
+                }
+            );
+
+            return res.data.success || true;
+        } catch (err) {
+            console.error("Delete course error:", err);
+            setError(err.response?.data?.message || "Failed to delete course");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return {
+        deleteCourse,
+        loading,
+        error,
+    };
+}
