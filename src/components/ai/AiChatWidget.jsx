@@ -23,8 +23,13 @@ export default function AiChatWidget({ open, onClose }) {
 
         try {
             const res = await api.post(
-                ENDPOINTS.AI_CHAT,       // we will define this endpoint below
-                { message: userQuery },  // body
+
+                ENDPOINTS.AI_CHAT,
+                {
+                    message: userQuery,
+                    history: messages
+                },
+                // body
                 {
                     headers: {
                         Authorization: `Bearer ${userToken}`,
