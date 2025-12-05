@@ -13,8 +13,11 @@ import { cn } from "@/lib/utils";
 import { ToolsLinks } from "@/Constants/sidebar-links";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
+import AiChatWidget from "../ai/AiChatWidget";
+import { useState } from "react";
 
 function SidebarComponent({ Links }) {
+  const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   const router = useRouter();
@@ -55,7 +58,7 @@ function SidebarComponent({ Links }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
@@ -68,6 +71,7 @@ function SidebarComponent({ Links }) {
       <SidebarFooter className="p-5">
         {/* AI Button */}
         <Button
+          onClick={() => setIsAiOpen(true)}
           variant="ghost"
           className="
     group/button relative flex items-center justify-start
@@ -100,6 +104,8 @@ function SidebarComponent({ Links }) {
           <LogOut /> Sign out
         </Button>
       </SidebarFooter>
+      <AiChatWidget open={isAiOpen} onClose={() => setIsAiOpen(false)} />
+
     </Sidebar>
   );
 }
