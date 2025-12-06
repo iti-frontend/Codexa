@@ -16,7 +16,7 @@ import AiChatWidget from "../ai/AiChatWidget";
 import { useState } from "react";
 import { ToolsLinks } from "@/Constants/sidebar-links";
 import { useTranslation } from "react-i18next";
-function SidebarComponent({ Links,side="left",ToolsLinks }) {
+function SidebarComponent({ Links }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();

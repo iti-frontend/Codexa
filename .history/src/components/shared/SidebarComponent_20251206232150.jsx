@@ -14,9 +14,9 @@ import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import AiChatWidget from "../ai/AiChatWidget";
 import { useState } from "react";
-import { ToolsLinks } from "@/Constants/sidebar-links";
 import { useTranslation } from "react-i18next";
-function SidebarComponent({ Links,side="left",ToolsLinks }) {
+
+function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
@@ -48,11 +48,13 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
             variant="ghost"
           >
             <Link href={link.href} className="items-center gap-2 font-semibold">
-              <link.icon size={18} /> {t(`sidebar.${link.nameKey}`)}
+              <link.icon size={18} /> {t(sidebar.${link.nameKey})}
             </Link>
           </Button>
         ))}
-        <h6 className="px-3 pt-4 text-sm text-foreground/70">{t("sidebar.tools")}</h6>
+        <h6 className="px-3 pt-4 text-sm text-foreground/70">
+          {t("sidebar.tools")}
+        </h6>
         {ToolsLinks.map((tool, index) => (
           <Button
             key={index}
@@ -60,12 +62,12 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
             <Link href={tool.href} className="items-center gap-2 font-semibold">
-              <tool.icon size={18} /> {t(`sidebar.${tool.nameKey}`)}
+              <tool.icon size={18} /> {t("sidebar.${tool.nameKey})}
             </Link>
           </Button>
         ))}
@@ -107,7 +109,6 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
         </Button>
       </SidebarFooter>
       <AiChatWidget open={isAiOpen} onClose={() => setIsAiOpen(false)} />
-
     </Sidebar>
   );
 }

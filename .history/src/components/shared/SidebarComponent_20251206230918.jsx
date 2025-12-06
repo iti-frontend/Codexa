@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import AiChatWidget from "../ai/AiChatWidget";
-import { useState } from "react";
-import { ToolsLinks } from "@/Constants/sidebar-links";
 import { useTranslation } from "react-i18next";
-function SidebarComponent({ Links,side="left",ToolsLinks }) {
+import { useState } from "react";
+
+function SidebarComponent({ Links }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
@@ -29,7 +29,7 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
   };
 
   return (
-    <Sidebar side={side} className="!border-0">
+    <Sidebar  className="!border-0">
       <SidebarHeader>
         <UserMenu />
       </SidebarHeader>
