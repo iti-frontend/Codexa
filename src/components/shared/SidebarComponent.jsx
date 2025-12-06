@@ -12,9 +12,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useTranslation } from "react-i18next";
+import AiChatWidget from "../ai/AiChatWidget";
+import { useState } from "react";
 
-function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
+function SidebarComponent({ Links }) {
+  const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   const router = useRouter();
@@ -57,7 +59,7 @@ function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
@@ -70,6 +72,7 @@ function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
       <SidebarFooter className="p-5">
         {/* AI Button */}
         <Button
+          onClick={() => setIsAiOpen(true)}
           variant="ghost"
           className="
     group/button relative flex items-center justify-start
@@ -102,6 +105,8 @@ function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
           <LogOut /> {t("sidebar.signout")}
         </Button>
       </SidebarFooter>
+      <AiChatWidget open={isAiOpen} onClose={() => setIsAiOpen(false)} />
+
     </Sidebar>
   );
 }
