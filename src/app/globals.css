@@ -124,3 +124,13 @@
     @apply bg-sidebar text-foreground;
   }
 }
+
+@layer utilities {
+  .animate-bounce-slow {
+    animation: bounce 3s infinite;
+  }
+  
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+}
