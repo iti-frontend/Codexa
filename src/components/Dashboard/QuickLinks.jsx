@@ -4,30 +4,23 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateCourseDialog from "@/components/Dashboard/CreateCourseDialog";
+import { useTranslation } from "react-i18next";
 
 function QuickLinks() {
+    const { t } = useTranslation();
     const router = useRouter();
     const [openCreateCourse, setOpenCreateCourse] = useState(false);
 
-    //  Handler based on action
     const handleClick = (action) => {
         switch (action) {
             case "create-course":
                 setOpenCreateCourse(true);
                 break;
-
             case "announcement":
                 alert("Announcement dialog not implemented yet");
                 break;
-
             case "analytics":
                 alert("Analytics router not implemented yet");
-                // uncomment after creating
-                // router.push("/instructor/analytics");
-                break;
-
-            default:
-                console.warn("Unknown quick link action:", action);
                 break;
         }
     };
@@ -40,7 +33,9 @@ function QuickLinks() {
                 transition={{ duration: 0.4, delay: 0.3 }}
                 className="rounded-xl bg-foreground/5 p-5 shadow-sm w-full"
             >
-                <h2 className="text-lg font-semibold mb-4">Quick Links</h2>
+                <h2 className="text-lg font-semibold mb-4">
+                    {t("instructor.quickLinks.title")}
+                </h2>
 
                 <div className="flex flex-col gap-3">
                     {quickLinks.map((link, index) => {
@@ -62,7 +57,7 @@ function QuickLinks() {
                                 </div>
 
                                 <p className="text-sm text-foreground/80">
-                                    {link.text}
+                                    {t(link.text)}
                                 </p>
                             </motion.div>
                         );
@@ -70,7 +65,6 @@ function QuickLinks() {
                 </div>
             </motion.div>
 
-            {/* Create Course Dialog */}
             <CreateCourseDialog
                 open={openCreateCourse}
                 onOpenChange={setOpenCreateCourse}
