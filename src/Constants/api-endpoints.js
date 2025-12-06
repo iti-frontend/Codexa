@@ -45,6 +45,8 @@ export const ENDPOINTS = {
   ADMIN_INSTRUCTORS: "/admin/instructors",
 
   AI_CHAT: "/ai/chat",
+  TEXT_TO_VOICE: "/ai/text-to-voice",
+  VOICE_TO_TEXT: "/ai/voice-to-text",
 
 };
 // api's we  need  get from backend
