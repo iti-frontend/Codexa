@@ -8,10 +8,12 @@ import { PlayCircle, BookOpen, Video, User, Clock, DollarSign } from "lucide-rea
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 export default function StudentCourseDetails() {
-    const { id } = useParams();
+    const { id, lang } = useParams();
     const { fetchCourseById } = useStudentCourses();
+    const { t } = useTranslation();
 
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ export default function StudentCourseDetails() {
     if (!course)
         return (
             <div className="min-h-[50vh] flex items-center justify-center text-muted-foreground">
-                Course not found
+                {t("courseDetails.courseNotFound")}
             </div>
         );
 
@@ -114,11 +116,13 @@ function CoverImageSection({ cover, title }) {
 
 
 function StatsSection({ course }) {
+    const { t } = useTranslation();
+
     const stats = [
-        { label: "Price", value: `$${course.price}`, icon: DollarSign },
-        { label: "Videos", value: `${course.videos?.length || 0}`, icon: Video },
-        { label: "Category", value: course.category, icon: BookOpen },
-        { label: "Level", value: course.level, icon: Clock },
+        { label: t("courseDetails.stats.price"), value: `$${course.price}`, icon: DollarSign },
+        { label: t("courseDetails.stats.videos"), value: `${course.videos?.length || 0}`, icon: Video },
+        { label: t("courseDetails.stats.category"), value: course.category, icon: BookOpen },
+        { label: t("courseDetails.stats.level"), value: course.level, icon: Clock },
     ];
 
     return (
@@ -143,11 +147,13 @@ function StatsSection({ course }) {
 
 /* -------------------- DESCRIPTION --------------------- */
 function DescriptionSection({ description }) {
+    const { t } = useTranslation();
+
     return (
         <div className="bg-card border rounded-xl p-6 shadow-sm">
-            <h2 className="text-xl font-bold mb-3">Description</h2>
+            <h2 className="text-xl font-bold mb-3">{t("courseDetails.description")}</h2>
             <p className="text-muted-foreground leading-relaxed">
-                {description || "No description provided."}
+                {description || t("courseDetails.noDescription")}
             </p>
         </div>
     );
@@ -174,24 +180,25 @@ function InstructorCard({ instructor }) {
                 <p className="text-xs text-muted-foreground">{instructor.email}</p>
             </div>
         </div>
-
     );
 }
 
 /* ------------------------ VIDEOS ---------------------- */
 function VideosSection({ videos, onPlay }) {
+    const { t } = useTranslation();
+
     if (!videos?.length)
         return (
             <div className="border rounded-xl p-10 text-center">
                 <Video className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No videos available yet.</p>
+                <p className="text-muted-foreground">{t("courseDetails.noVideos")}</p>
             </div>
         );
 
     return (
         <div className="bg-card border rounded-xl p-6 shadow-sm">
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Video className="w-5 h-5 text-primary" /> Course Content
+                <Video className="w-5 h-5 text-primary" /> {t("courseDetails.courseContent")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -222,7 +229,7 @@ function VideosSection({ videos, onPlay }) {
 
                         <div className="p-3">
                             <p className="font-semibold text-sm truncate">
-                                {video.title || `Lesson ${i + 1}`}
+                                {video.title || `${t("courseDetails.lesson")} ${i + 1}`}
                             </p>
                         </div>
                     </div>
@@ -235,13 +242,15 @@ function VideosSection({ videos, onPlay }) {
 
 /* ----------------------- PLAYER ----------------------- */
 function VideoPlayer({ video, onClose }) {
+    const { t } = useTranslation();
+
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
             <div className="bg-card rounded-xl p-4 w-full max-w-3xl">
                 <div className="flex justify-between items-center mb-3">
                     <h3 className="font-semibold">{video.title}</h3>
                     <Button variant="ghost" onClick={onClose}>
-                        Close
+                        {t("courseDetails.close")}
                     </Button>
                 </div>
 

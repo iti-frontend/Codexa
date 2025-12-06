@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import ChangePasswordDialog from "../auth/ChangePasswordDialog";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 export function UserMenu() {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ export function UserMenu() {
     profileImage: "/auth/login.png",
   });
 
+  const { t } = useTranslation();
   const userInfo = Cookies.get("userInfo");
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function UserMenu() {
     } catch (error) {
       console.error("Error reading user info from cookies:", error);
     }
-  }, []);
+  }, [userInfo]);
 
 
   //  Dynamic PROFILE ROUTE
@@ -63,10 +65,10 @@ export function UserMenu() {
 
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href={profileLink}>Profile</Link>
+            <Link href={profileLink}>{t("sidebar.profile")}</Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            Change Password
+            {t("sidebar.changePassword")}
           </DropdownMenuItem>
           <hr />
         </DropdownMenuContent>

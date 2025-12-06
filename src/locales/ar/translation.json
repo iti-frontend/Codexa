@@ -1,4 +1,28 @@
 {
+    "sidebar": {
+        "toggle": "إظهار/إخفاء القائمة الجانبية",
+        "sheetTitle": "القائمة الجانبية",
+        "sheetDescription": "عرض القائمة الجانبية على الهاتف",
+        "signout": "تسجيل الخروج",
+        "tools": "الأدوات",
+        "profile": "الملف الشخصي",
+        "changePassword": "تغيير كلمة المرور",
+        "dashboard": "لوحة التحكم",
+        "students": "الطلاب",
+        "instructors": "المدرسون",
+        "courses": "الدورات",
+        "home": "الرئيسية",
+        "analytics": "التحليلات",
+        "todos": "المهام",
+        "community": "المجتمع",
+        "myCourses": "دوراتي",
+        "exploreMore": "استكشاف المزيد",
+        "certifications": "الشهادات",
+        "cart": "عربة التسوق",
+        "notification": "الإشعارات",
+        "saved": "المحفوظات",
+        "codexaAI": "Codexa AI"
+    },
     "community": {
         "title": "المجتمع",
         "refresh": "تحديث",
@@ -51,5 +75,209 @@
             "commentUpdated": "تم تحديث التعليق بنجاح",
             "commentDeleted": "تم حذف التعليق بنجاح"
         }
+    },
+    "cart": {
+        "title": "سلة التسوق",
+        "itemsCount": "{{count}} دورة في السلة",
+        "by": "بواسطة",
+        "ratings": "{{count}} تقييم",
+        "totalMins": "{{count}} دقيقة إجمالي",
+        "lectures": "{{count}} محاضرة",
+        "level": "المستوى",
+        "premium": "بريميوم",
+        "bestseller": "الأكثر مبيعاً",
+        "remove": "إزالة",
+        "saveForLater": "حفظ لاحقاً",
+        "moveToCart": "نقل إلى السلة",
+        "recentWishlist": "المحفوظة مؤخراً",
+        "total": "الإجمالي",
+        "checkout": "إتمام الشراء",
+        "noCharge": "لن يتم خصم أي مبلغ الآن",
+        "coupon": "تطبيق كود خصم",
+        "emptyTitle": "سلة التسوق فارغة",
+        "browse": "تصفح الدورات"
+    },
+    "studentCourses": {
+        "title": "دوراتي",
+        "subtitle": "إدارة وتنظيم دوراتك",
+        "loadingCourses": "جاري تحميل الدورات...",
+        "tabs": {
+            "allCourses": "جميع الدورات",
+            "completed": "مكتملة",
+            "continueWatching": "متابعة المشاهدة",
+            "notStarted": "لم تبدأ"
+        },
+        "noCourses": "لا توجد دورات {{tab}}.",
+        "openCourse": "فتح الدورة"
+    },
+    "courseDetails": {
+        "courseNotFound": "الدورة غير موجودة",
+        "description": "الوصف",
+        "noDescription": "لا يوجد وصف متاح.",
+        "courseContent": "محتوى الدورة",
+        "noVideos": "لا توجد فيديوهات متاحة بعد",
+        "lesson": "الدرس",
+        "close": "إغلاق",
+        "stats": {
+            "price": "السعر",
+            "videos": "الفيديوهات",
+            "category": "الفئة",
+            "level": "المستوى"
+        }
+    },
+    "explore": {
+        "title": "استكشاف الدورات",
+        "subtitle": "اكتشف دورات رائعة لتعزيز مهاراتك ومعرفتك",
+        "searchPlaceholder": "ابحث عن دورات...",
+        "category": "الفئة",
+        "allCategories": "جميع الفئات",
+        "clear": "مسح",
+        "filters": {
+            "search": "بحث",
+            "category": "الفئة"
+        },
+        "stats": {
+            "courses": "دورات",
+            "instructors": "مدرسون"
+        },
+        "noCourses": {
+            "title": "لم يتم العثور على دورات",
+            "withFilters": "حاول تعديل مصطلحات البحث أو الفلاتر",
+            "withoutFilters": "تحقق لاحقاً للحصول على دورات جديدة!"
+        },
+        "clearFilters": "مسح جميع الفلاتر",
+        "showing": "عرض {{filtered}} من {{total}} دورة",
+        "filtered": "(مفلتر)",
+        "tryAgain": "حاول مرة أخرى",
+        "errorTitle": "خطأ في تحميل الدورات",
+        "public": "عام",
+        "unknownInstructor": "مدرس غير معروف",
+        "addToCart": "أضف للسلة",
+        "adding": "جاري الإضافة...",
+        "toast": {
+            "addedToCart": "تمت الإضافة للسلة!",
+            "addedDescription": "تمت إضافة الدورة إلى سلة التسوق بنجاح.",
+            "failedToAdd": "فشل في إضافة الدورة للسلة"
+        }
+    },
+    "courseDetailsPage": {
+        "back": "رجوع",
+        "backToCourses": "العودة للدورات",
+        "errorTitle": "خطأ في تحميل الدورة",
+        "tryAgain": "حاول مرة أخرى",
+        "students": "طالب",
+        "videos": "فيديوهات",
+        "video": "فيديو",
+        "lastUpdated": "آخر تحديث",
+        "tabs": {
+            "overview": "نظرة عامة",
+            "content": "المحتوى",
+            "instructor": "المدرس"
+        },
+        "overview": {
+            "about": "حول هذه الدورة",
+            "prerequisites": "المتطلبات الأساسية",
+            "whatYouLearn": "ما ستتعلمه",
+            "masterConcepts": "إتقان المفاهيم المشمولة في"
+        },
+        "content": {
+            "title": "محتوى الدورة",
+            "lectures": "محاضرات",
+            "noVideos": "لا توجد فيديوهات متاحة بعد"
+        },
+        "instructor": {
+            "about": "حول المدرس",
+            "expertIn": "مدرس محترف متخصص في",
+            "expertInstructor": "مدرس خبير",
+            "unknownInstructor": "مدرس غير معروف"
+        },
+        "pricing": {
+            "addToCart": "أضف للسلة",
+            "addingToCart": "جاري الإضافة للسلة...",
+            "addToFavourites": "أضف للمفضلة",
+            "removeFromFavourites": "إزالة من المفضلة",
+            "includes": "تتضمن هذه الدورة:",
+            "downloadableResources": "موارد قابلة للتنزيل",
+            "lifetimeAccess": "وصول كامل مدى الحياة",
+            "certificate": "شهادة إتمام",
+            "share": "شارك هذه الدورة"
+        },
+        "favourited": "في المفضلة",
+        "public": "عام"
+    },
+    "dashboard": {
+        "continueWatching": {
+            "title": "تابع",
+            "titleHighlight": "المشاهدة",
+            "loadingCourses": "جاري تحميل الدورات..."
+        },
+        "header": {
+            "welcome": "مرحباً بك في لوحة التحكم",
+            "description": "هنا يمكنك إدارة مهامك اليومية بكفاءة وتتبع تقدمك بسهولة. حافظ على تركيزك وتنظيمك وإنتاجيتك من خلال الاحتفاظ بجميع أهدافك في مكان واحد.",
+            "joinNow": "انضم الآن"
+        },
+        "activity": {
+            "title": "نظرة عامة على التعلم",
+            "noAnalytics": "لا توجد تحليلات."
+        },
+        "following": {
+            "title": "مرشدك",
+            "follow": "متابعة",
+            "seeAll": "عرض الكل",
+            "mentor": "مرشد"
+        },
+        "stats": {
+            "allCourses": "جميع الدورات",
+            "completed": "مكتملة",
+            "inProgress": "قيد التقدم",
+            "todoDone": "مهام منجزة",
+            "todoPending": "مهام معلقة"
+        }
+    },
+    "saved": {
+        "title": "الدورات المحفوظة",
+        "loading": "جاري التحميل...",
+        "noSaved": "لا توجد دورات محفوظة",
+        "noSavedDescription": "ابدأ باستكشاف الدورات واحفظ المفضلة لديك!",
+        "browseCourses": "تصفح الدورات",
+        "price": "السعر",
+        "level": "المستوى",
+        "status": "الحالة",
+        "videos": "الفيديوهات",
+        "savedOn": "تم الحفظ"
+    },
+    "instructor": {
+  "performance": {
+    "title": "مؤشرات الأداء",
+    "totalStudents": "إجمالي الطلاب",
+    "activeCourses": "الدورات النشطة",
+    "rating": "التقييم",
+    "revenue": "الإيرادات"
+  },
+  "quickLinks": {
+    "title": "روابط سريعة",
+    "createCourse": "إنشاء دورة جديدة",
+    "announcement": "إعلان جديد",
+    "analytics": "عرض التحليلات"
+  },
+  "activity": {
+    "title": "الدورات النشطة",
+    "manage": "إدارة الدورة"
+  },
+  "recent": {
+    "title": "آخر نشاط للطلاب",
+    "actions": {
+      "enrolled": "قام بالاشتراك في {{course}}",
+      "completed": "أنهى دورة {{course}}",
+      "question": "قام بطرح سؤال"
+    },
+    "times": {
+      "twoMinutes": "منذ دقيقتين",
+      "oneHour": "منذ ساعة واحدة",
+      "threeHours": "منذ 3 ساعات"
     }
+  }
+}
+
+    
 }

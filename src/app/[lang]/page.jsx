@@ -7,4 +7,5 @@ export default async function LangPage({ params }) {
     // Redirect to the appropriate home page based on role
     // This will be handled by middleware for authenticated users
     redirect(`/${lang}/community`);
+    //   redirect(`/${lang}`);
 }

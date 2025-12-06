@@ -78,3 +78,94 @@ export const coursesData = [
     price: "$59",
   },
 ];
+
+export const communityData = [
+  {
+    icon: MessageSquareMore,
+    title: "Discussion Forums",
+    description:
+      "Engage in meaningful conversations with peers and instructors on various topics.",
+  },
+  {
+    icon: Users,
+    title: "Study Groups",
+    description:
+      "Join or create study groups to collaborate and learn together with fellow students.",
+  },
+  {
+    icon: Share2,
+    title: "Knowledge Sharing",
+    description:
+      "Share your insights, ask questions, and help others in their learning journey.",
+  },
+];
+
+export const statsData = [
+  {
+    icon: Users,
+    value: "50,000+",
+    label: "Active Students",
+  },
+  {
+    icon: Video,
+    value: "500+",
+    label: "Quality Courses",
+  },
+  {
+    icon: GraduationCap,
+    value: "200+",
+    label: "Expert Instructors",
+  },
+  {
+    icon: Target,
+    value: "95%",
+    label: "Completion Rate",
+  },
+];
+
+export const testimonialsData = [
+  {
+    name: "Sarah Johnson",
+    role: "Web Developer",
+    image: "",
+    rating: 5,
+    quote:
+      "Codexa transformed my career. The courses are comprehensive and the community support is incredible!",
+  },
+  {
+    name: "Michael Chen",
+    role: "UX Designer",
+    image: "",
+    rating: 5,
+    quote:
+      "The best e-learning platform I've used. The instructors are knowledgeable and the content is always up-to-date.",
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "Marketing Specialist",
+    image: "",
+    rating: 5,
+    quote:
+      "I love the community aspect of Codexa. It's not just about learning, it's about growing together.",
+  },
+];
+
+export const footerLinks = {
+  platform: [
+    { label: "About Us", href: "/about" },
+    { label: "How It Works", href: "/how-it-works" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Careers", href: "/careers" },
+  ],
+  resources: [
+    { label: "All Courses", href: "/courses" },
+    { label: "Community", href: "/community" },
+    { label: "Blog", href: "/blog" },
+    { label: "Help Center", href: "/help" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Cookie Policy", href: "/cookies" },
+  ],
+};

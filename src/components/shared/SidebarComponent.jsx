@@ -10,21 +10,23 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ToolsLinks } from "@/Constants/sidebar-links";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useTranslation } from "react-i18next";
 
-function SidebarComponent({ Links }) {
+function SidebarComponent({ Links, ToolsLinks, side = "left" }) {
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const logOut = () => {
     handleLogout();
     router.push("/login");
   };
+
   return (
-    <Sidebar className="!border-0">
+    <Sidebar side={side} className="!border-0">
       <SidebarHeader>
         <UserMenu />
       </SidebarHeader>
@@ -43,11 +45,11 @@ function SidebarComponent({ Links }) {
             variant="ghost"
           >
             <Link href={link.href} className="items-center gap-2 font-semibold">
-              <link.icon size={18} /> {link.name}
+              <link.icon size={18} /> {t(`sidebar.${link.nameKey}`)}
             </Link>
           </Button>
         ))}
-        <h6 className="px-3 pt-4 text-sm text-foreground/70">Tools</h6>
+        <h6 className="px-3 pt-4 text-sm text-foreground/70">{t("sidebar.tools")}</h6>
         {ToolsLinks.map((tool, index) => (
           <Button
             key={index}
@@ -60,7 +62,7 @@ function SidebarComponent({ Links }) {
             variant="ghost"
           >
             <Link href={tool.href} className="items-center gap-2 font-semibold">
-              <tool.icon size={18} /> {tool.name}
+              <tool.icon size={18} /> {t(`sidebar.${tool.nameKey}`)}
             </Link>
           </Button>
         ))}
@@ -87,7 +89,7 @@ function SidebarComponent({ Links }) {
       whitespace-nowrap
     "
           >
-            Codexa AI
+            {t("sidebar.codexaAI")}
           </span>
         </Button>
 
@@ -97,7 +99,7 @@ function SidebarComponent({ Links }) {
           onClick={logOut}
           className="bg-transparent text-red-500 hover:text-red-500 w-full"
         >
-          <LogOut /> Sign out
+          <LogOut /> {t("sidebar.signout")}
         </Button>
       </SidebarFooter>
     </Sidebar>
