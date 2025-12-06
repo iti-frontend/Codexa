@@ -1,0 +1,76 @@
+"use client";
+
+import { testimonialsData } from "@/Constants/Home-data";
+import HomeHeading from "./HomeHeading";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Star, Quote } from "lucide-react";
+
+function HomeTestimonials() {
+    return (
+        <section
+            className="flex flex-col items-center justify-center py-16 bg-muted/30"
+            id="testimonials"
+        >
+            <HomeHeading
+                title="What Our Students Say"
+                desc="Hear from learners who have transformed their careers with Codexa"
+            />
+            <main className="flex flex-col md:flex-row items-stretch justify-center flex-wrap gap-8 mt-8 max-w-6xl px-4">
+                {testimonialsData.map((testimonial, index) => (
+                    <TestimonialCard key={index} {...testimonial} />
+                ))}
+            </main>
+        </section>
+    );
+}
+
+export default HomeTestimonials;
+
+function TestimonialCard({ name, role, image, rating, quote }) {
+    const initials = name
+        .split(" ")
+        .map((n) => n[0])
+        .join("");
+
+    return (
+        <Card className="max-w-sm flex-1 shadow-lg rounded-2xl hover:shadow-xl transition-shadow relative">
+            <CardContent className="pt-6 space-y-4">
+                {/* Quote Icon */}
+                <div className="absolute top-4 right-4 text-primary/20">
+                    <Quote size={40} fill="currentColor" />
+                </div>
+
+                {/* Rating */}
+                <div className="flex gap-1">
+                    {[...Array(rating)].map((_, i) => (
+                        <Star
+                            key={i}
+                            size={16}
+                            className="text-yellow-500 fill-yellow-500"
+                        />
+                    ))}
+                </div>
+
+                {/* Quote */}
+                <p className="text-muted-foreground italic leading-relaxed">
+                    "{quote}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t">
+                    <Avatar>
+                        <AvatarImage src={image} alt={name} />
+                        <AvatarFallback className="bg-primary text-primary-foreground">
+                            {initials}
+                        </AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-semibold text-card-foreground">{name}</div>
+                        <div className="text-sm text-muted-foreground">{role}</div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
