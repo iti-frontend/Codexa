@@ -4,13 +4,16 @@ import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { useInstructorCourse } from "@/hooks/useInstructorCourse";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 function InstructorsActivity() {
-  // will be factored to make it reusable in the future **
+  const { t } = useTranslation();
   const { fetchInstructorCourses, courses } = useInstructorCourse();
+
   useEffect(() => {
     fetchInstructorCourses();
   }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 1000 }}
@@ -18,7 +21,9 @@ function InstructorsActivity() {
       transition={{ duration: 1 }}
       className="rounded-xl bg-foreground/5 p-5 shadow-sm w-full"
     >
-      <h2 className="text-lg font-semibold mb-4">Active Courses</h2>
+      <h2 className="text-lg font-semibold mb-4">
+        {t("instructor.activity.title")}
+      </h2>
 
       <div className="grid grid-cols-1 gap-4">
         {courses.map((course, index) => (
@@ -37,9 +42,8 @@ function InstructorsActivity() {
               <div className="relative shrink-0">
                 <img
                   src={
-                    course.coverImage.url != null
-                      ? course.coverImage.url
-                      : "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
+                    course.coverImage.url ??
+                    "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
                   }
                   alt={course.title}
                   className="w-14 h-14 object-cover rounded-xl border border-border shadow-sm shrink-0"
@@ -59,7 +63,7 @@ function InstructorsActivity() {
 
             <Button asChild className="w-fit">
               <Link href={`/instructor/courses/${course._id}`}>
-                Manage Course
+                {t("instructor.activity.manage")}
               </Link>
             </Button>
           </motion.div>

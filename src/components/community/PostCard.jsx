@@ -24,8 +24,10 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { CommentSection } from "./CommentSection";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export function PostCard({ post }) {
+  const { t } = useTranslation();
   const [showComments, setShowComments] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editContent, setEditContent] = useState(post.content || "");
@@ -51,10 +53,10 @@ export function PostCard({ post }) {
   };
 
   const getAuthorName = () => {
-    if (!post.author) return "Anonymous";
+    if (!post.author) return t('community.post.anonymous');
     if (typeof post.author === 'object' && post.author.name) return post.author.name;
     if (isPostOwner() && userInfo?.name) return userInfo.name;
-    return "Anonymous";
+    return t('community.post.anonymous');
   };
 
   const getAuthorAvatar = () => {
@@ -69,7 +71,7 @@ export function PostCard({ post }) {
 
   const handleLike = async () => {
     if (!userToken) {
-      toast.error("Please login to like posts");
+      toast.error(t('community.toast.pleaseLogin', { action: t('community.post.share').toLowerCase() }));
       return;
     }
 
@@ -82,24 +84,24 @@ export function PostCard({ post }) {
 
   const handleEditPost = async () => {
     if (!editContent.trim()) {
-      toast.error("Post content cannot be empty");
+      toast.error(t('community.toast.emptyContent'));
       return;
     }
     try {
       await editPost(post._id, { content: editContent }, userToken);
       setIsEditDialogOpen(false);
-      toast.success("Post updated successfully");
+      toast.success(t('community.toast.postUpdated'));
     } catch (error) {
       toast.error(error.message);
     }
   };
 
   const handleDeletePost = async () => {
-    if (!confirm("Are you sure you want to delete this post?")) return;
+    if (!confirm(t('community.post.deleteConfirm'))) return;
     setIsDeleting(true);
     try {
       await deletePost(post._id, userToken);
-      toast.success("Post deleted successfully");
+      toast.success(t('community.toast.postDeleted'));
     } catch (error) {
       toast.error(error.message);
       setIsDeleting(false);
@@ -109,7 +111,7 @@ export function PostCard({ post }) {
   const handleShare = () => {
     const postUrl = `${window.location.origin}/community/${post._id}`;
     navigator.clipboard.writeText(postUrl);
-    toast.success("Link copied to clipboard!");
+    toast.success(t('community.toast.linkCopied'));
   };
 
   const authorName = getAuthorName();
@@ -150,15 +152,15 @@ export function PostCard({ post }) {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
                       <Edit className="w-4 h-4 mr-2" />
-                      Edit Post
+                      {t('community.post.editPost')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={handleDeletePost}
                       className="text-destructive focus:text-destructive"
                       disabled={isDeleting}
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Post
+                      {t('community.post.deletePost')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -202,9 +204,8 @@ export function PostCard({ post }) {
                 variant="ghost"
                 size="sm"
                 onClick={handleLike}
-                className={`flex items-center space-x-2 ${
-                  isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground hover:text-red-500"
-                }`}
+                className={`flex items-center space-x-2 ${isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground hover:text-red-500"
+                  }`}
               >
                 <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
                 <span>{likesCount}</span>
@@ -238,20 +239,20 @@ export function PostCard({ post }) {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Post</DialogTitle>
+            <DialogTitle>{t('community.post.editPost')}</DialogTitle>
           </DialogHeader>
           <Textarea
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
             rows={6}
-            placeholder="What's on your mind?"
+            placeholder={t('community.post.editPlaceholder')}
             className="resize-none"
           />
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-              Cancel
+              {t('community.post.cancel')}
             </Button>
-            <Button onClick={handleEditPost}>Save Changes</Button>
+            <Button onClick={handleEditPost}>{t('community.post.saveChanges')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

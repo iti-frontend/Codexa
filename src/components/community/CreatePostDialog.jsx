@@ -11,8 +11,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useCommunity } from "@/hooks/useCommunity";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useTranslation } from "react-i18next";
 
 export function CreatePostDialog({ onPostCreated }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,12 +25,12 @@ export function CreatePostDialog({ onPostCreated }) {
     e.preventDefault();
 
     if (!userToken) {
-      alert("Please login to create a post");
+      alert(t('community.toast.pleaseLogin', { action: t('community.createPost').toLowerCase() }));
       return;
     }
 
     if (!content.trim()) {
-      alert("Please enter some content");
+      alert(t('community.toast.emptyContent'));
       return;
     }
 
@@ -49,15 +51,15 @@ export function CreatePostDialog({ onPostCreated }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create Post</Button>
+        <Button>{t('community.createPost')}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create New Post</DialogTitle>
+          <DialogTitle>{t('community.createDialog.title')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
-            placeholder="What's on your mind?"
+            placeholder={t('community.createDialog.placeholder')}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={4}
@@ -69,10 +71,10 @@ export function CreatePostDialog({ onPostCreated }) {
               variant="outline"
               onClick={() => setOpen(false)}
             >
-              Cancel
+              {t('community.createDialog.cancel')}
             </Button>
             <Button type="submit" disabled={loading || !content.trim()}>
-              {loading ? "Posting..." : "Post"}
+              {loading ? t('community.createDialog.posting') : t('community.createDialog.post')}
             </Button>
           </div>
         </form>

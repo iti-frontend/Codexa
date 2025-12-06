@@ -2,8 +2,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { recentActivity } from "@/Constants/InstructorContent";
+import { useTranslation } from "react-i18next";
 
 function RecentActivity() {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 90 }}
@@ -11,9 +14,11 @@ function RecentActivity() {
       transition={{ duration: 0.7, delay: 0.4 }}
       className="rounded-xl bg-foreground/5 p-5 shadow-sm w-full mt-4"
     >
-      <h2 className="text-lg font-semibold mb-4">Recent Student Activity</h2>
+      <h2 className="text-lg font-semibold mb-4">
+        {t("instructor.recent.title")}
+      </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
         {recentActivity.map((reactive, index) => (
           <motion.div
             key={index}
@@ -28,15 +33,22 @@ function RecentActivity() {
               <img
                 src="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
                 alt={reactive.name}
-                className="w-12 h-12 lg:w-12 lg:h-12 object-cover rounded-full"
+                className="w-12 h-12 object-cover rounded-full"
               />
-              <span className="font-bold text-foreground">{reactive.name}</span>
+              <span className="font-bold text-foreground">
+                {reactive.name}
+              </span>
             </div>
 
             <div className="flex flex-col gap-1">
-              <p className="text-foreground/80">{reactive.text}</p>
+              <p className="text-foreground/80">
+                {reactive.course
+                  ? t(reactive.text, { course: reactive.course })
+                  : t(reactive.text)}
+              </p>
+
               <span className="text-sm text-foreground/60">
-                {reactive.time}
+                {t(reactive.time)}
               </span>
             </div>
           </motion.div>

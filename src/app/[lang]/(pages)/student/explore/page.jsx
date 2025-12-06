@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import {
   Search,
   Filter,
   BookOpen,
-  Clock,
   Users,
-  Star,
   ChevronRight,
   X,
   ShoppingCart,
@@ -34,17 +33,22 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import api from "@/lib/axios";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 export default function Explore() {
+  const { t, i18n } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [addingToCart, setAddingToCart] = useState({}); // Track loading state per course
+  const [addingToCart, setAddingToCart] = useState({});
   const router = useRouter();
+  const pathname = usePathname();
+
+  // Get current language from pathname
+  const currentLang = pathname.split('/')[1] || 'en';
 
   useEffect(() => {
     fetchCourses();
@@ -58,7 +62,7 @@ export default function Explore() {
       setCourses(res.data);
     } catch (err) {
       setError(
-        err.response?.data?.message || err.message || "Failed to fetch courses"
+        err.response?.data?.message || err.message || t('explore.errorTitle')
       );
       console.error("Error fetching courses:", err);
     } finally {
@@ -67,7 +71,6 @@ export default function Explore() {
   };
 
   const addToCart = async (courseId, event) => {
-    // Prevent card click event from firing
     event.stopPropagation();
     
     try {
@@ -75,18 +78,16 @@ export default function Explore() {
       
       await api.post("/cart", { courseId });
       
-      // Show success toast
-      toast.success("Added to cart!", {
-        description: "Course has been added to your cart successfully.",
+      toast.success(t('explore.toast.addedToCart'), {
+        description: t('explore.toast.addedDescription'),
         duration: 3000,
       });
       
     } catch (error) {
       console.error("Error adding to cart:", error);
-      const errorMessage = error.response?.data?.message || "Failed to add course to cart";
+      const errorMessage = error.response?.data?.message || t('explore.toast.failedToAdd');
       
-      // Show error toast
-      toast.error("Failed to add to cart", {
+      toast.error(t('explore.toast.failedToAdd'), {
         description: errorMessage,
         duration: 4000,
       });
@@ -96,7 +97,10 @@ export default function Explore() {
   };
 
   const handleCourseClick = (courseId) => {
-    router.push(`explore/${courseId}`);
+    // Make sure we're using the correct path with student prefix
+    const coursePath = `/${currentLang}/student/explore/${courseId}`;
+    console.log('Navigating to:', coursePath); // For debugging
+    router.push(coursePath);
   };
 
   const getLevelVariant = (level) => {
@@ -112,7 +116,6 @@ export default function Explore() {
     }
   };
 
-  // Get unique categories from courses
   const categories = [
     "all",
     ...new Set(courses.map((course) => course.category).filter(Boolean)),
@@ -141,18 +144,15 @@ export default function Explore() {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
-          {/* Header Skeleton */}
           <div className="space-y-4 mb-12">
             <Skeleton className="h-12 w-64 mx-auto" />
             <Skeleton className="h-6 w-96 mx-auto" />
           </div>
 
-          {/* Search Skeleton */}
           <div className="mb-8">
             <Skeleton className="h-10 w-full max-w-md mx-auto" />
           </div>
 
-          {/* Grid Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} className="overflow-hidden">
@@ -177,10 +177,10 @@ export default function Explore() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-md">
-          <AlertTitle>Error Loading Courses</AlertTitle>
+          <AlertTitle>{t('explore.errorTitle')}</AlertTitle>
           <AlertDescription className="mt-2">{error}</AlertDescription>
           <Button onClick={fetchCourses} variant="outline" className="mt-4">
-            Try Again
+            {t('explore.tryAgain')}
           </Button>
         </Alert>
       </div>
@@ -193,10 +193,10 @@ export default function Explore() {
         {/* Header */}
         <div className="text-center mb-12 space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Explore Courses
+            {t('explore.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Discover amazing courses to enhance your skills and knowledge
+            {t('explore.subtitle')}
           </p>
         </div>
 
@@ -206,7 +206,7 @@ export default function Explore() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               type="text"
-              placeholder="Search courses..."
+              placeholder={t('explore.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -218,7 +218,7 @@ export default function Explore() {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex items-center gap-2">
                   <Filter className="h-4 w-4" />
-                  Category
+                  {t('explore.category')}
                   {selectedCategory !== "all" && (
                     <Badge
                       variant="secondary"
@@ -234,7 +234,7 @@ export default function Explore() {
                   onClick={() => setSelectedCategory("all")}
                   className={selectedCategory === "all" ? "bg-accent" : ""}
                 >
-                  All Categories
+                  {t('explore.allCategories')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 {categories
@@ -260,7 +260,7 @@ export default function Explore() {
                 className="flex items-center gap-2"
               >
                 <X className="h-4 w-4" />
-                Clear
+                {t('explore.clear')}
               </Button>
             )}
           </div>
@@ -271,7 +271,7 @@ export default function Explore() {
           <div className="mb-6 flex flex-wrap gap-2 justify-center">
             {searchQuery && (
               <Badge variant="secondary" className="flex items-center gap-1">
-                Search: "{searchQuery}"
+                {t('explore.filters.search')}: "{searchQuery}"
                 <X
                   className="h-3 w-3 cursor-pointer"
                   onClick={() => setSearchQuery("")}
@@ -280,7 +280,7 @@ export default function Explore() {
             )}
             {selectedCategory !== "all" && (
               <Badge variant="secondary" className="flex items-center gap-1">
-                Category: {selectedCategory}
+                {t('explore.filters.category')}: {selectedCategory}
                 <X
                   className="h-3 w-3 cursor-pointer"
                   onClick={() => setSelectedCategory("all")}
@@ -294,12 +294,12 @@ export default function Explore() {
         <div className="mb-8 flex justify-center gap-8 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <BookOpen className="h-4 w-4" />
-            <span>{filteredCourses.length} Courses</span>
+            <span>{filteredCourses.length} {t('explore.stats.courses')}</span>
           </div>
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             <span>
-              {new Set(courses.map((c) => c.instructor?._id)).size} Instructors
+              {new Set(courses.map((c) => c.instructor?._id)).size} {t('explore.stats.instructors')}
             </span>
           </div>
           {selectedCategory !== "all" && (
@@ -314,17 +314,17 @@ export default function Explore() {
           <div className="text-center py-12">
             <Card className="max-w-md mx-auto">
               <CardHeader>
-                <CardTitle>No Courses Found</CardTitle>
+                <CardTitle>{t('explore.noCourses.title')}</CardTitle>
                 <CardDescription>
                   {hasActiveFilters
-                    ? "Try adjusting your search terms or filters"
-                    : "Check back later for new courses!"}
+                    ? t('explore.noCourses.withFilters')
+                    : t('explore.noCourses.withoutFilters')}
                 </CardDescription>
               </CardHeader>
               {hasActiveFilters && (
                 <CardFooter>
                   <Button onClick={clearFilters} variant="outline">
-                    Clear All Filters
+                    {t('explore.clearFilters')}
                   </Button>
                 </CardFooter>
               )}
@@ -356,13 +356,12 @@ export default function Explore() {
                       className="absolute top-3 right-3"
                       variant="secondary"
                     >
-                      Public
+                      {t('explore.public')}
                     </Badge>
                   )}
                 </div>
 
                 <CardHeader className="space-y-3">
-                  {/* Category and Level */}
                   <div className="flex justify-between items-center">
                     <Badge variant="outline" className="text-xs">
                       {course.category}
@@ -375,19 +374,16 @@ export default function Explore() {
                     </Badge>
                   </div>
 
-                  {/* Title */}
                   <CardTitle className="line-clamp-2 text-lg group-hover:text-primary transition-colors">
                     {course.title}
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  {/* Description */}
                   <CardDescription className="line-clamp-2">
                     {course.description}
                   </CardDescription>
 
-                  {/* Instructor */}
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={course.instructor?.profileImage} />
@@ -397,7 +393,7 @@ export default function Explore() {
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
-                        {course.instructor?.name || "Unknown Instructor"}
+                        {course.instructor?.name || t('explore.unknownInstructor')}
                       </p>
                     </div>
                   </div>
@@ -409,7 +405,6 @@ export default function Explore() {
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    {/* Add to Cart Button */}
                     <Button
                       size="sm"
                       variant="outline"
@@ -420,17 +415,16 @@ export default function Explore() {
                       {addingToCart[course._id] ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span className="hidden sm:inline">Adding...</span>
+                          <span className="hidden sm:inline">{t('explore.adding')}</span>
                         </>
                       ) : (
                         <>
                           <ShoppingCart className="h-4 w-4" />
-                          <span className="hidden sm:inline">Add to Cart</span>
+                          <span className="hidden sm:inline">{t('explore.addToCart')}</span>
                         </>
                       )}
                     </Button>
                     
-                    {/* View Details Arrow */}
                     <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>
                 </CardFooter>
@@ -443,9 +437,11 @@ export default function Explore() {
         {!loading && filteredCourses.length > 0 && (
           <div className="text-center mt-12">
             <p className="text-sm text-muted-foreground">
-              Showing {filteredCourses.length} of {courses.length} course
-              {courses.length !== 1 ? "s" : ""}
-              {hasActiveFilters && " (filtered)"}
+              {t(courses.length === 1 ? 'explore.showing' : 'explore.showing_plural', {
+                filtered: filteredCourses.length,
+                total: courses.length
+              })}
+              {hasActiveFilters && ` ${t('explore.filtered')}`}
             </p>
           </div>
         )}
