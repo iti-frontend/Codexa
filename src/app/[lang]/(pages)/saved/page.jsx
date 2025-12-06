@@ -36,15 +36,15 @@ export default function Saved() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {favourites.map((fav) => (
             <Link
-              href={`student/explore/${fav.course._id}`}
+              href={`student/explore/${fav.course?._id}`}
               key={fav._id}
               className="border rounded-lg p-4 shadow-sm"
             >
               {/* Course Image - Handle null case */}
               <div className="w-full h-40 bg-gray-200 rounded mb-3 flex items-center justify-center">
                 <img
-                  src={fav.course.coverImage.url || "/auth/login.png"}
-                  alt={fav.course.title}
+                  src={fav.course?.coverImage.url || "/auth/login.png"}
+                  alt={fav.course?.title}
                   className="w-full h-full object-cover rounded"
                 />
               </div>

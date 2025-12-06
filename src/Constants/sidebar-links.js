@@ -53,7 +53,6 @@ export const getInstructorLinks = (lang = 'en') => {
   return [
     { icon: Home, nameKey: "home", href: `${ins}` },
     { icon: Video, nameKey: "courses", href: `${ins}/courses` },
-    { icon: ChartLine, nameKey: "analytics", href: `${ins}/analytics` },
     { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
     { icon: Users, nameKey: "community", href: `/${lang}/community` },
   ];
@@ -87,7 +86,7 @@ export const getAdminLinks = (lang = 'en') => {
 
 // Tools SideBar Links
 export const getToolsLinks = (lang = 'en') => [
-  { icon: Bell, nameKey: "notification", href: `/${lang}/notification` },
+  // { icon: Bell, nameKey: "notification", href: `/${lang}/notification` },
   { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
 ];
 
