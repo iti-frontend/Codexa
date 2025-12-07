@@ -246,44 +246,38 @@
         "videos": "الفيديوهات",
         "savedOn": "تم الحفظ"
     },
-    "profile": {
-        "loading": "جاري التحميل...",
-        "noProfile": "لم يتم العثور على الملف الشخصي",
-        "unnamed": "بدون اسم",
-        "verified": "موثق",
-        "editProfile": "تعديل الملف الشخصي",
-        "about": "نبذة",
-        "links": "الروابط",
-        "accountDetails": "تفاصيل الحساب",
-        "memberSince": "عضو منذ",
-        "lastUpdated": "آخر تحديث",
-        "accountStatus": "حالة الحساب",
-        "active": "نشط",
-        "inactive": "غير نشط",
-        "authProvider": "مزود المصادقة",
-        "edit": {
-            "loading": "جاري التحميل...",
-            "noProfile": "لم يتم العثور على الملف الشخصي",
-            "profileImage": "صورة الملف الشخصي",
-            "name": "الاسم",
-            "namePlaceholder": "الاسم",
-            "aboutMe": "نبذة عني",
-            "bioPlaceholder": "السيرة الذاتية",
-            "links": "الروابط",
-            "linksHint": "(Github، LinkedIn، إلخ.)",
-            "labelPlaceholder": "التسمية",
-            "urlPlaceholder": "الرابط",
-            "remove": "إزالة",
-            "addLink": "+ إضافة رابط",
-            "save": "حفظ",
-            "saving": "جاري الحفظ...",
-            "cancel": "إلغاء",
-            "onlyImages": "الصور فقط مسموحة",
-            "maxSize": "الحد الأقصى 5 ميجابايت",
-            "tokenMissing": "الرمز مفقود",
-            "unknownRole": "دور غير معروف",
-            "success": "تم تحديث الملف الشخصي بنجاح!",
-            "failed": "فشل التحديث"
-        }
+    "instructor": {
+  "performance": {
+    "title": "مؤشرات الأداء",
+    "totalStudents": "إجمالي الطلاب",
+    "activeCourses": "الدورات النشطة",
+    "rating": "التقييم",
+    "revenue": "الإيرادات"
+  },
+  "quickLinks": {
+    "title": "روابط سريعة",
+    "createCourse": "إنشاء دورة جديدة",
+    "announcement": "إعلان جديد",
+    "analytics": "عرض التحليلات"
+  },
+  "activity": {
+    "title": "الدورات النشطة",
+    "manage": "إدارة الدورة"
+  },
+  "recent": {
+    "title": "آخر نشاط للطلاب",
+    "actions": {
+      "enrolled": "قام بالاشتراك في {{course}}",
+      "completed": "أنهى دورة {{course}}",
+      "question": "قام بطرح سؤال"
+    },
+    "times": {
+      "twoMinutes": "منذ دقيقتين",
+      "oneHour": "منذ ساعة واحدة",
+      "threeHours": "منذ 3 ساعات"
     }
+  }
+}
+
+    
 }

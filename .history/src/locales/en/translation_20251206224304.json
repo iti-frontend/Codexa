@@ -234,58 +234,48 @@
             "inProgress": "In Progress",
             "todoDone": "Todo Done",
             "todoPending": "Todo Pending"
-        }
-    },
-    "saved": {
-        "title": "Saved Courses",
-        "loading": "Loading...",
-        "noSaved": "No saved courses found",
-        "noSavedDescription": "Start exploring courses and save your favorites!",
-        "browseCourses": "Browse Courses",
-        "price": "Price",
-        "level": "Level",
-        "status": "Status",
-        "videos": "Videos",
-        "savedOn": "Saved"
-    },
-    "profile": {
-        "loading": "Loading...",
-        "noProfile": "No profile found",
-        "unnamed": "Unnamed",
-        "verified": "Verified",
-        "editProfile": "Edit Profile",
-        "about": "About",
-        "links": "Links",
-        "accountDetails": "Account Details",
-        "memberSince": "Member Since",
-        "lastUpdated": "Last Updated",
-        "accountStatus": "Account Status",
-        "active": "Active",
-        "inactive": "Inactive",
-        "authProvider": "Auth Provider",
-        "edit": {
+        },
+        "saved": {
+            "title": "Saved Courses",
             "loading": "Loading...",
-            "noProfile": "No profile found",
-            "profileImage": "Profile Image",
-            "name": "Name",
-            "namePlaceholder": "Name",
-            "aboutMe": "About Me",
-            "bioPlaceholder": "Bio",
-            "links": "Links",
-            "linksHint": "(Github, LinkedIn, etc.)",
-            "labelPlaceholder": "Label",
-            "urlPlaceholder": "URL",
-            "remove": "Remove",
-            "addLink": "+ Add Link",
-            "save": "Save",
-            "saving": "Saving...",
-            "cancel": "Cancel",
-            "onlyImages": "Only images allowed",
-            "maxSize": "Max size 5MB",
-            "tokenMissing": "Token missing",
-            "unknownRole": "Unknown role",
-            "success": "Profile updated successfully!",
-            "failed": "Update failed"
+            "noSaved": "No saved courses found",
+            "price": "Price",
+            "level": "Level",
+            "status": "Status",
+            "videos": "Videos",
+            "savedOn": "Saved"
         }
+    },"instructor": {
+  "performance": {
+    "title": "Performance Metrics",
+    "totalStudents": "Total Students",
+    "activeCourses": "Active Courses",
+    "rating": "Rating",
+    "revenue": "Revenue"
+  },
+  "quickLinks": {
+    "title": "Quick Links",
+    "createCourse": "Create New Courses",
+    "announcement": "New Announcement",
+    "analytics": "View Analytics"
+  },
+  "activity": {
+    "title": "Active Courses",
+    "manage": "Manage Course"
+  },
+  "recent": {
+    "title": "Recent Student Activity",
+    "actions": {
+      "enrolled": "just enrolled in {{course}}.",
+      "completed": "completed {{course}}.",
+      "question": "asked a question."
+    },
+    "times": {
+      "twoMinutes": "2 minutes ago",
+      "oneHour": "1 hour ago",
+      "threeHours": "3 hours ago"
     }
+  }
+}
+
 }

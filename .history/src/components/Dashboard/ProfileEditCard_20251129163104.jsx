@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
 import useProfile from "@/hooks/useProfile";
 import api from "@/lib/axios";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
@@ -10,7 +9,6 @@ import Cookies from "js-cookie";
 
 
 export default function ProfileEditCard() {
-    const { t } = useTranslation();
     const router = useRouter();
     const { profile, loading } = useProfile();
 
@@ -48,8 +46,8 @@ export default function ProfileEditCard() {
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith("image/")) return toast.error(t('profile.edit.onlyImages'));
-        if (file.size > 5 * 1024 * 1024) return toast.error(t('profile.edit.maxSize'));
+        if (!file.type.startsWith("image/")) return toast.error("Only images allowed");
+        if (file.size > 5 * 1024 * 1024) return toast.error("Max size 5MB");
 
         setFormData((prev) => ({ ...prev, profileImage: file }));
 
@@ -93,7 +91,7 @@ export default function ProfileEditCard() {
         try {
             // Get token safely
             const token = Cookies.get("token");
-            if (!token) return toast.error(t('profile.edit.tokenMissing'));
+            if (!token) return toast.error("Token missing");
 
             // Read user from cookies
             const userInfo = Cookies.get("userInfo");
@@ -109,7 +107,7 @@ export default function ProfileEditCard() {
             } else if (role === "admin") {
                 endpoint = ENDPOINTS.ADMIN_EDIT_PROFILE; // تأكد انه موجود
             } else {
-                return toast.error(t('profile.edit.unknownRole'));
+                return toast.error("Unknown role");
             }
 
             // Prepare FormData
@@ -148,7 +146,7 @@ export default function ProfileEditCard() {
                 path: "/",
             });
 
-            toast.success(t('profile.edit.success'));
+            toast.success("Profile updated successfully!");
 
             // Redirect correctly
             if (role === "admin") {
@@ -159,7 +157,7 @@ export default function ProfileEditCard() {
 
         } catch (err) {
             console.error("Update error:", err);
-            toast.error(t('profile.edit.failed'));
+            toast.error("Update failed");
         } finally {
             setSaving(false);
         }
@@ -167,21 +165,21 @@ export default function ProfileEditCard() {
 
 
 
-    if (loading) return <div>{t('profile.edit.loading')}</div>;
-    if (!profile) return <div>{t('profile.edit.noProfile')}</div>;
+    if (loading) return <div>Loading...</div>;
+    if (!profile) return <div>No profile found</div>;
 
     return (
         <div className="min-h-screen py-8 px-4 bg-[#0d1117]">
             <div className="max-w-3xl mx-auto bg-[#161b22] rounded-xl p-6 sm:p-8 shadow-md">
                 {/* ----------- Header ----------- */}
                 <h1 className="text-3xl text-white font-bold mb-6 text-center sm:text-left">
-                    {t('profile.editProfile')}
+                    Edit Profile
                 </h1>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* ----------- Profile Image ----------- */}
                     <div>
-                        <label className="block text-gray-200 mb-2">{t('profile.edit.profileImage')}</label>
+                        <label className="block text-gray-200 mb-2">Profile Image</label>
                         <div className="flex flex-col sm:flex-row items-center gap-4">
                             {imagePreview && (
                                 <img
@@ -201,25 +199,25 @@ export default function ProfileEditCard() {
 
                     {/* ----------- Name ----------- */}
                     <div>
-                        <label className="block text-gray-200 mb-2">{t('profile.edit.name')}</label>
+                        <label className="block text-gray-200 mb-2">Name</label>
                         <input
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder={t('profile.edit.namePlaceholder')}
+                            placeholder="Name"
                             className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-600 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                         />
                     </div>
 
                     {/* ----------- Bio ----------- */}
                     <div>
-                        <label className="block text-gray-200 mb-2">{t('profile.edit.aboutMe')}</label>
+                        <label className="block text-gray-200 mb-2">About Me</label>
                         <textarea
                             name="bio"
                             value={formData.bio}
                             onChange={handleChange}
-                            placeholder={t('profile.edit.bioPlaceholder')}
+                            placeholder="Bio"
                             rows={4}
                             className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-600 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                         />
@@ -228,20 +226,20 @@ export default function ProfileEditCard() {
                     {/* ----------- Links ----------- */}
                     <div>
                         <label className="block text-gray-200 mb-2">
-                            {t('profile.edit.links')} <span className="text-gray-500">{t('profile.edit.linksHint')}</span>
+                            Links <span className="text-gray-500">(Github, LinkedIn, etc.)</span>
                         </label>
                         {formData.links.map((link, i) => (
                             <div key={i} className="flex flex-col sm:flex-row gap-2 mb-2">
                                 <input
                                     type="text"
-                                    placeholder={t('profile.edit.labelPlaceholder')}
+                                    placeholder="Label"
                                     value={link.label}
                                     onChange={(e) => handleLinkChange(i, "label", e.target.value)}
                                     className="flex-1 px-3 py-2 rounded-md bg-gray-800 text-white border border-gray-600 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 />
                                 <input
                                     type="url"
-                                    placeholder={t('profile.edit.urlPlaceholder')}
+                                    placeholder="URL"
                                     value={link.url}
                                     onChange={(e) => handleLinkChange(i, "url", e.target.value)}
                                     className="flex-1 px-3 py-2 rounded-md bg-gray-800 text-white border border-gray-600 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -251,7 +249,7 @@ export default function ProfileEditCard() {
                                     onClick={() => removeLink(i)}
                                     className="bg-red-500 px-3 py-2 rounded-md text-white hover:bg-red-600 cursor-pointer"
                                 >
-                                    {t('profile.edit.remove')}
+                                    Remove
                                 </button>
                             </div>
                         ))}
@@ -260,7 +258,7 @@ export default function ProfileEditCard() {
                             onClick={addLink}
                             className="text-blue-400 hover:text-blue-500 cursor-pointer"
                         >
-                            {t('profile.edit.addLink')}
+                            + Add Link
                         </button>
                     </div>
 
@@ -271,14 +269,14 @@ export default function ProfileEditCard() {
                             disabled={saving}
                             className="flex-1 bg-blue-600 py-3 text-white rounded-md hover:bg-blue-700 cursor-pointer"
                         >
-                            {saving ? t('profile.edit.saving') : t('profile.edit.save')}
+                            {saving ? "Saving..." : "Save"}
                         </button>
                         <button
                             type="button"
                             onClick={() => router.back()}
                             className="flex-1 bg-gray-500 py-3 text-white rounded-md hover:bg-gray-600 cursor-pointer"
                         >
-                            {t('profile.edit.cancel')}
+                            Cancel
                         </button>
                     </div>
                 </form>
