@@ -47,4 +47,4 @@ export const getFeaturedCourses = async () => {
     }
 };
 
-export default {getCourses,getCourseById,getFeaturedCourses}
+export deafault {}

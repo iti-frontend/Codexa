@@ -46,5 +46,3 @@ export const getFeaturedCourses = async () => {
         return [];
     }
 };
-
-export default {getCourses,getCourseById,getFeaturedCourses}
