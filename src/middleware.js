@@ -30,6 +30,11 @@ export function middleware(req) {
         return NextResponse.rewrite(url);
     }
 
+    if (pathname === `/${defaultLocale}`) {
+        const url = new URL("/", req.url);
+        return NextResponse.redirect(url);
+    }
+
     // ============================================================
     // 2️⃣ URL WITHOUT LOCALE → add it
     // ============================================================
