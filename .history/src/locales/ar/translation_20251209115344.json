@@ -509,9 +509,9 @@
         "jul": "يوليو",
         "aug": "أغسطس",
         "sep": "سبتمبر",
-        "oct": "أكتوبر",
-        "nov": "نوفمبر",
-        "dec": "ديسمبر"
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
       }
     },
     "activity": {

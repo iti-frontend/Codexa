@@ -1,10 +1,10 @@
 import { DollarSign, GraduationCap, User, Video } from "lucide-react";
 
 export const AdminStatsCards = [
-    { title: "admin.stats.totalStudents", key: "students", icon: User },
-    { title: "admin.stats.totalInstructors", key: "instructors", icon: GraduationCap },
-    { title: "admin.stats.totalCourses", key: "courses", icon: Video },
-    { title: "admin.stats.totalRevenue", key: "totalRevenue", icon: DollarSign },
+    { title: "Total Students", key: "students", icon: User },
+    { title: "Instructors", key: "instructors", icon: GraduationCap },
+    { title: "Courses", key: "courses", icon: Video },
+    { title: "Revenue", key: "totalRevenue", icon: DollarSign },
 ];
 
 export const ChartData = [

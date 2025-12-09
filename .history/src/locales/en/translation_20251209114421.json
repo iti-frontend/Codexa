@@ -482,7 +482,7 @@
             "noVideos": "No videos selected. Course created successfully!",
             "videosUploaded": "Videos uploaded successfully!"
         }
-    },
+    },{
   "admin": {
     "dashboard": {
       "title": "Admin Dashboard",
@@ -493,9 +493,11 @@
     },
     "stats": {
       "totalStudents": "Total Students",
-      "totalInstructors": "Instructors",
-      "totalCourses": "Courses",
-      "totalRevenue": "Revenue"
+      "totalInstructors": "Total Instructors",
+      "totalCourses": "Total Courses",
+      "totalRevenue": "Total Revenue",
+      "activeCourses": "Active Courses",
+      "communityPosts": "Community Posts"
     },
     "chart": {
       "title": "Revenue Growth",
@@ -527,6 +529,5 @@
       "ellipsis": "..."
     }
   }
-
-
+}
 }

@@ -507,11 +507,11 @@
         "may": "مايو",
         "jun": "يونيو",
         "jul": "يوليو",
-        "aug": "أغسطس",
-        "sep": "سبتمبر",
-        "oct": "أكتوبر",
-        "nov": "نوفمبر",
-        "dec": "ديسمبر"
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
       }
     },
     "activity": {

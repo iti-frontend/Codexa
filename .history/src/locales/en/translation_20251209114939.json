@@ -483,6 +483,7 @@
             "videosUploaded": "Videos uploaded successfully!"
         }
     },
+{
   "admin": {
     "dashboard": {
       "title": "Admin Dashboard",
@@ -527,6 +528,6 @@
       "ellipsis": "..."
     }
   }
-
+}
 
 }

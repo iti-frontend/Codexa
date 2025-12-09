@@ -505,13 +505,12 @@
         "mar": "مارس",
         "apr": "أبريل",
         "may": "مايو",
-        "jun": "يونيو",
-        "jul": "يوليو",
-        "aug": "أغسطس",
-        "sep": "سبتمبر",
-        "oct": "أكتوبر",
-        "nov": "نوفمبر",
-        "dec": "ديسمبر"
+        "jun": "يونيو","jul": "July",
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
       }
     },
     "activity": {
