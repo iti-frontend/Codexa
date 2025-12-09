@@ -9,17 +9,17 @@ import HomeCTA from "@/components/Home/HomeCTA";
 import HomeFooter from "@/components/Home/HomeFooter";
 
 export default function Home() {
-  return (
-    <>
-      <HomeNavbar />
-      <HomeHero />
-      <HomeFeatures />
-      <HomeCourses />
-      <HomeCommunity />
-      <HomeStats />
-      <HomeTestimonials />
-      <HomeCTA />
-      <HomeFooter />
-    </>
-  );
+    return (
+        <>
+            <HomeNavbar />
+            <HomeHero />
+            <HomeFeatures />
+            <HomeCourses />
+            <HomeCommunity />
+            <HomeStats />
+            <HomeTestimonials />
+            <HomeCTA />
+            <HomeFooter />
+        </>
+    );
 }
