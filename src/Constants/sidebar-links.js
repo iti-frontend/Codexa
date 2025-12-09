@@ -13,7 +13,8 @@ import {
   Video,
   BarChart3,
   UserCheck,
-  Settings
+  Settings,
+  Radio
 } from "lucide-react";
 
 // Instructor Info
@@ -46,7 +47,6 @@ export const adminInfo = [
   },
 ];
 
-
 // Instructor SideBar Links 
 export const getInstructorLinks = (lang = 'en') => {
   const ins = `/${lang}/instructor`;
@@ -55,9 +55,9 @@ export const getInstructorLinks = (lang = 'en') => {
     { icon: Video, nameKey: "courses", href: `${ins}/courses` },
     { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
     { icon: Users, nameKey: "community", href: `/${lang}/community` },
+    { icon: Radio, nameKey: "liveSessions", href: `/${lang}/live-sessions/instructor` },
   ];
 };
-
 
 // Student SideBar Links 
 export const getStudentsLinks = (lang = 'en') => {
@@ -68,6 +68,7 @@ export const getStudentsLinks = (lang = 'en') => {
     { icon: Grid2x2X, nameKey: "exploreMore", href: `${stu}/explore` },
     { icon: Award, nameKey: "certifications", href: `${stu}/certifications` },
     { icon: Users, nameKey: "community", href: `/${lang}/community` },
+    { icon: Radio, nameKey: "liveSessions", href: `/${lang}/live-sessions` },
     { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
     { icon: ShoppingCart, nameKey: "cart", href: `/${lang}/cart` }
   ];
@@ -86,10 +87,8 @@ export const getAdminLinks = (lang = 'en') => {
 
 // Tools SideBar Links
 export const getToolsLinks = (lang = 'en') => [
-  // { icon: Bell, nameKey: "notification", href: `/${lang}/notification` },
   { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
 ];
-
 export const InstructorLinks = getInstructorLinks('en');
 export const StudentsLinks = getStudentsLinks('en');
 export const AdminLinks = getAdminLinks('en');

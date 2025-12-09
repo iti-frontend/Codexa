@@ -21,7 +21,8 @@
         "cart": "عربة التسوق",
         "notification": "الإشعارات",
         "saved": "المحفوظات",
-        "codexaAI": "Codexa AI"
+        "codexaAI": "Codexa AI",
+        "liveSessions":"محاضرات مباشرة"
     },
     "community": {
         "title": "المجتمع",
