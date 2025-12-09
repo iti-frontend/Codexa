@@ -298,7 +298,7 @@
         },
         "quickLinks": {
             "title": "Quick Links",
-            "createCourse": "Create New Course",
+            "createCourse": "Create New Courses",
             "announcement": "New Announcement",
             "analytics": "View Analytics"
         },
@@ -308,11 +308,10 @@
         },
         "recent": {
             "title": "Recent Student Activity",
-            "noActivity": "No recent activity to show",
             "actions": {
-                "enrolled": "just enrolled in {{course}}",
-                "completed": "completed {{course}}",
-                "question": "asked a question"
+                "enrolled": "just enrolled in {{course}}.",
+                "completed": "completed {{course}}.",
+                "question": "asked a question."
             },
             "times": {
                 "twoMinutes": "2 minutes ago",
@@ -409,78 +408,6 @@
             "uploadingVideos": "Uploading...",
             "deleteVideo": "Delete this video?",
             "deleteVideoDesc": "This action will permanently remove \"{{title}}\" from the course."
-        }
-    },
-    "createCourse": {
-        "title": "Create New Course",
-        "description": "Create a new course by filling in the details and uploading content.",
-        "fields": {
-            "title": "Title",
-            "description": "Description",
-            "category": "Category",
-            "price": "Price ($)",
-            "level": "Level",
-            "status": "Status",
-            "prerequisites": "Prerequisites",
-            "coverImage": "Cover Image"
-        },
-        "placeholders": {
-            "title": "Enter course title",
-            "description": "Describe what students will learn in this course",
-            "category": "e.g., Web Development",
-            "level": "Select level",
-            "status": "Select status",
-            "prerequisites": "What should students know before taking this course?"
-        },
-        "levels": {
-            "beginner": "Beginner",
-            "intermediate": "Intermediate",
-            "advanced": "Advanced"
-        },
-        "status": {
-            "public": "Public",
-            "private": "Private"
-        },
-        "hints": {
-            "level": "Choose the difficulty level",
-            "status": "Public: Visible to all, Private: Only you can see",
-            "prerequisites": "Optional - list any required knowledge or skills",
-            "coverImage": "Recommended: 1280x720 pixels, max 5MB"
-        },
-        "errors": {
-            "titleRequired": "Title is required",
-            "titleMinLength": "Title must be at least 3 characters",
-            "descriptionRequired": "Description is required",
-            "descriptionMinLength": "Description must be at least 10 characters",
-            "categoryRequired": "Category is required",
-            "categoryMinLength": "Category must be at least 2 characters",
-            "priceRequired": "Price is required",
-            "priceMin": "Price must be 0 or greater",
-            "coverImageRequired": "Cover image is required",
-            "imageType": "Please select an image file",
-            "imageSize": "Image must be less than 5MB",
-            "notVideoFile": "\"{{name}}\" is not a video file",
-            "fileTooLarge": "\"{{name}}\" is too large (max 100MB)"
-        },
-        "buttons": {
-            "creating": "Creating...",
-            "next": "Next",
-            "skipNow": "Skip for now",
-            "uploading": "Uploading...",
-            "finish": "Finish"
-        },
-        "upload": {
-            "title": "Upload Course Videos",
-            "description": "Add videos to your course. You can skip this and add videos later.",
-            "selectFiles": "Select Video Files",
-            "hint": "Supported formats: MP4, MOV, AVI, etc. Max 100MB per file",
-            "selectedFiles": "Selected Files ({{count}}):"
-        },
-        "toast": {
-            "courseCreated": "Course created successfully!",
-            "courseCreationFailed": "Course creation failed. Please try again.",
-            "noVideos": "No videos selected. Course created successfully!",
-            "videosUploaded": "Videos uploaded successfully!"
         }
     }
 }

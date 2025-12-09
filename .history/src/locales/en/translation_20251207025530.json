@@ -288,199 +288,53 @@
             "failed": "Update failed"
         }
     },
-    "instructor": {
-        "performance": {
-            "title": "Performance Metrics",
-            "totalStudents": "Total Students",
-            "activeCourses": "Active Courses",
-            "rating": "Rating",
-            "revenue": "Revenue"
+    "home": {
+        "hero": {
+            "badge": "Your Journey Starts Here",
+            "title": "Unlock your potential with",
+            "description": "Join a vibrant community of learners and educators. Explore courses, share knowledge, and grow together.",
+            "getStarted": "Get Started",
+            "exploreCourses": "Explore Courses"
         },
-        "quickLinks": {
-            "title": "Quick Links",
-            "createCourse": "Create New Course",
-            "announcement": "New Announcement",
-            "analytics": "View Analytics"
-        },
-        "activity": {
-            "title": "Active Courses",
-            "manage": "Manage Course"
-        },
-        "recent": {
-            "title": "Recent Student Activity",
-            "noActivity": "No recent activity to show",
-            "actions": {
-                "enrolled": "just enrolled in {{course}}",
-                "completed": "completed {{course}}",
-                "question": "asked a question"
-            },
-            "times": {
-                "twoMinutes": "2 minutes ago",
-                "oneHour": "1 hour ago",
-                "threeHours": "3 hours ago"
-            }
+        "navbar": {
+            "signOut": "Sign out"
         },
         "courses": {
-            "title": "My Courses",
-            "subtitle": "Manage and organize your courses",
-            "newCourse": "New Course",
-            "noCourses": "No courses found.",
-            "instructor": "Instructor",
-            "manageCourse": "Manage Course"
+            "title": "Why Learn With Codexa?",
+            "description": "Discover the benefits that make Codexa the best choice for your learning journey.",
+            "exploreAll": "Explore All Courses"
         },
-        "courseDetails": {
-            "uploadVideos": "Upload Videos",
-            "edit": "Edit",
-            "delete": "Delete",
-            "deleting": "Deleting...",
-            "deleteConfirm": "Delete Course?",
-            "deleteDescription": "This will permanently delete the course and all its content. This action cannot be undone.",
-            "cancel": "Cancel",
-            "noCoverImage": "No cover image",
-            "changeCover": "Change Cover",
-            "uploadCover": "Upload Cover",
-            "price": "Price",
-            "duration": "Duration",
-            "enrolledStudents": "Enrolled Students",
-            "level": "Level",
-            "allLevels": "All Levels",
-            "progressTracking": "Progress Tracking",
-            "courseDescription": "Course Description",
-            "noDescription": "No description provided.",
-            "prerequisites": "Prerequisites",
-            "courseDetails": "Course Details",
-            "language": "Language",
-            "english": "English",
-            "difficultyLevel": "Difficulty Level",
-            "totalVideos": "Total Videos",
-            "lessons": "lessons",
-            "created": "Created",
-            "lastUpdated": "Last Updated",
-            "instructor": "Instructor",
-            "courseInstructor": "Course Instructor",
-            "student": "Student",
-            "students": "Students",
-            "enrolledStudentsText": "This course currently has {{count}} enrolled {{text}}.",
-            "noVideosYet": "No Videos Yet",
-            "noVideosDescription": "Start building your course by uploading video lessons. Your students will be able to access them once published.",
-            "courseContent": "Course Content",
-            "video": "Video",
-            "videos": "Videos",
-            "lesson": "Lesson",
-            "of": "of",
-            "editCourse": "Edit Course Information",
-            "editDescription": "Update your course details. All fields are optional - only updated fields will be changed.",
-            "basicInfo": "Basic Information",
-            "courseTitle": "Course Title",
-            "enterTitle": "Enter course title",
-            "enterDescription": "Describe what students will learn in this course...",
-            "category": "Category",
-            "categoryPlaceholder": "e.g., Web Development",
-            "languagePlaceholder": "e.g., English, Arabic",
-            "courseSettings": "Course Settings",
-            "selectLevel": "Select level",
-            "beginner": "Beginner",
-            "intermediate": "Intermediate",
-            "advanced": "Advanced",
-            "courseStatus": "Course Status",
-            "selectStatus": "Select status",
-            "public": "Public",
-            "private": "Private",
-            "draft": "Draft",
-            "additionalInfo": "Additional Information",
-            "prerequisitesPlaceholder": "What should students know before taking this course? (Optional)",
-            "prerequisitesHelp": "List any required knowledge, skills, or tools students should have",
-            "saveChanges": "Save Changes",
-            "updating": "Updating...",
-            "requiredFields": "* Required fields: Title, Description, Price, and Category",
-            "uploadCoverImage": "Upload Cover Image",
-            "uploadCoverDesc": "Choose a new cover image for your course. Recommended: 1280x720 pixels, max 5MB.",
-            "currentCover": "Current Cover",
-            "newCoverImage": "New Cover Image",
-            "clickToSelect": "Click to select an image",
-            "imageFormats": "PNG, JPG, JPEG up to 5MB",
-            "selectedImage": "Selected Image",
-            "uploadingCover": "Uploading...",
-            "uploadNewVideos": "Upload New Videos",
-            "uploadVideosDesc": "Select multiple video files to upload to this course.",
-            "clickToSelectVideos": "Click to select video files",
-            "supportsMultiple": "Supports multiple files",
-            "selectedFiles": "Selected files",
-            "uploadingVideos": "Uploading...",
-            "deleteVideo": "Delete this video?",
-            "deleteVideoDesc": "This action will permanently remove \"{{title}}\" from the course."
-        }
-    },
-    "createCourse": {
-        "title": "Create New Course",
-        "description": "Create a new course by filling in the details and uploading content.",
-        "fields": {
-            "title": "Title",
-            "description": "Description",
-            "category": "Category",
-            "price": "Price ($)",
-            "level": "Level",
-            "status": "Status",
-            "prerequisites": "Prerequisites",
-            "coverImage": "Cover Image"
+        "features": {
+            "title": "Why Choose Codexa?",
+            "description": "Codexa offers a unique blend of learning and teaching, fostering a collaborative environment for growth"
         },
-        "placeholders": {
-            "title": "Enter course title",
-            "description": "Describe what students will learn in this course",
-            "category": "e.g., Web Development",
-            "level": "Select level",
-            "status": "Select status",
-            "prerequisites": "What should students know before taking this course?"
+        "community": {
+            "title": "Join Our Thriving Community",
+            "description": "Connect with thousands of learners and educators. Share knowledge, ask questions, and grow together."
         },
-        "levels": {
-            "beginner": "Beginner",
-            "intermediate": "Intermediate",
-            "advanced": "Advanced"
+        "stats": {
+            "title": "Our Impact in Numbers",
+            "description": "Join thousands of learners who are transforming their careers with Codexa"
         },
-        "status": {
-            "public": "Public",
-            "private": "Private"
+        "testimonials": {
+            "title": "What Our Students Say",
+            "description": "Hear from learners who have transformed their careers with Codexa"
         },
-        "hints": {
-            "level": "Choose the difficulty level",
-            "status": "Public: Visible to all, Private: Only you can see",
-            "prerequisites": "Optional - list any required knowledge or skills",
-            "coverImage": "Recommended: 1280x720 pixels, max 5MB"
+        "cta": {
+            "title": "Ready to Start Your",
+            "titleHighlight": "Learning Journey?",
+            "description": "Join thousands of students already learning on Codexa. Get access to expert courses, connect with a vibrant community, and achieve your goals.",
+            "getStarted": "Get Started for Free",
+            "browseCourses": "Browse Courses",
+            "trustBadge": "No credit card required • Free trial available • Cancel anytime"
         },
-        "errors": {
-            "titleRequired": "Title is required",
-            "titleMinLength": "Title must be at least 3 characters",
-            "descriptionRequired": "Description is required",
-            "descriptionMinLength": "Description must be at least 10 characters",
-            "categoryRequired": "Category is required",
-            "categoryMinLength": "Category must be at least 2 characters",
-            "priceRequired": "Price is required",
-            "priceMin": "Price must be 0 or greater",
-            "coverImageRequired": "Cover image is required",
-            "imageType": "Please select an image file",
-            "imageSize": "Image must be less than 5MB",
-            "notVideoFile": "\"{{name}}\" is not a video file",
-            "fileTooLarge": "\"{{name}}\" is too large (max 100MB)"
-        },
-        "buttons": {
-            "creating": "Creating...",
-            "next": "Next",
-            "skipNow": "Skip for now",
-            "uploading": "Uploading...",
-            "finish": "Finish"
-        },
-        "upload": {
-            "title": "Upload Course Videos",
-            "description": "Add videos to your course. You can skip this and add videos later.",
-            "selectFiles": "Select Video Files",
-            "hint": "Supported formats: MP4, MOV, AVI, etc. Max 100MB per file",
-            "selectedFiles": "Selected Files ({{count}}):"
-        },
-        "toast": {
-            "courseCreated": "Course created successfully!",
-            "courseCreationFailed": "Course creation failed. Please try again.",
-            "noVideos": "No videos selected. Course created successfully!",
-            "videosUploaded": "Videos uploaded successfully!"
+        "footer": {
+            "description": "Empowering learners worldwide with quality education and a supportive community. Start your journey today.",
+            "platform": "Platform",
+            "resources": "Resources",
+            "legal": "Legal",
+            "copyright": "All rights reserved.",
+            "madeWith": "Made with Codexa Team"
         }
     }
 }

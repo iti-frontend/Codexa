@@ -44,7 +44,7 @@ function RecentActivity() {
             {/* Avatar */}
             <Avatar className="w-12 h-12 flex-shrink-0">
               <AvatarImage 
-                src={reactive.imgSrc || "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"}
+                src={reactive.avatar || "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"}
                 alt={reactive.name}
               />
               <AvatarFallback>
@@ -54,7 +54,7 @@ function RecentActivity() {
 
             {/* Content */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="font-semibold text-foreground truncate">
                   {reactive.name}
                 </span>
@@ -67,20 +67,20 @@ function RecentActivity() {
 
               <p className="text-sm text-foreground/80 mb-2">
                 {reactive.course
-                  ? t(`instructor.recent.actions.${reactive.action}`, { course: reactive.course })
-                  : t(`instructor.recent.actions.${reactive.action}`)}
+                  ? t(reactive.text, { course: reactive.course })
+                  : t(reactive.text)}
               </p>
 
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="w-3 h-3" />
-                <span>{t(`instructor.recent.times.${reactive.time}`)}</span>
+                <span>{t(reactive.time)}</span>
               </div>
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Empty State */}
+      {/* Empty State - Optional */}
       {recentActivity.length === 0 && (
         <div className="text-center py-8">
           <div className="w-16 h-16 rounded-full bg-muted mx-auto mb-3 flex items-center justify-center">

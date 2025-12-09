@@ -1180,3 +1180,13 @@ function DeleteVideoDialog({ video, onCancel, onConfirm }) {
   );
 }
 
+// Export all components
+export {
+  EnrollmentSection,
+  VideosSection,
+  EditCourseDialog,
+  UploadCoverImageDialog,
+  UploadVideosDialog,
+  VideoDialog,
+  DeleteVideoDialog
+};

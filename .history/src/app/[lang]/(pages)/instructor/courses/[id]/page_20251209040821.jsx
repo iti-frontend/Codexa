@@ -338,12 +338,14 @@ export default function CourseDetailsPage() {
 // ----------------------------
 // Sub Components
 // ----------------------------
-// نكمل الـ Components...
-// استورد useTranslation في أول كل component
-
-function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, deleting }) {
-  const { t } = useTranslation();
-  
+function HeaderSection({
+  course,
+  onEdit,
+  onUpload,
+  onUploadImage,
+  onDelete,
+  deleting,
+}) {
   return (
     <div className="bg-card border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -352,10 +354,15 @@ function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, dele
             <BookOpen className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-card-foreground">{course.title}</h1>
+            <h1 className="text-2xl font-bold text-card-foreground">
+              {course.title}
+            </h1>
             <div className="flex items-center gap-2 mt-1.5">
-              <Badge variant={course.status === "public" ? "default" : "secondary"} className="font-medium">
-                {course.status || t('instructor.courseDetails.draft')}
+              <Badge
+                variant={course.status === "public" ? "default" : "secondary"}
+                className="font-medium"
+              >
+                {course.status || "Draft"}
               </Badge>
               <span className="text-sm text-muted-foreground font-medium">
                 {course.category || "General"}
@@ -367,33 +374,49 @@ function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, dele
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={onUpload}>
             <Upload className="w-4 h-4 mr-2" />
-            {t('instructor.courseDetails.uploadVideos')}
+           {t('instructor.courseDetails.uploadVideos')}
           </Button>
           <Button variant="outline" size="sm" onClick={onEdit}>
             <Pencil className="w-4 h-4 mr-2" />
-            {t('instructor.courseDetails.edit')}
+            Edit
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="outline" size="sm" disabled={deleting} className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={deleting}
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+              >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {deleting ? t('instructor.courseDetails.deleting') : t('instructor.courseDetails.delete')}
+                {deleting ? "Deleting..." : "Delete"}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('instructor.courseDetails.deleteConfirm')}</AlertDialogTitle>
-                <AlertDialogDescription>{t('instructor.courseDetails.deleteDescription')}</AlertDialogDescription>
+                <AlertDialogTitle>Delete Course?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete the course and all its content.
+                  This action cannot be undone.
+                </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={deleting}>{t('instructor.courseDetails.cancel')}</AlertDialogCancel>
-                <AlertDialogAction onClick={onDelete} disabled={deleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-2">
+                <AlertDialogCancel disabled={deleting}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={onDelete}
+                  disabled={deleting}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-2"
+                >
                   {deleting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      {t('instructor.courseDetails.deleting')}
+                      Deleting...
                     </>
-                  ) : t('instructor.courseDetails.delete')}
+                  ) : (
+                    "Delete"
+                  )}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -405,33 +428,39 @@ function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, dele
 }
 
 function CoverImageSection({ course, onUploadImage }) {
-  const { t } = useTranslation();
-  
   return (
     <div className="relative w-full h-80 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background border shadow-lg group">
       {course.coverImage?.url ? (
         <>
-          <img src={course.coverImage.url} alt={course.title} className="w-full h-full object-cover" />
+          <img
+            src={course.coverImage.url}
+            alt={course.title}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <ImageIcon className="w-16 h-16 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground font-medium">{t('instructor.courseDetails.noCoverImage')}</p>
+            <p className="text-muted-foreground font-medium">No cover image</p>
           </div>
         </div>
       )}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
         <Button onClick={onUploadImage} size="lg" className="shadow-xl">
           <ImageIcon className="w-5 h-5 mr-2" />
-          {course.coverImage?.url ? t('instructor.courseDetails.changeCover') : t('instructor.courseDetails.uploadCover')}
+          {course.coverImage?.url ? "Change Cover" : "Upload Cover"}
         </Button>
       </div>
       {course.coverImage?.url && (
         <div className="absolute bottom-6 left-6 right-6">
-          <h2 className="text-3xl font-bold text-white drop-shadow-lg">{course.title}</h2>
-          <p className="text-white/90 mt-2 text-lg drop-shadow-md">{course.category}</p>
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+            {course.title}
+          </h2>
+          <p className="text-white/90 mt-2 text-lg drop-shadow-md">
+            {course.category}
+          </p>
         </div>
       )}
     </div>
@@ -439,11 +468,9 @@ function CoverImageSection({ course, onUploadImage }) {
 }
 
 function StatsSection({ course }) {
-  const { t } = useTranslation();
-  
   const stats = [
     {
-      label: t('instructor.courseDetails.price'),
+      label: "Price",
       value: `$${course.price}`,
       icon: DollarSign,
       color: "text-emerald-600 dark:text-emerald-400",
@@ -451,7 +478,7 @@ function StatsSection({ course }) {
       borderColor: "border-emerald-200 dark:border-emerald-900",
     },
     {
-      label: t('instructor.courseDetails.duration'),
+      label: "Duration",
       value: course.duration || "N/A",
       icon: Clock,
       color: "text-blue-600 dark:text-blue-400",
@@ -459,7 +486,7 @@ function StatsSection({ course }) {
       borderColor: "border-blue-200 dark:border-blue-900",
     },
     {
-      label: t('instructor.courseDetails.enrolledStudents'),
+      label: "Enrolled Students",
       value: course.enrolledStudents?.length || 0,
       icon: Users,
       color: "text-purple-600 dark:text-purple-400",
@@ -467,15 +494,15 @@ function StatsSection({ course }) {
       borderColor: "border-purple-200 dark:border-purple-900",
     },
     {
-      label: t('instructor.courseDetails.level'),
-      value: course.level || t('instructor.courseDetails.allLevels'),
+      label: "Level",
+      value: course.level || "All Levels",
       icon: BarChart3,
       color: "text-orange-600 dark:text-orange-400",
       bgColor: "bg-orange-50 dark:bg-orange-950/30",
       borderColor: "border-orange-200 dark:border-orange-900",
     },
     {
-      label: t('instructor.courseDetails.progressTracking'),
+      label: "Progress Tracking",
       value: course.progress?.length || 0,
       icon: TrendingUp,
       color: "text-cyan-600 dark:text-cyan-400",
@@ -486,95 +513,150 @@ function StatsSection({ course }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {stats.map(({ label, value, icon: Icon, color, bgColor, borderColor }) => (
-        <div key={label} className={cn("bg-card rounded-xl p-5 border-2 shadow-sm hover:shadow-md transition-all", borderColor)}>
-          <div className="flex items-start justify-between mb-3">
-            <div className={cn("w-11 h-11 rounded-lg flex items-center justify-center", bgColor)}>
-              <Icon className={cn("w-5 h-5", color)} />
+      {stats.map(
+        ({ label, value, icon: Icon, color, bgColor, borderColor }) => (
+          <div
+            key={label}
+            className={cn(
+              "bg-card rounded-xl p-5 border-2 shadow-sm hover:shadow-md transition-all",
+              borderColor
+            )}
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div
+                className={cn(
+                  "w-11 h-11 rounded-lg flex items-center justify-center",
+                  bgColor
+                )}
+              >
+                <Icon className={cn("w-5 h-5", color)} />
+              </div>
             </div>
+            <p className="text-sm text-muted-foreground font-medium mb-1">
+              {label}
+            </p>
+            <p className="text-2xl font-bold text-card-foreground">{value}</p>
           </div>
-          <p className="text-sm text-muted-foreground font-medium mb-1">{label}</p>
-          <p className="text-2xl font-bold text-card-foreground">{value}</p>
-        </div>
-      ))}
+        )
+      )}
     </div>
   );
 }
 
 function InfoSection({ course }) {
-  const { t } = useTranslation();
-  
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <FileText className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold text-card-foreground">{t('instructor.courseDetails.courseDescription')}</h2>
+        <h2 className="text-xl font-bold text-card-foreground">
+          Course Description
+        </h2>
       </div>
       <p className="text-muted-foreground leading-relaxed text-base">
-        {course.description || t('instructor.courseDetails.noDescription')}
+        {course.description || "No description provided."}
       </p>
     </div>
   );
 }
 
 function PrerequisitesSection({ course }) {
-  const { t } = useTranslation();
-  
   if (!course.prerequisites) return null;
 
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <CheckCircle2 className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold text-card-foreground">{t('instructor.courseDetails.prerequisites')}</h2>
+        <h2 className="text-xl font-bold text-card-foreground">
+          Prerequisites
+        </h2>
       </div>
-      <p className="text-muted-foreground leading-relaxed text-base">{course.prerequisites}</p>
+      <p className="text-muted-foreground leading-relaxed text-base">
+        {course.prerequisites}
+      </p>
     </div>
   );
 }
 
 function DetailsCard({ course }) {
-  const { t } = useTranslation();
-  
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
         <BookOpen className="w-5 h-5 text-primary" />
-        {t('instructor.courseDetails.courseDetails')}
+        Course Details
       </h2>
       <div className="space-y-4">
-        <DetailItem icon={Globe} label={t('instructor.courseDetails.language')} value={course.language || t('instructor.courseDetails.english')} />
-        <DetailItem icon={BarChart3} label={t('instructor.courseDetails.difficultyLevel')} value={course.level || t('instructor.courseDetails.allLevels')} />
-        <DetailItem icon={Video} label={t('instructor.courseDetails.totalVideos')} value={`${course.videos?.length || 0} ${t('instructor.courseDetails.lessons')}`} />
-        <DetailItem icon={Calendar} label={t('instructor.courseDetails.created')} value={course.createdAt ? new Date(course.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "N/A"} />
-        <DetailItem icon={Calendar} label={t('instructor.courseDetails.lastUpdated')} value={course.updatedAt ? new Date(course.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "N/A"} />
+        <DetailItem
+          icon={Globe}
+          label="Language"
+          value={course.language || "English"}
+        />
+        <DetailItem
+          icon={BarChart3}
+          label="Difficulty Level"
+          value={course.level || "All Levels"}
+        />
+        <DetailItem
+          icon={Video}
+          label="Total Videos"
+          value={`${course.videos?.length || 0} lessons`}
+        />
+        <DetailItem
+          icon={Calendar}
+          label="Created"
+          value={
+            course.createdAt
+              ? new Date(course.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
+        <DetailItem
+          icon={Calendar}
+          label="Last Updated"
+          value={
+            course.updatedAt
+              ? new Date(course.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
       </div>
     </div>
   );
 }
 
 function InstructorCard({ course }) {
-  const { t } = useTranslation();
-  
   if (!course.instructor) return null;
 
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
         <UserCheck className="w-5 h-5 text-primary" />
-        {t('instructor.courseDetails.instructor')}
+        Instructor
       </h2>
       <div className="flex items-center gap-4">
         {course.instructor.profileImage ? (
-          <img src={"/auth/login.png"} alt={course.instructor.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" />
+          <img
+            src={"/auth/login.png"}
+            alt={course.instructor.name}
+            className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
+          />
         ) : (
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
             <UserCheck className="w-8 h-8 text-primary" />
           </div>
         )}
         <div>
-          <p className="font-bold text-card-foreground text-lg">{course.instructor.name}</p>
-          <p className="text-sm text-muted-foreground">{t('instructor.courseDetails.courseInstructor')}</p>
+          <p className="font-bold text-card-foreground text-lg">
+            {course.instructor.name}
+          </p>
+          <p className="text-sm text-muted-foreground">Course Instructor</p>
         </div>
       </div>
     </div>
@@ -588,14 +670,16 @@ function DetailItem({ icon: Icon, label, value }) {
         <Icon className="w-4 h-4 text-primary" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+          {label}
+        </p>
         <p className="font-semibold text-card-foreground">{value}</p>
       </div>
     </div>
   );
 }
+
 function EnrollmentSection({ course }) {
-  const { t } = useTranslation();
   const enrolledCount = course.enrolledStudents?.length || 0;
 
   if (enrolledCount === 0) return null;
@@ -605,25 +689,21 @@ function EnrollmentSection({ course }) {
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl font-bold text-card-foreground flex items-center gap-2">
           <Users className="w-5 h-5 text-primary" />
-          {t("instructor.courseDetails.enrolledStudents")}
+          Enrolled Students
         </h2>
         <Badge variant="secondary" className="text-base px-3 py-1">
-          {enrolledCount} {enrolledCount === 1 ? t("instructor.courseDetails.student") : t("instructor.courseDetails.students")}
+          {enrolledCount} {enrolledCount === 1 ? "Student" : "Students"}
         </Badge>
       </div>
       <p className="text-muted-foreground">
-        {t("instructor.courseDetails.enrolledStudentsText", {
-          count: enrolledCount,
-          text: enrolledCount === 1 ? t("instructor.courseDetails.student") : t("instructor.courseDetails.students")
-        })}
+        This course currently has {enrolledCount} enrolled{" "}
+        {enrolledCount === 1 ? "student" : "students"}.
       </p>
     </div>
   );
 }
 
 function VideosSection({ course, onPlay, onDelete }) {
-  const { t } = useTranslation();
-
   if (!course.videos?.length) {
     return (
       <div className="bg-card rounded-xl p-12 border shadow-sm text-center">
@@ -631,10 +711,11 @@ function VideosSection({ course, onPlay, onDelete }) {
           <Video className="w-10 h-10 text-primary" />
         </div>
         <h3 className="text-xl font-bold text-card-foreground mb-2">
-          {t("instructor.courseDetails.noVideosYet")}
+          No Videos Yet
         </h3>
         <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-          {t("instructor.courseDetails.noVideosDescription")}
+          Start building your course by uploading video lessons. Your students
+          will be able to access them once published.
         </p>
       </div>
     );
@@ -645,11 +726,11 @@ function VideosSection({ course, onPlay, onDelete }) {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-card-foreground flex items-center gap-2">
           <Video className="w-5 h-5 text-primary" />
-          {t("instructor.courseDetails.courseContent")}
+          Course Content
         </h2>
         <Badge variant="secondary" className="text-base px-3 py-1">
           {course.videos.length}{" "}
-          {course.videos.length === 1 ? t("instructor.courseDetails.video") : t("instructor.courseDetails.videos")}
+          {course.videos.length === 1 ? "Video" : "Videos"}
         </Badge>
       </div>
 
@@ -690,10 +771,10 @@ function VideosSection({ course, onPlay, onDelete }) {
             </div>
             <div className="p-4 bg-card">
               <p className="font-semibold text-sm text-card-foreground truncate">
-                {video.title || `${t("instructor.courseDetails.lesson")} ${i + 1}`}
+                {video.title || `Lesson ${i + 1}`}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                {t("instructor.courseDetails.video")} {i + 1} {t("instructor.courseDetails.of")} {course.videos.length}
+                Video {i + 1} of {course.videos.length}
               </p>
             </div>
           </div>
@@ -711,8 +792,6 @@ function EditCourseDialog({
   onSave,
   loading,
 }) {
-  const { t } = useTranslation();
-
   const handleInputChange = (field, value) => {
     setEditData((prev) => ({
       ...prev,
@@ -724,9 +803,10 @@ function EditCourseDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-3xl! max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("instructor.courseDetails.editCourse")}</DialogTitle>
+          <DialogTitle>Edit Course Information</DialogTitle>
           <DialogDescription>
-            {t("instructor.courseDetails.editDescription")}
+            Update your course details. All fields are optional - only updated
+            fields will be changed.
           </DialogDescription>
         </DialogHeader>
 
@@ -734,17 +814,17 @@ function EditCourseDialog({
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground border-b pb-2">
-              {t("instructor.courseDetails.basicInfo")}
+              Basic Information
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-sm font-medium">
-                  {t("instructor.courseDetails.courseTitle")} *
+                  Course Title *
                 </Label>
                 <Input
                   id="title"
-                  placeholder={t("instructor.courseDetails.enterTitle")}
+                  placeholder="Enter course title"
                   value={editData.title}
                   onChange={(e) => handleInputChange("title", e.target.value)}
                   className="w-full"
@@ -753,7 +833,7 @@ function EditCourseDialog({
 
               <div className="space-y-2">
                 <Label htmlFor="price" className="text-sm font-medium">
-                  {t("instructor.courseDetails.price")} ($) *
+                  Price ($) *
                 </Label>
                 <Input
                   id="price"
@@ -770,11 +850,11 @@ function EditCourseDialog({
 
             <div className="space-y-2">
               <Label htmlFor="description" className="text-sm font-medium">
-                {t("courseDetails.description")} *
+                Description *
               </Label>
               <Textarea
                 id="description"
-                placeholder={t("instructor.courseDetails.enterDescription")}
+                placeholder="Describe what students will learn in this course..."
                 value={editData.description}
                 onChange={(e) =>
                   handleInputChange("description", e.target.value)
@@ -787,11 +867,11 @@ function EditCourseDialog({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="category" className="text-sm font-medium">
-                  {t("instructor.courseDetails.category")} *
+                  Category *
                 </Label>
                 <Input
                   id="category"
-                  placeholder={t("instructor.courseDetails.categoryPlaceholder")}
+                  placeholder="e.g., Web Development"
                   value={editData.category}
                   onChange={(e) =>
                     handleInputChange("category", e.target.value)
@@ -802,11 +882,11 @@ function EditCourseDialog({
 
               <div className="space-y-2">
                 <Label htmlFor="language" className="text-sm font-medium">
-                  {t("instructor.courseDetails.language")}
+                  Language
                 </Label>
                 <Input
                   id="language"
-                  placeholder={t("instructor.courseDetails.languagePlaceholder")}
+                  placeholder="e.g., English, Arabic"
                   value={editData.language}
                   onChange={(e) =>
                     handleInputChange("language", e.target.value)
@@ -820,45 +900,45 @@ function EditCourseDialog({
           {/* Course Settings */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground border-b pb-2">
-              {t("instructor.courseDetails.courseSettings")}
+              Course Settings
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="level" className="text-sm font-medium">
-                  {t("instructor.courseDetails.difficultyLevel")}
+                  Difficulty Level
                 </Label>
                 <Select
                   value={editData.level}
                   onValueChange={(value) => handleInputChange("level", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t("instructor.courseDetails.selectLevel")} />
+                    <SelectValue placeholder="Select level" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beginner">{t("instructor.courseDetails.beginner")}</SelectItem>
-                    <SelectItem value="intermediate">{t("instructor.courseDetails.intermediate")}</SelectItem>
-                    <SelectItem value="advanced">{t("instructor.courseDetails.advanced")}</SelectItem>
-                    <SelectItem value="all levels">{t("instructor.courseDetails.allLevels")}</SelectItem>
+                    <SelectItem value="beginner">Beginner</SelectItem>
+                    <SelectItem value="intermediate">Intermediate</SelectItem>
+                    <SelectItem value="advanced">Advanced</SelectItem>
+                    <SelectItem value="all levels">All Levels</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="status" className="text-sm font-medium">
-                  {t("instructor.courseDetails.courseStatus")}
+                  Course Status
                 </Label>
                 <Select
                   value={editData.status}
                   onValueChange={(value) => handleInputChange("status", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t("instructor.courseDetails.selectStatus")} />
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="public">{t("instructor.courseDetails.public")}</SelectItem>
-                    <SelectItem value="private">{t("instructor.courseDetails.private")}</SelectItem>
-                    <SelectItem value="draft">{t("instructor.courseDetails.draft")}</SelectItem>
+                    <SelectItem value="public">Public</SelectItem>
+                    <SelectItem value="private">Private</SelectItem>
+                    <SelectItem value="draft">Draft</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -868,16 +948,16 @@ function EditCourseDialog({
           {/* Additional Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground border-b pb-2">
-              {t("instructor.courseDetails.additionalInfo")}
+              Additional Information
             </h3>
 
             <div className="space-y-2">
               <Label htmlFor="prerequisites" className="text-sm font-medium">
-                {t("instructor.courseDetails.prerequisites")}
+                Prerequisites
               </Label>
               <Textarea
                 id="prerequisites"
-                placeholder={t("instructor.courseDetails.prerequisitesPlaceholder")}
+                placeholder="What should students know before taking this course? (Optional)"
                 value={editData.prerequisites}
                 onChange={(e) =>
                   handleInputChange("prerequisites", e.target.value)
@@ -886,7 +966,8 @@ function EditCourseDialog({
                 className="resize-none"
               />
               <p className="text-xs text-muted-foreground">
-                {t("instructor.courseDetails.prerequisitesHelp")}
+                List any required knowledge, skills, or tools students should
+                have
               </p>
             </div>
           </div>
@@ -899,7 +980,7 @@ function EditCourseDialog({
             disabled={loading}
             className="w-full sm:w-auto"
           >
-            {t("instructor.courseDetails.cancel")}
+            Cancel
           </Button>
           <Button
             onClick={onSave}
@@ -915,17 +996,17 @@ function EditCourseDialog({
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {t("instructor.courseDetails.updating")}
+                Updating...
               </>
             ) : (
-              t("instructor.courseDetails.saveChanges")
+              "Save Changes"
             )}
           </Button>
         </DialogFooter>
 
         {/* Required Fields Note */}
         <div className="text-xs text-muted-foreground border-t pt-3">
-          <p>{t("instructor.courseDetails.requiredFields")}</p>
+          <p>* Required fields: Title, Description, Price, and Category</p>
         </div>
       </DialogContent>
     </Dialog>
@@ -943,15 +1024,14 @@ function UploadCoverImageDialog({
   loading,
   currentCoverImage,
 }) {
-  const { t } = useTranslation();
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("instructor.courseDetails.uploadCoverImage")}</DialogTitle>
+          <DialogTitle>Upload Cover Image</DialogTitle>
           <DialogDescription>
-            {t("instructor.courseDetails.uploadCoverDesc")}
+            Choose a new cover image for your course. Recommended: 1280x720
+            pixels, max 5MB.
           </DialogDescription>
         </DialogHeader>
 
@@ -959,7 +1039,7 @@ function UploadCoverImageDialog({
           {/* Current Cover Image Preview */}
           {currentCoverImage && (
             <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("instructor.courseDetails.currentCover")}</Label>
+              <Label className="text-sm font-medium">Current Cover</Label>
               <div className="border rounded-lg overflow-hidden">
                 <img
                   src={currentCoverImage}
@@ -972,7 +1052,7 @@ function UploadCoverImageDialog({
 
           {/* File Upload Area */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">{t("instructor.courseDetails.newCoverImage")}</Label>
+            <Label className="text-sm font-medium">New Cover Image</Label>
             {!selectedCoverImage ? (
               <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/40 transition-colors">
                 <input
@@ -988,17 +1068,17 @@ function UploadCoverImageDialog({
                 >
                   <ImageIcon className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">
-                    {t("instructor.courseDetails.clickToSelect")}
+                    Click to select an image
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {t("instructor.courseDetails.imageFormats")}
+                    PNG, JPG, JPEG up to 5MB
                   </p>
                 </label>
               </div>
             ) : (
               <div className="border rounded-lg p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-sm font-medium">{t("instructor.courseDetails.selectedImage")}</Label>
+                  <Label className="text-sm font-medium">Selected Image</Label>
                   <Button
                     type="button"
                     variant="ghost"
@@ -1030,18 +1110,18 @@ function UploadCoverImageDialog({
             onClick={() => setOpen(false)}
             disabled={loading}
           >
-            {t("instructor.courseDetails.cancel")}
+            Cancel
           </Button>
           <Button onClick={onUpload} disabled={loading || !selectedCoverImage}>
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {t("instructor.courseDetails.uploadingCover")}
+                Uploading...
               </>
             ) : (
               <>
                 <Upload className="w-4 h-4 mr-2" />
-                {t("instructor.courseDetails.uploadCover")}
+                Upload Cover
               </>
             )}
           </Button>
@@ -1059,15 +1139,13 @@ function UploadVideosDialog({
   onUpload,
   loading,
 }) {
-  const { t } = useTranslation();
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{t("instructor.courseDetails.uploadNewVideos")}</DialogTitle>
+          <DialogTitle>Upload New Videos</DialogTitle>
           <DialogDescription>
-            {t("instructor.courseDetails.uploadVideosDesc")}
+            Select multiple video files to upload to this course.
           </DialogDescription>
         </DialogHeader>
 
@@ -1084,10 +1162,10 @@ function UploadVideosDialog({
             <label htmlFor="video-upload" className="cursor-pointer block">
               <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
               <p className="text-sm text-muted-foreground">
-                {t("instructor.courseDetails.clickToSelectVideos")}
+                Click to select video files
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                {t("instructor.courseDetails.supportsMultiple")}
+                Supports multiple files
               </p>
             </label>
           </div>
@@ -1095,7 +1173,7 @@ function UploadVideosDialog({
           {selectedFiles.length > 0 && (
             <div className="bg-muted/50 rounded-lg p-3">
               <p className="text-sm font-medium text-foreground mb-2">
-                {t("instructor.courseDetails.selectedFiles")} ({selectedFiles.length}):
+                Selected files ({selectedFiles.length}):
               </p>
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {selectedFiles.map((file, index) => (
@@ -1117,14 +1195,14 @@ function UploadVideosDialog({
             onClick={() => setOpen(false)}
             disabled={loading}
           >
-            {t("instructor.courseDetails.cancel")}
+            Cancel
           </Button>
           <Button
             onClick={onUpload}
             disabled={loading || !selectedFiles.length}
           >
             <Upload className="w-4 h-4 mr-2" />
-            {loading ? t("instructor.courseDetails.uploadingVideos") : t("instructor.courseDetails.uploadVideos")}
+            {loading ? "Uploading..." : "Upload Videos"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -1155,28 +1233,26 @@ function VideoDialog({ video, onClose }) {
 }
 
 function DeleteVideoDialog({ video, onCancel, onConfirm }) {
-  const { t } = useTranslation();
-
   return (
     <AlertDialog open={!!video} onOpenChange={onCancel}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("instructor.courseDetails.deleteVideo")}</AlertDialogTitle>
+          <AlertDialogTitle>Delete this video?</AlertDialogTitle>
           <AlertDialogDescription>
-            {t("instructor.courseDetails.deleteVideoDesc", { title: video?.title })}
+            This action will permanently remove "{video?.title}" from the
+            course.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("instructor.courseDetails.cancel")}</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             onClick={onConfirm}
           >
-            {t("instructor.courseDetails.delete")}
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
-
