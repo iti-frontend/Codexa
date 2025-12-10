@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { locales, defaultLocale } from "./i18n.config";
 import { getLocaleFromPathname, removeLocaleFromPathname, detectLocale } from "./lib/locale";
@@ -5,75 +6,131 @@ import { getLocaleFromPathname, removeLocaleFromPathname, detectLocale } from ".
 export function middleware(req) {
     const { pathname } = req.nextUrl;
 
-    // Public routes (NO AUTH required)
+    // PUBLIC (no locale allowed in URL)
     const publicPaths = [
         "/",
         "/login",
         "/register",
         "/unauthorized",
-        "/admin-portal-iti-login"
+        "/admin-portal-iti-login",
     ];
 
-    // Extract locale info
     const pathnameLocale = getLocaleFromPathname(pathname);
     const cleanPath = removeLocaleFromPathname(pathname);
     const cookieLocale = req.cookies.get("locale")?.value || defaultLocale;
 
-    const isPublicPath = publicPaths.includes(cleanPath);
-
     // ============================================================
-    // 1️⃣ ROOT "/" → rewrite internally to locale (keeps URL clean)
+    // 1️⃣ ROOT "/" → rewrite internally to locale (keeps URL as "/")
     // ============================================================
     if (pathname === "/") {
-        const cookieLocale = req.cookies.get("locale")?.value || defaultLocale;
-        const url = new URL(`/${cookieLocale}`, req.url);
-        return NextResponse.rewrite(url);
-    }
-
-    if (pathname === `/${defaultLocale}`) {
-        const url = new URL("/", req.url);
-        return NextResponse.redirect(url);
+        const locale = cookieLocale || detectLocale(req) || defaultLocale;
+        const url = new URL(`/${locale}`, req.url);
+        const res = NextResponse.rewrite(url);
+        // Preserve ALL cookies from request with proper attributes
+        req.cookies.getAll().forEach(cookie => {
+            res.cookies.set(cookie.name, cookie.value, {
+                path: '/',
+                sameSite: 'lax',
+            });
+        });
+        // Set locale cookie
+        res.cookies.set("locale", locale, {
+            path: '/',
+            sameSite: 'lax',
+        });
+        return handleAuthentication(req, "/", res);
     }
 
     // ============================================================
-    // 2️⃣ URL WITHOUT LOCALE → add it
+    // 2️⃣ REDIRECT /${locale} (e.g., /en, /ar) → / (keep URL clean)
+    // ============================================================
+    if (pathnameLocale && pathname === `/${pathnameLocale}`) {
+        if (locales.includes(pathnameLocale)) {
+            // Valid locale - redirect to "/" and preserve all cookies
+            const res = NextResponse.redirect(new URL("/", req.url));
+            // Copy all cookies from request to preserve them
+            req.cookies.getAll().forEach(cookie => {
+                res.cookies.set(cookie.name, cookie.value);
+            });
+            // Update locale cookie
+            res.cookies.set("locale", pathnameLocale);
+            return res;
+        } else {
+            // Invalid locale - redirect to "/" with default locale
+            const res = NextResponse.redirect(new URL("/", req.url));
+            // Copy all cookies from request to preserve them
+            req.cookies.getAll().forEach(cookie => {
+                res.cookies.set(cookie.name, cookie.value);
+            });
+            res.cookies.set("locale", defaultLocale);
+            return res;
+        }
+    }
+
+    // ============================================================
+    // 3️⃣ PUBLIC ROUTES MUST NOT HAVE LOCALE
+    //    (excluding the root locale paths which are handled above)
+    // ============================================================
+    const isPublic = publicPaths.includes(cleanPath);
+    if (isPublic && pathnameLocale) {
+        // Public path with locale - redirect to clean path
+        const res = NextResponse.redirect(new URL(cleanPath, req.url));
+        // Copy all cookies from request to preserve them
+        req.cookies.getAll().forEach(cookie => {
+            res.cookies.set(cookie.name, cookie.value);
+        });
+        return res;
+    }
+
+    // Public path without locale - allow it (next() preserves cookies automatically)
+    if (isPublic && !pathnameLocale) {
+        return NextResponse.next();
+    }
+
+    // ============================================================
+    // 4️⃣ PROTECTED ROUTES MUST HAVE LOCALE
     // ============================================================
     if (!pathnameLocale) {
         const locale = cookieLocale || detectLocale(req) || defaultLocale;
-        const url = new URL(`/${locale}${pathname}`, req.url);
-        const res = NextResponse.redirect(url);
+        const res = NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
+        // Copy all cookies from request to preserve them
+        req.cookies.getAll().forEach(cookie => {
+            res.cookies.set(cookie.name, cookie.value);
+        });
         res.cookies.set("locale", locale);
         return res;
     }
 
     // ============================================================
-    // 3️⃣ URL WITH INVALID LOCALE → fix it
+    // 5️⃣ INVALID LOCALE → FIX
     // ============================================================
     if (!locales.includes(pathnameLocale)) {
-        const url = new URL(`/${defaultLocale}${cleanPath}`, req.url);
-        const res = NextResponse.redirect(url);
+        const res = NextResponse.redirect(new URL(`/${defaultLocale}${cleanPath}`, req.url));
+        // Copy all cookies from request to preserve them
+        req.cookies.getAll().forEach(cookie => {
+            res.cookies.set(cookie.name, cookie.value);
+        });
         res.cookies.set("locale", defaultLocale);
         return res;
     }
 
     // ============================================================
-    // 4️⃣ UPDATE COOKIE IF NECESSARY
+    // 6️⃣ UPDATE LOCALE COOKIE
     // ============================================================
-    if (cookieLocale !== pathnameLocale) {
-        const res = NextResponse.next();
+    const res = NextResponse.next();
+    // Update locale cookie if needed (next() preserves other cookies automatically)
+    if (!req.cookies.get("locale") || req.cookies.get("locale").value !== pathnameLocale) {
         res.cookies.set("locale", pathnameLocale);
-        return handleAuthentication(req, cleanPath, res);
     }
 
     // ============================================================
-    // 5️⃣ AUTH CHECK
+    // 7️⃣ AUTH
     // ============================================================
-    return handleAuthentication(req, cleanPath);
+    return handleAuthentication(req, cleanPath, res);
 }
 
-// -------------------------------------------------------------
-// AUTH LOGIC (unchanged)
-// -------------------------------------------------------------
+
+
 function handleAuthentication(req, pathname, response = null) {
     const token = req.cookies.get("token")?.value;
     const userInfoCookie = req.cookies.get("userInfo")?.value;
@@ -90,37 +147,60 @@ function handleAuthentication(req, pathname, response = null) {
         "/login",
         "/register",
         "/unauthorized",
-        "/admin-portal-iti-login"
+        "/admin-portal-iti-login",
     ];
 
     const isPublic = publicPaths.includes(pathname);
     const locale = getLocaleFromPathname(req.nextUrl.pathname) || defaultLocale;
 
+    // Helper function to preserve cookies in redirects
+    const createRedirectWithCookies = (url) => {
+        const res = NextResponse.redirect(new URL(url, req.url));
+        // Preserve all existing cookies
+        req.cookies.getAll().forEach(cookie => {
+            res.cookies.set(cookie.name, cookie.value);
+        });
+        return res;
+    };
+
     if (token && ["/login", "/register", "/admin-portal-iti-login"].includes(pathname)) {
-        if (role === "student") return NextResponse.redirect(new URL(`/${locale}/student`, req.url));
-        if (role === "instructor") return NextResponse.redirect(new URL(`/${locale}/instructor`, req.url));
-        if (role === "admin") return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
+        if (role === "student") return createRedirectWithCookies(`/${locale}/student`);
+        if (role === "instructor") return createRedirectWithCookies(`/${locale}/instructor`);
+        if (role === "admin") return createRedirectWithCookies(`/${locale}/admin`);
     }
 
     if (!token && !isPublic) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return createRedirectWithCookies("/login");
     }
 
     if (pathname.startsWith("/admin") && pathname !== "/admin-portal-iti-login" && role !== "admin") {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+        return createRedirectWithCookies(`/${locale}/unauthorized`);
     }
 
     if (pathname.startsWith("/student") && role !== "student") {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+        return createRedirectWithCookies(`/${locale}/unauthorized`);
     }
 
     if (pathname.startsWith("/instructor") && role !== "instructor") {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+        return createRedirectWithCookies(`/${locale}/unauthorized`);
     }
 
-    return response || NextResponse.next();
+    // If a response was provided (like from rewrite), return it as-is
+    // Don't modify cookies here as they should already be set in the response
+    if (response) {
+        return response;
+    }
+
+    // Otherwise, create a new next() response with cookies
+    const res = NextResponse.next();
+    req.cookies.getAll().forEach(cookie => {
+        res.cookies.set(cookie.name, cookie.value);
+    });
+    return res;
 }
 
+
+
 export const config = {
-    matcher: ["/((?!_next|static|.*\\..*).*)"]
+    matcher: ["/((?!_next|static|.*\\..*).*)"],
 };
