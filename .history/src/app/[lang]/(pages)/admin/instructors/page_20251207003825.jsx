@@ -1,6 +1,4 @@
 "use client";
-
-import { useTranslation } from "react-i18next";
 import AdminListCard from "@/components/adminComponents/AdminListCard";
 import UserDetailsDrawer from "@/components/adminComponents/UserDetailsDrawer";
 import { useAdminUserDetails } from "@/hooks/useAdminUserDetails";
@@ -8,10 +6,9 @@ import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useState } from "react";
 
 export default function InstructorsPage() {
-    const { t } = useTranslation();
     const { loading, data: instructors, count, refetch } = useAdminUsers("instructors");
     const [viewUser, setViewUser] = useState(null);
-    
+    // ===== Fetch selected user details =====
     const {
         data: userDetails,
         loading: userLoading,
@@ -22,22 +19,22 @@ export default function InstructorsPage() {
         <div className="p-6 space-y-6">
             {/* ===== Page Header ===== */}
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">
-                    {t("admin.users.instructors.title")}
-                </h1>
-                
+                <h1 className="text-2xl font-bold">instructors</h1>
+                {/* Count Badge */}
                 <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    {t("admin.users.instructors.total")}: {count}
+                    Total: {count}
                 </span>
             </div>
 
             {/* ===== Loading ===== */}
             {loading ? (
-                <div className="min-h-screen flex justify-center items-center">
+                <div className="min-h-screen flex justify-center ">
                     <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
                 </div>
             ) : (
                 <>
+
+
                     <AdminListCard
                         items={instructors}
                         itemKey="name"
@@ -47,7 +44,6 @@ export default function InstructorsPage() {
                         onRefetch={refetch}
                         role="instructors"
                     />
-                    
                     <UserDetailsDrawer
                         open={!!viewUser}
                         onClose={() => setViewUser(null)}

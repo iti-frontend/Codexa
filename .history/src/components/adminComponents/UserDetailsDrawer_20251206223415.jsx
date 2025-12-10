@@ -1,15 +1,15 @@
 "use client";
-
-import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
 import {
     Trash,
     Mail,
@@ -18,6 +18,7 @@ import {
     Calendar,
     KeyRound,
     CheckCircle,
+    BookOpen,
 } from "lucide-react";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { useState } from "react";
@@ -30,40 +31,41 @@ export default function UserDetailsDrawer({
     user,
     loading = false,
     error = null,
-    role = "",
-    onRefetch = () => {},
+    role = '',
+    onRefetch = () => { },
+
 }) {
-    const { t } = useTranslation();
     const isEmpty = !user && !loading;
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const { deleteUsers } = useAdminDeleteUsers(role);
 
     async function confirmDelete() {
         try {
-            const ok = await deleteUsers(user._id);
+            const ok = await deleteUsers(user._id); // delete single user
 
             if (ok) {
-                toast.success(t("admin.users.toast.deleteSuccess"), {
-                    description: t("admin.users.toast.userRemoved", { name: user.name }),
+                toast.success("User deleted successfully.", {
+                    description: `The user "${user.name}" has been removed.`,
                 });
 
-                onRefetch();
-                onClose();
+                onRefetch(); //  Refresh list
+                onClose();   //  Close drawer after deletion
             }
         } catch (err) {
             console.error("Delete error:", err);
-            toast.error(t("admin.users.toast.deleteFailed"));
+            toast.error("Failed to delete user.");
         } finally {
-            setShowDeleteDialog(false);
+            setShowDeleteDialog(false); // ALWAYS CLOSE dialog
         }
     }
+
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-lg rounded-2xl p-6">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-semibold">
-                        {t("admin.users.details.title")}
+                        User Details
                     </DialogTitle>
                 </DialogHeader>
 
@@ -82,13 +84,14 @@ export default function UserDetailsDrawer({
                 {/* EMPTY STATE */}
                 {isEmpty && !loading && (
                     <p className="text-center text-muted-foreground py-8">
-                        {t("admin.users.details.noUser")}
+                        No user selected.
                     </p>
                 )}
 
                 {/* USER CONTENT */}
                 {!loading && user && (
                     <div className="space-y-6">
+
                         {/* AVATAR + NAME */}
                         <div className="flex flex-col items-center text-center gap-3">
                             <Avatar className="w-24 h-24 border shadow">
@@ -111,34 +114,23 @@ export default function UserDetailsDrawer({
                         {/* INFO SECTION */}
                         <div className="space-y-4 border rounded-xl p-4 bg-muted/30">
                             {/* NAME */}
-                            <InfoRow 
-                                icon={<User />} 
-                                label={t("admin.users.details.name")} 
-                                value={user.name} 
-                            />
+                            <InfoRow icon={<User />} label="Name" value={user.name} />
 
                             {/* EMAIL */}
-                            <InfoRow 
-                                icon={<Mail />} 
-                                label={t("admin.users.details.email")} 
-                                value={user.email} 
-                            />
+                            <InfoRow icon={<Mail />} label="Email" value={user.email} />
 
                             {/* ROLE */}
                             <InfoRow
                                 icon={<Shield />}
-                                label={t("admin.users.details.role")}
+                                label="Role"
                                 value={user.role}
                             />
 
                             {/* VERIFIED */}
                             <InfoRow
                                 icon={<CheckCircle />}
-                                label={t("admin.users.details.emailVerified")}
-                                value={user.emailVerified 
-                                    ? t("admin.users.details.yes") 
-                                    : t("admin.users.details.no")
-                                }
+                                label="Email Verified"
+                                value={user.emailVerified ? "Yes" : "No"}
                                 valueClass={
                                     user.emailVerified
                                         ? "text-green-600"
@@ -149,37 +141,38 @@ export default function UserDetailsDrawer({
                             {/* AUTH PROVIDER */}
                             <InfoRow
                                 icon={<KeyRound />}
-                                label={t("admin.users.details.authProvider")}
+                                label="Auth Provider"
                                 value={user.authProvider}
                             />
 
                             {/* JOIN DATE */}
                             <InfoRow
                                 icon={<Calendar />}
-                                label={t("admin.users.details.joined")}
+                                label="Joined"
                                 value={new Date(user.createdAt).toLocaleDateString()}
                             />
                         </div>
-
                         {/* ACTIONS */}
                         <div className="flex justify-between pt-4">
                             <Button variant="outline" onClick={onClose}>
-                                {t("admin.users.details.close")}
+                                Close
                             </Button>
 
                             <Button
                                 variant="destructive"
-                                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]"
+                                className="
+                                    flex items-center gap-2 bg-red-600 
+                                    hover:bg-red-700 hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
+                                "
                                 onClick={() => setShowDeleteDialog(true)}
                             >
                                 <Trash size={16} />
-                                {t("admin.users.details.deleteUser")}
+                                Delete User
                             </Button>
                         </div>
                     </div>
                 )}
             </DialogContent>
-
             <DeleteConfirmDialog
                 open={showDeleteDialog}
                 onClose={() => setShowDeleteDialog(false)}
@@ -190,7 +183,7 @@ export default function UserDetailsDrawer({
     );
 }
 
-/** Info Row Component */
+/** SMALL SUB-COMPONENT FOR CLEAN UI */
 function InfoRow({ icon, label, value, valueClass = "" }) {
     return (
         <div className="flex items-center gap-3 text-sm">

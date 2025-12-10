@@ -97,7 +97,8 @@
         "codexaAI": "Codexa AI",
         "profile": "Profile",
         "changePassword": "Change Password",
-        "liveSessions": "Live Sessions"
+        "liveSessions":"Live Sessions"
+        
     },
     "studentCourses": {
         "title": "My Courses",
@@ -484,226 +485,130 @@
             "videosUploaded": "Videos uploaded successfully!"
         }
     },
-    "admin": {
-        "dashboard": {
-            "title": "Admin Dashboard",
-            "subtitle": "Overview of platform growth, activity & performance",
-            "loading": "Loading...",
-            "noAnalytics": "No analytics found.",
-            "updatedNow": "Updated now"
-        },
-        "stats": {
-            "totalStudents": "Total Students",
-            "totalInstructors": "Instructors",
-            "totalCourses": "Courses",
-            "totalRevenue": "Revenue"
-        },
-        "chart": {
-            "title": "Revenue Growth",
-            "subtitle": "Monthly revenue analytics",
-            "months": {
-                "jan": "January",
-                "feb": "February",
-                "mar": "March",
-                "apr": "April",
-                "may": "May",
-                "jun": "June",
-                "jul": "July",
-                "aug": "August",
-                "sep": "September",
-                "oct": "October",
-                "nov": "November",
-                "dec": "December"
-            }
-        },
-        "activity": {
-            "title": "Recent Activity",
-            "loading": "Loading recent activity...",
-            "noActivity": "No activity available",
-            "newPost": "New community post",
-            "newStudent": "New student registered",
-            "newInstructor": "New instructor joined",
-            "newCourse": "New course published",
-            "posted": "posted",
-            "ellipsis": "..."
-        },
-        "users": {
-            "students": {
-                "title": "Students",
-                "total": "Total"
-            },
-            "instructors": {
-                "title": "Instructors",
-                "total": "Total"
-            },
-            "list": {
-                "search": "Search...",
-                "selectAll": "Select All",
-                "noUsers": "No users found.",
-                "deletePermanently": "Delete Permanently ({{count}})",
-                "deleting": "Deleting...",
-                "viewDetails": "View Details",
-                "delete": "Delete"
-            },
-            "details": {
-                "title": "User Details",
-                "loading": "Loading...",
-                "noUser": "No user selected.",
-                "name": "Name",
-                "email": "Email",
-                "role": "Role",
-                "emailVerified": "Email Verified",
-                "yes": "Yes",
-                "no": "No",
-                "authProvider": "Auth Provider",
-                "joined": "Joined",
-                "close": "Close",
-                "deleteUser": "Delete User"
-            },
-            "deleteDialog": {
-                "title": "Confirm Deletion",
-                "messageSingle": "Are you sure you want to delete this user?",
-                "messageMultiple": "Are you sure you want to delete {{count}} users?",
-                "warning": "This action cannot be undone.",
-                "cancel": "Cancel",
-                "confirm": "Confirm Delete",
-                "deleting": "Deleting..."
-            },
-            "toast": {
-                "deleteSuccess": "User deleted successfully.",
-                "deleteSuccessMultiple": "{{count}} users deleted successfully.",
-                "deleteFailed": "Failed to delete user(s).",
-                "userRemoved": "The user \"{{name}}\" has been removed."
-            }
-        },
-        "courses": {
-            "title": "All Courses",
-            "search": "Search courses...",
-            "category": "Category",
-            "allCategories": "All",
-            "noCourses": "No courses found.",
-            "loading": "Loading...",
-            "price": "Price",
-            "details": "Details",
-            "deleteCourse": "Delete Course",
-            "deleting": "Deleting...",
-            "courseDeleted": "Course deleted successfully",
-            "deleteFailed": "Failed to delete course",
-            "drawer": {
-                "title": "Course Details",
-                "loading": "Loading...",
-                "noCourse": "No course selected.",
-                "price": "Price",
-                "level": "Level",
-                "status": "Status",
-                "prerequisites": "Prerequisites",
-                "createdAt": "Created At",
-                "lastUpdate": "Last Update",
-                "instructor": "Instructor",
-                "statistics": "Course Statistics",
-                "totalVideos": "Total Videos",
-                "enrolledStudents": "Enrolled Students",
-                "close": "Close",
-                "deleteCourse": "Delete Course"
-            }
-        },
-        "deleteDialog": {
-            "title": "Delete {{label}}?",
-            "description": "This action",
-            "cannotUndo": "cannot be undone",
-            "willBeRemoved": "The {{type}}",
-            "permanently": "will be permanently removed from the system",
-            "cancel": "Cancel",
-            "confirmDelete": "Delete Permanently",
-            "course": "course",
-            "user": "user",
-            "item": "item"
-        }
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Overview of platform growth, activity & performance",
+      "loading": "Loading...",
+      "noAnalytics": "No analytics found.",
+      "updatedNow": "Updated now"
     },
-  "home": {
-    "nav": {
-      "home": "Home",
-      "community": "Community",
-      "courses": "Courses",
-      "testimonials": "Testimonials",
-      "logout": "Sign out",
-      "user": "Abanoub Abdelmessih"
-    },
-
-    "hero": {
-      "cards": {
-        "expertCourses": {
-          "title": "Expert Courses",
-          "description": "Learn from industry professionals."
-        },
-        "community": {
-          "title": "Community",
-          "description": "Connect with fellow learners."
-        },
-        "trackProgress": {
-          "title": "Track Progress",
-          "description": "Monitor your learning journey."
-        }
-      }
-    },
-
-    "features": {
-      "learn": {
-        "title": "Learn from Experts",
-        "description": "Access high-quality courses taught by industry leaders and expert educators."
-      },
-      "connect": {
-        "title": "Connect with Peers",
-        "description": "Engage with a diverse community of learners, share ideas, and collaborate on projects."
-      },
-      "share": {
-        "title": "Share Your Knowledge",
-        "description": "Become a teacher and share your experience with the world while earning rewards."
-      }
-    },
-
-    "community": {
-      "forums": {
-        "title": "Discussion Forums",
-        "description": "Participate in meaningful discussions with peers and instructors."
-      },
-      "studyGroups": {
-        "title": "Study Groups",
-        "description": "Join or create study groups to learn together."
-      },
-      "knowledgeSharing": {
-        "title": "Knowledge Sharing",
-        "description": "Share insights, ask questions, and help other learners."
-      }
-    },
-
     "stats": {
-      "students": "Active Students",
-      "courses": "Quality Courses",
-      "instructors": "Expert Instructors",
-      "completion": "Completion Rate"
+      "totalStudents": "Total Students",
+      "totalInstructors": "Instructors",
+      "totalCourses": "Courses",
+      "totalRevenue": "Revenue"
     },
-
-    "testimonials": {
-      "first": "Codexa transformed my career. The courses are comprehensive and the community support is incredible!",
-      "second": "The best e-learning platform I’ve ever used.",
-      "third": "I love the community aspect of Codexa. Learning feels motivating here."
+    "chart": {
+      "title": "Revenue Growth",
+      "subtitle": "Monthly revenue analytics",
+      "months": {
+        "jan": "January",
+        "feb": "February",
+        "mar": "March",
+        "apr": "April",
+        "may": "May",
+        "jun": "June",
+        "jul": "July",
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
+      }
     },
-
-    "footer": {
-      "platform": "Platform",
-      "resources": "Resources",
-      "legal": "Legal",
-      "about": "About Us",
-      "how": "How it works",
-      "pricing": "Pricing",
-      "careers": "Careers",
-      "blog": "Blog",
-      "help": "Help Center",
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "cookies": "Cookie Policy"
-    }
+    "activity": {
+      "title": "Recent Activity",
+      "loading": "Loading recent activity...",
+      "noActivity": "No activity available",
+      "newPost": "New community post",
+      "newStudent": "New student registered",
+      "newInstructor": "New instructor joined",
+      "newCourse": "New course published",
+      "posted": "posted",
+      "ellipsis": "..."
+    },
+    "users": {
+      "students": {
+        "title": "Students",
+        "total": "Total"
+      },
+      "instructors": {
+        "title": "Instructors",
+        "total": "Total"
+      },
+      "list": {
+        "search": "Search...",
+        "selectAll": "Select All",
+        "noUsers": "No users found.",
+        "deletePermanently": "Delete Permanently ({{count}})",
+        "deleting": "Deleting...",
+        "viewDetails": "View Details",
+        "delete": "Delete"
+      },
+      "details": {
+        "title": "User Details",
+        "loading": "Loading...",
+        "noUser": "No user selected.",
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "emailVerified": "Email Verified",
+        "yes": "Yes",
+        "no": "No",
+        "authProvider": "Auth Provider",
+        "joined": "Joined",
+        "close": "Close",
+        "deleteUser": "Delete User"
+      },
+      "deleteDialog": {
+        "title": "Confirm Deletion",
+        "messageSingle": "Are you sure you want to delete this user?",
+        "messageMultiple": "Are you sure you want to delete {{count}} users?",
+        "warning": "This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Confirm Delete",
+        "deleting": "Deleting..."
+      },
+      "toast": {
+        "deleteSuccess": "User deleted successfully.",
+        "deleteSuccessMultiple": "{{count}} users deleted successfully.",
+        "deleteFailed": "Failed to delete user(s).",
+        "userRemoved": "The user \"{{name}}\" has been removed."
+      }
+    },,
+    "courses": {
+      "title": "جميع الدورات",
+      "search": "ابحث عن دورات...",
+      "category": "الفئة",
+      "allCategories": "الكل",
+      "noCourses": "لم يتم العثور على دورات.",
+      "loading": "جاري التحميل...",
+      "price": "السعر",
+      "details": "التفاصيل",
+      "deleteCourse": "حذف الدورة",
+      "deleting": "جاري الحذف...",
+      "courseDeleted": "تم حذف الدورة بنجاح",
+      "deleteFailed": "فشل حذف الدورة",
+      "drawer": {
+        "title": "تفاصيل الدورة",
+        "loading": "جاري التحميل...",
+        "noCourse": "لم يتم اختيار دورة.",
+        "price": "السعر",
+        "level": "المستوى",
+        "status": "الحالة",
+        "prerequisites": "المتطلبات الأساسية",
+        "createdAt": "تاريخ الإنشاء",
+        "lastUpdate": "آخر تحديث",
+        "instructor": "المدرس",
+        "statistics": "إحصائيات الدورة",
+        "totalVideos": "إجمالي الفيديوهات",
+        "enrolledStudents": "الطلاب المسجلين",
+        "close": "إغلاق",
+        "deleteCourse": "حذف الدورة"
+      }
+    },
   }
-}
 
+
+}
