@@ -139,6 +139,9 @@ function handleAuth(req, pathname, response = null) {
         return redirectWithCookies("/login");
     }
 
+    if (pathname === "/admin-portal-iti-login") {
+        return response || NextResponse.next();
+    }
     // Role-based protection
     if (pathname.startsWith("/admin") && role !== "admin") {
         return redirectWithCookies(`/${locale}/unauthorized`);
