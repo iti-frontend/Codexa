@@ -619,7 +619,7 @@
             "user": "user",
             "item": "item"
         }
-    },
+    },{
   "home": {
     "nav": {
       "home": "Home",
@@ -707,3 +707,4 @@
   }
 }
 
+}

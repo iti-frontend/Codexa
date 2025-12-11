@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -29,13 +28,16 @@ import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 
+// ---------------------------------------------------
+// MAIN COMPONENT
+// ---------------------------------------------------
+
 export default function CourseDetailsDrawer({
     open,
     onClose,
     courseId,
-    onDelete,
+    onDelete, // parent UI-remove handler
 }) {
-    const { t } = useTranslation();
     const {
         data: course,
         loading: detailsLoading,
@@ -48,33 +50,51 @@ export default function CourseDetailsDrawer({
 
     const isEmpty = !course && !detailsLoading;
 
+    // const handleDelete = async () => {
+    //     const ok = await deleteCourse(course._id);
+
+    //     if (ok) {
+    //         toast.success("Course deleted successfully");
+
+    //         // Notify parent to remove card from UI
+    //         onDelete?.(course);
+
+    //         // Close dialog + drawer
+    //         setShowDeleteDialog(false);
+    //         onClose();
+    //     } else {
+    //         toast.error("Failed to delete course");
+    //     }
+    // };
     const handleDelete = async () => {
         const ok = await deleteCourse(course._id);
 
         if (ok) {
-            toast.success(t("admin.courses.courseDeleted"));
+            toast.success("Course deleted successfully");
 
-            await onDelete?.();
+            await onDelete?.();  // 🚀 refetch courses
             setShowDeleteDialog(false);
-            onClose();
+            onClose();           // close drawer
         } else {
-            toast.error(t("admin.courses.deleteFailed"));
+            toast.error("Failed to delete course");
         }
     };
 
+
     useEffect(() => {
         if (!open) {
-            setShowDeleteDialog(false);
+            setShowDeleteDialog(false); // <-- force close dialog
         }
     }, [open]);
+
 
     return (
         <Dialog
             open={open}
             onOpenChange={(state) => {
                 if (!state) {
-                    setShowDeleteDialog(false);
-                    onClose();
+                    setShowDeleteDialog(false); // force close delete dialog
+                    onClose();                  // then close drawer
                 }
             }}
         >
@@ -93,7 +113,7 @@ export default function CourseDetailsDrawer({
                     <DialogHeader>
                         <DialogTitle className="text-xl font-semibold flex items-center gap-2">
                             <BookOpen className="h-5 w-5 text-muted-foreground" />
-                            {t("admin.courses.drawer.title")}
+                            Course Details
                         </DialogTitle>
                     </DialogHeader>
                 </div>
@@ -118,7 +138,7 @@ export default function CourseDetailsDrawer({
                     {/* EMPTY */}
                     {isEmpty && (
                         <p className="text-center text-muted-foreground">
-                            {t("admin.courses.drawer.noCourse")}
+                            No course selected.
                         </p>
                     )}
 
@@ -147,43 +167,21 @@ export default function CourseDetailsDrawer({
 
                             {/* DETAILS */}
                             <Section>
-                                <InfoRow 
-                                    icon={<BadgeDollarSign />} 
-                                    label={t("admin.courses.drawer.price")} 
-                                    value={`$${course.price}`} 
-                                />
-                                <InfoRow 
-                                    icon={<Layers />} 
-                                    label={t("admin.courses.drawer.level")} 
-                                    value={course.level} 
-                                />
-                                <InfoRow 
-                                    icon={<Tag />} 
-                                    label={t("admin.courses.drawer.status")} 
-                                    value={course.status} 
-                                />
-                                <InfoRow 
-                                    icon={<Info />} 
-                                    label={t("admin.courses.drawer.prerequisites")} 
-                                    value={course.prerequisites || "—"} 
+                                <InfoRow icon={<BadgeDollarSign />} label="Price" value={`$${course.price}`} />
+                                <InfoRow icon={<Layers />} label="Level" value={course.level} />
+                                <InfoRow icon={<Tag />} label="Status" value={course.status} />
+                                <InfoRow icon={<Info />} label="Prerequisites" value={course.prerequisites} />
+
+                                <InfoRow
+                                    icon={<Calendar />}
+                                    label="Created At"
+                                    value={course.statistics?.createdAt ? new Date(course.statistics.createdAt).toLocaleDateString() : "—"}
                                 />
 
                                 <InfoRow
                                     icon={<Calendar />}
-                                    label={t("admin.courses.drawer.createdAt")}
-                                    value={course.statistics?.createdAt 
-                                        ? new Date(course.statistics.createdAt).toLocaleDateString() 
-                                        : "—"
-                                    }
-                                />
-
-                                <InfoRow
-                                    icon={<Calendar />}
-                                    label={t("admin.courses.drawer.lastUpdate")}
-                                    value={course.statistics?.updatedAt 
-                                        ? new Date(course.statistics.updatedAt).toLocaleDateString() 
-                                        : "—"
-                                    }
+                                    label="Last Update"
+                                    value={course.statistics?.updatedAt ? new Date(course.statistics.updatedAt).toLocaleDateString() : "—"}
                                 />
                             </Section>
 
@@ -191,9 +189,7 @@ export default function CourseDetailsDrawer({
                             <Section>
                                 <div className="flex items-center gap-2 mb-2">
                                     <User className="h-4 w-4 text-muted-foreground" />
-                                    <span className="font-medium">
-                                        {t("admin.courses.drawer.instructor")}
-                                    </span>
+                                    <span className="font-medium">Instructor</span>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -217,25 +213,19 @@ export default function CourseDetailsDrawer({
                             <Section>
                                 <div className="flex items-center gap-2 mb-2">
                                     <BookOpen className="h-4 w-4 text-muted-foreground" />
-                                    <span className="font-medium">
-                                        {t("admin.courses.drawer.statistics")}
-                                    </span>
+                                    <span className="font-medium">Course Statistics</span>
                                 </div>
 
                                 <div className="text-sm text-muted-foreground space-y-1">
-                                    <p>
-                                        {t("admin.courses.drawer.totalVideos")}: {course.statistics?.totalVideos ?? "—"}
-                                    </p>
-                                    <p>
-                                        {t("admin.courses.drawer.enrolledStudents")}: {course.statistics?.enrolledStudentsCount ?? "—"}
-                                    </p>
+                                    <p>Total Videos: {course.statistics?.totalVideos ?? "—"}</p>
+                                    <p>Enrolled Students: {course.statistics?.enrolledStudentsCount ?? "—"}</p>
                                 </div>
                             </Section>
 
                             {/* ACTIONS */}
                             <div className="flex justify-end pt-2 gap-3">
                                 <Button variant="outline" onClick={onClose}>
-                                    {t("admin.courses.drawer.close")}
+                                    Close
                                 </Button>
 
                                 <Button
@@ -245,10 +235,7 @@ export default function CourseDetailsDrawer({
                                     onClick={() => setShowDeleteDialog(true)}
                                 >
                                     <Trash size={16} />
-                                    {deleteLoading 
-                                        ? t("admin.courses.deleting")
-                                        : t("admin.courses.drawer.deleteCourse")
-                                    }
+                                    {deleteLoading ? "Deleting..." : "Delete Course"}
                                 </Button>
                             </div>
 

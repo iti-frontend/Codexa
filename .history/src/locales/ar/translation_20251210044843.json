@@ -22,7 +22,7 @@
         "notification": "الإشعارات",
         "saved": "المحفوظات",
         "codexaAI": "Codexa AI",
-        "liveSessions": "محاضرات مباشرة"
+        "liveSessions":"محاضرات مباشرة"
     },
     "community": {
         "title": "المجتمع",
@@ -410,292 +410,203 @@
         }
     },
     "createCourse": {
-        "title": "إنشاء دورة جديدة",
-        "description": "أنشئ دورة جديدة عن طريق ملء التفاصيل ورفع المحتوى.",
-        "fields": {
-            "title": "العنوان",
-            "description": "الوصف",
-            "category": "الفئة",
-            "price": "السعر ($)",
-            "level": "المستوى",
-            "status": "الحالة",
-            "prerequisites": "المتطلبات الأساسية",
-            "coverImage": "صورة الغلاف"
-        },
-        "placeholders": {
-            "title": "أدخل عنوان الدورة",
-            "description": "صف ما سيتعلمه الطلاب في هذه الدورة",
-            "category": "مثال: تطوير الويب",
-            "level": "اختر المستوى",
-            "status": "اختر الحالة",
-            "prerequisites": "ما الذي يجب أن يعرفه الطلاب قبل أخذ هذه الدورة؟"
-        },
-        "levels": {
-            "beginner": "مبتدئ",
-            "intermediate": "متوسط",
-            "advanced": "متقدم"
-        },
-        "status": {
-            "public": "عامة",
-            "private": "خاصة"
-        },
-        "hints": {
-            "level": "اختر مستوى الصعوبة",
-            "status": "عامة: مرئية للجميع، خاصة: أنت فقط يمكنك رؤيتها",
-            "prerequisites": "اختياري - اذكر أي معرفة أو مهارات مطلوبة",
-            "coverImage": "الموصى به: 1280x720 بكسل، بحد أقصى 5 ميجابايت"
-        },
-        "errors": {
-            "titleRequired": "العنوان مطلوب",
-            "titleMinLength": "يجب أن يكون العنوان على الأقل 3 أحرف",
-            "descriptionRequired": "الوصف مطلوب",
-            "descriptionMinLength": "يجب أن يكون الوصف على الأقل 10 أحرف",
-            "categoryRequired": "الفئة مطلوبة",
-            "categoryMinLength": "يجب أن تكون الفئة على الأقل حرفين",
-            "priceRequired": "السعر مطلوب",
-            "priceMin": "يجب أن يكون السعر 0 أو أكثر",
-            "coverImageRequired": "صورة الغلاف مطلوبة",
-            "imageType": "يرجى اختيار ملف صورة",
-            "imageSize": "يجب أن تكون الصورة أقل من 5 ميجابايت",
-            "notVideoFile": "\"{{name}}\" ليس ملف فيديو",
-            "fileTooLarge": "\"{{name}}\" كبير جداً (الحد الأقصى 100 ميجابايت)"
-        },
-        "buttons": {
-            "creating": "جاري الإنشاء...",
-            "next": "التالي",
-            "skipNow": "تخطي الآن",
-            "uploading": "جاري الرفع...",
-            "finish": "إنهاء"
-        },
-        "upload": {
-            "title": "رفع فيديوهات الدورة",
-            "description": "أضف فيديوهات إلى دورتك. يمكنك تخطي هذا وإضافة فيديوهات لاحقاً.",
-            "selectFiles": "اختر ملفات الفيديو",
-            "hint": "التنسيقات المدعومة: MP4، MOV، AVI، إلخ. الحد الأقصى 100 ميجابايت لكل ملف",
-            "selectedFiles": "الملفات المحددة ({{count}}):"
-        },
-        "toast": {
-            "courseCreated": "تم إنشاء الدورة بنجاح!",
-            "courseCreationFailed": "فشل إنشاء الدورة. يرجى المحاولة مرة أخرى.",
-            "noVideos": "لم يتم اختيار فيديوهات. تم إنشاء الدورة بنجاح!",
-            "videosUploaded": "تم رفع الفيديوهات بنجاح!"
-        }
+    "title": "إنشاء دورة جديدة",
+    "description": "أنشئ دورة جديدة عن طريق ملء التفاصيل ورفع المحتوى.",
+    "fields": {
+      "title": "العنوان",
+      "description": "الوصف",
+      "category": "الفئة",
+      "price": "السعر ($)",
+      "level": "المستوى",
+      "status": "الحالة",
+      "prerequisites": "المتطلبات الأساسية",
+      "coverImage": "صورة الغلاف"
     },
-    "admin": {
-        "dashboard": {
-            "title": "لوحة تحكم الإدارة",
-            "subtitle": "نظرة عامة على نمو المنصة والنشاط والأداء",
-            "loading": "جاري التحميل...",
-            "noAnalytics": "لا توجد تحليلات.",
-            "updatedNow": "تم التحديث الآن"
-        },
-        "stats": {
-            "totalStudents": "إجمالي الطلاب",
-            "totalInstructors": "إجمالي المدرسين",
-            "totalCourses": "إجمالي الدورات",
-            "totalRevenue": "إجمالي الإيرادات",
-            "activeCourses": "الدورات النشطة",
-            "communityPosts": "منشورات المجتمع"
-        },
-        "chart": {
-            "title": "نمو الإيرادات",
-            "subtitle": "تحليلات الإيرادات الشهرية",
-            "months": {
-                "jan": "يناير",
-                "feb": "فبراير",
-                "mar": "مارس",
-                "apr": "أبريل",
-                "may": "مايو",
-                "jun": "يونيو",
-                "jul": "يوليو",
-                "aug": "أغسطس",
-                "sep": "سبتمبر",
-                "oct": "أكتوبر",
-                "nov": "نوفمبر",
-                "dec": "ديسمبر"
-            }
-        },
-        "activity": {
-            "title": "النشاط الأخير",
-            "loading": "جاري تحميل النشاط الأخير...",
-            "noActivity": "لا يوجد نشاط متاح",
-            "newPost": "منشور جديد في المجتمع",
-            "newStudent": "طالب جديد مسجل",
-            "newInstructor": "مدرس جديد انضم",
-            "newCourse": "دورة جديدة منشورة",
-            "posted": "نشر",
-            "ellipsis": "..."
-        },
-        "users": {
-            "students": {
-                "title": "الطلاب",
-                "total": "الإجمالي"
-            },
-            "instructors": {
-                "title": "المدرسون",
-                "total": "الإجمالي"
-            },
-            "list": {
-                "search": "بحث...",
-                "selectAll": "اختيار الكل",
-                "noUsers": "لم يتم العثور على مستخدمين.",
-                "deletePermanently": "حذف نهائياً ({{count}})",
-                "deleting": "جاري الحذف...",
-                "viewDetails": "عرض التفاصيل",
-                "delete": "حذف"
-            },
-            "details": {
-                "title": "تفاصيل المستخدم",
-                "loading": "جاري التحميل...",
-                "noUser": "لم يتم اختيار مستخدم.",
-                "name": "الاسم",
-                "email": "البريد الإلكتروني",
-                "role": "الدور",
-                "emailVerified": "البريد الإلكتروني موثق",
-                "yes": "نعم",
-                "no": "لا",
-                "authProvider": "مزود المصادقة",
-                "joined": "تاريخ الانضمام",
-                "close": "إغلاق",
-                "deleteUser": "حذف المستخدم"
-            },
-            "deleteDialog": {
-                "title": "تأكيد الحذف",
-                "messageSingle": "هل أنت متأكد من حذف هذا المستخدم؟",
-                "messageMultiple": "هل أنت متأكد من حذف {{count}} مستخدمين؟",
-                "warning": "هذا الإجراء لا يمكن التراجع عنه.",
-                "cancel": "إلغاء",
-                "confirm": "تأكيد الحذف",
-                "deleting": "جاري الحذف..."
-            },
-            "toast": {
-                "deleteSuccess": "تم حذف المستخدم بنجاح.",
-                "deleteSuccessMultiple": "تم حذف {{count}} مستخدمين بنجاح.",
-                "deleteFailed": "فشل حذف المستخدم.",
-                "userRemoved": "تمت إزالة المستخدم \"{{name}}\"."
-            }
-        },
-        "courses": {
-            "title": "جميع الدورات",
-            "search": "ابحث عن دورات...",
-            "category": "الفئة",
-            "allCategories": "الكل",
-            "noCourses": "لم يتم العثور على دورات.",
-            "loading": "جاري التحميل...",
-            "price": "السعر",
-            "details": "التفاصيل",
-            "deleteCourse": "حذف الدورة",
-            "deleting": "جاري الحذف...",
-            "courseDeleted": "تم حذف الدورة بنجاح",
-            "deleteFailed": "فشل حذف الدورة",
-            "drawer": {
-                "title": "تفاصيل الدورة",
-                "loading": "جاري التحميل...",
-                "noCourse": "لم يتم اختيار دورة.",
-                "price": "السعر",
-                "level": "المستوى",
-                "status": "الحالة",
-                "prerequisites": "المتطلبات الأساسية",
-                "createdAt": "تاريخ الإنشاء",
-                "lastUpdate": "آخر تحديث",
-                "instructor": "المدرس",
-                "statistics": "إحصائيات الدورة",
-                "totalVideos": "إجمالي الفيديوهات",
-                "enrolledStudents": "الطلاب المسجلين",
-                "close": "إغلاق",
-                "deleteCourse": "حذف الدورة"
-            }
-        },
-        "deleteDialog": {
-            "title": "حذف {{label}}؟",
-            "description": "هذا الإجراء",
-            "cannotUndo": "لا يمكن التراجع عنه",
-            "willBeRemoved": "سيتم إزالة {{type}}",
-            "permanently": "نهائياً من النظام",
-            "cancel": "إلغاء",
-            "confirmDelete": "حذف نهائياً",
-            "course": "الدورة",
-            "user": "المستخدم",
-            "item": "العنصر"
-        }
+    "placeholders": {
+      "title": "أدخل عنوان الدورة",
+      "description": "صف ما سيتعلمه الطلاب في هذه الدورة",
+      "category": "مثال: تطوير الويب",
+      "level": "اختر المستوى",
+      "status": "اختر الحالة",
+      "prerequisites": "ما الذي يجب أن يعرفه الطلاب قبل أخذ هذه الدورة؟"
     },
-    "home": {
-        "nav": {
-            "home": "الرئيسية",
-            "community": "المجتمع",
-            "courses": "الكورسات",
-            "testimonials": "آراء الطلاب",
-            "logout": "تسجيل الخروج",
-            "user": "أبانوب عبدالمسيح"
-        },
-        "hero": {
-            "cards": {
-                "expertCourses": {
-                    "title": "كورسات احترافية",
-                    "description": "تعلّم على يد محترفين في المجال."
-                },
-                "community": {
-                    "title": "مجتمع داعم",
-                    "description": "تواصل مع متعلمين مثلك."
-                },
-                "trackProgress": {
-                    "title": "تتبع تقدمك",
-                    "description": "راقب رحلتك التعليمية خطوة بخطوة."
-                }
-            }
-        },
-        "features": {
-            "learn": {
-                "title": "تعلم من الخبراء",
-                "description": "كورسات عالية الجودة مقدمة من متخصصين ذوي خبرة."
-            },
-            "connect": {
-                "title": "تواصل مع الآخرين",
-                "description": "شارك أفكارك وتفاعل مع مجتمع من المتعلمين."
-            },
-            "share": {
-                "title": "شارك معرفتك",
-                "description": "انقل خبرتك للعالم واكسب مكافآت."
-            }
-        },
-        "community": {
-            "forums": {
-                "title": "منتديات النقاش",
-                "description": "شارك في مناقشات هادفة مع المتعلمين والمدربين."
-            },
-            "studyGroups": {
-                "title": "مجموعات الدراسة",
-                "description": "انضم أو أنشئ مجموعة للتعلم الجماعي."
-            },
-            "knowledgeSharing": {
-                "title": "مشاركة المعرفة",
-                "description": "اسأل وأسهم بمعلوماتك لمساعدة الآخرين."
-            }
-        },
-        "stats": {
-            "students": "طالب نشط",
-            "courses": "كورس",
-            "instructors": "مدرب محترف",
-            "completion": "نسبة الإكمال"
-        },
-        "testimonials": {
-            "first": "Codexa غيرت مسيرتي المهنية بالكامل.",
-            "second": "أفضل منصة تعليمية استخدمتها.",
-            "third": "أحب روح التعاون بين المتعلمين هنا."
-        },
-        "footer": {
-            "platform": "المنصة",
-            "resources": "المصادر",
-            "legal": "قانوني",
-            "about": "من نحن",
-            "how": "كيف تعمل",
-            "pricing": "الأسعار",
-            "careers": "وظائف",
-            "blog": "المدونة",
-            "help": "مركز المساعدة",
-            "privacy": "سياسة الخصوصية",
-            "terms": "شروط الاستخدام",
-            "cookies": "سياسة الكوكيز"
-        }
+    "levels": {
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم"
+    },
+    "status": {
+      "public": "عامة",
+      "private": "خاصة"
+    },
+    "hints": {
+      "level": "اختر مستوى الصعوبة",
+      "status": "عامة: مرئية للجميع، خاصة: أنت فقط يمكنك رؤيتها",
+      "prerequisites": "اختياري - اذكر أي معرفة أو مهارات مطلوبة",
+      "coverImage": "الموصى به: 1280x720 بكسل، بحد أقصى 5 ميجابايت"
+    },
+    "errors": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMinLength": "يجب أن يكون العنوان على الأقل 3 أحرف",
+      "descriptionRequired": "الوصف مطلوب",
+      "descriptionMinLength": "يجب أن يكون الوصف على الأقل 10 أحرف",
+      "categoryRequired": "الفئة مطلوبة",
+      "categoryMinLength": "يجب أن تكون الفئة على الأقل حرفين",
+      "priceRequired": "السعر مطلوب",
+      "priceMin": "يجب أن يكون السعر 0 أو أكثر",
+      "coverImageRequired": "صورة الغلاف مطلوبة",
+      "imageType": "يرجى اختيار ملف صورة",
+      "imageSize": "يجب أن تكون الصورة أقل من 5 ميجابايت",
+      "notVideoFile": "\"{{name}}\" ليس ملف فيديو",
+      "fileTooLarge": "\"{{name}}\" كبير جداً (الحد الأقصى 100 ميجابايت)"
+    },
+    "buttons": {
+      "creating": "جاري الإنشاء...",
+      "next": "التالي",
+      "skipNow": "تخطي الآن",
+      "uploading": "جاري الرفع...",
+      "finish": "إنهاء"
+    },
+    "upload": {
+      "title": "رفع فيديوهات الدورة",
+      "description": "أضف فيديوهات إلى دورتك. يمكنك تخطي هذا وإضافة فيديوهات لاحقاً.",
+      "selectFiles": "اختر ملفات الفيديو",
+      "hint": "التنسيقات المدعومة: MP4، MOV، AVI، إلخ. الحد الأقصى 100 ميجابايت لكل ملف",
+      "selectedFiles": "الملفات المحددة ({{count}}):"
+    },
+    "toast": {
+      "courseCreated": "تم إنشاء الدورة بنجاح!",
+      "courseCreationFailed": "فشل إنشاء الدورة. يرجى المحاولة مرة أخرى.",
+      "noVideos": "لم يتم اختيار فيديوهات. تم إنشاء الدورة بنجاح!",
+      "videosUploaded": "تم رفع الفيديوهات بنجاح!"
     }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "لوحة تحكم الإدارة",
+      "subtitle": "نظرة عامة على نمو المنصة والنشاط والأداء",
+      "loading": "جاري التحميل...",
+      "noAnalytics": "لا توجد تحليلات.",
+      "updatedNow": "تم التحديث الآن"
+    },
+    "stats": {
+      "totalStudents": "إجمالي الطلاب",
+      "totalInstructors": "إجمالي المدرسين",
+      "totalCourses": "إجمالي الدورات",
+      "totalRevenue": "إجمالي الإيرادات",
+      "activeCourses": "الدورات النشطة",
+      "communityPosts": "منشورات المجتمع"
+    },
+    "chart": {
+      "title": "نمو الإيرادات",
+      "subtitle": "تحليلات الإيرادات الشهرية",
+      "months": {
+        "jan": "يناير",
+        "feb": "فبراير",
+        "mar": "مارس",
+        "apr": "أبريل",
+        "may": "مايو",
+        "jun": "يونيو",
+        "jul": "يوليو",
+        "aug": "أغسطس",
+        "sep": "سبتمبر",
+        "oct": "أكتوبر",
+        "nov": "نوفمبر",
+        "dec": "ديسمبر"
+      }
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "loading": "جاري تحميل النشاط الأخير...",
+      "noActivity": "لا يوجد نشاط متاح",
+      "newPost": "منشور جديد في المجتمع",
+      "newStudent": "طالب جديد مسجل",
+      "newInstructor": "مدرس جديد انضم",
+      "newCourse": "دورة جديدة منشورة",
+      "posted": "نشر",
+      "ellipsis": "..."
+    },
+    "users": {
+      "students": {
+        "title": "الطلاب",
+        "total": "الإجمالي"
+      },
+      "instructors": {
+        "title": "المدرسون",
+        "total": "الإجمالي"
+      },
+      "list": {
+        "search": "بحث...",
+        "selectAll": "اختيار الكل",
+        "noUsers": "لم يتم العثور على مستخدمين.",
+        "deletePermanently": "حذف نهائياً ({{count}})",
+        "deleting": "جاري الحذف...",
+        "viewDetails": "عرض التفاصيل",
+        "delete": "حذف"
+      },
+      "details": {
+        "title": "تفاصيل المستخدم",
+        "loading": "جاري التحميل...",
+        "noUser": "لم يتم اختيار مستخدم.",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "role": "الدور",
+        "emailVerified": "البريد الإلكتروني موثق",
+        "yes": "نعم",
+        "no": "لا",
+        "authProvider": "مزود المصادقة",
+        "joined": "تاريخ الانضمام",
+        "close": "إغلاق",
+        "deleteUser": "حذف المستخدم"
+      },
+      "deleteDialog": {
+        "title": "تأكيد الحذف",
+        "messageSingle": "هل أنت متأكد من حذف هذا المستخدم؟",
+        "messageMultiple": "هل أنت متأكد من حذف {{count}} مستخدمين؟",
+        "warning": "هذا الإجراء لا يمكن التراجع عنه.",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد الحذف",
+        "deleting": "جاري الحذف..."
+      },
+      "toast": {
+        "deleteSuccess": "تم حذف المستخدم بنجاح.",
+        "deleteSuccessMultiple": "تم حذف {{count}} مستخدمين بنجاح.",
+        "deleteFailed": "فشل حذف المستخدم.",
+        "userRemoved": "تمت إزالة المستخدم \"{{name}}\"."
+      }
+    },,
+    "courses": {
+      "title": "جميع الدورات",
+      "search": "ابحث عن دورات...",
+      "category": "الفئة",
+      "allCategories": "الكل",
+      "noCourses": "لم يتم العثور على دورات.",
+      "loading": "جاري التحميل...",
+      "price": "السعر",
+      "details": "التفاصيل",
+      "deleteCourse": "حذف الدورة",
+      "deleting": "جاري الحذف...",
+      "courseDeleted": "تم حذف الدورة بنجاح",
+      "deleteFailed": "فشل حذف الدورة",
+      "drawer": {
+        "title": "تفاصيل الدورة",
+        "loading": "جاري التحميل...",
+        "noCourse": "لم يتم اختيار دورة.",
+        "price": "السعر",
+        "level": "المستوى",
+        "status": "الحالة",
+        "prerequisites": "المتطلبات الأساسية",
+        "createdAt": "تاريخ الإنشاء",
+        "lastUpdate": "آخر تحديث",
+        "instructor": "المدرس",
+        "statistics": "إحصائيات الدورة",
+        "totalVideos": "إجمالي الفيديوهات",
+        "enrolledStudents": "الطلاب المسجلين",
+        "close": "إغلاق",
+        "deleteCourse": "حذف الدورة"
+      }
+    },
+  }
+
+
 }

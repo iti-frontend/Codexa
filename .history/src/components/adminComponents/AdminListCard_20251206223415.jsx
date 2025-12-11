@@ -1,12 +1,17 @@
 "use client";
-
 import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { Search, MoreHorizontal, User, X, Trash } from "lucide-react";
+import {
+    Search,
+    MoreHorizontal,
+    User,
+    X,
+    Trash,
+} from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -22,25 +27,30 @@ export default function AdminListCard({
     itemKey = "name",
     itemImageKey = "profileImage",
     itemSubKey = "email",
-    onView = () => {},
-    onRefetch = () => {},
+
+    // Callbacks
+    onView = () => { },
+    onRefetch = () => { },
     role = "",
 }) {
-    const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [selected, setSelected] = useState([]);
-    const [pendingDeleteIds, setPendingDeleteIds] = useState([]);
+    const [pendingDeleteIds, setPendingDeleteIds] = useState([]); // NEW
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const { deleteUsers, loading: deleting } = useAdminDeleteUsers(role);
 
+    // ------------------------------
     // Delete flow
+    // ------------------------------
+    // Open delete dialog for many (bulk)
     function openBulkDelete() {
         if (selected.length === 0) return;
         setPendingDeleteIds(selected);
         setShowDeleteDialog(true);
     }
 
+    // Open delete dialog for single item (from dropdown)
     function openSingleDelete(id) {
         setPendingDeleteIds([id]);
         setShowDeleteDialog(true);
@@ -48,6 +58,7 @@ export default function AdminListCard({
 
     async function confirmDelete() {
         if (!pendingDeleteIds || pendingDeleteIds.length === 0) {
+            // nothing to delete
             setShowDeleteDialog(false);
             return;
         }
@@ -59,26 +70,33 @@ export default function AdminListCard({
                 const count = pendingDeleteIds.length;
                 toast.success(
                     count === 1
-                        ? t("admin.users.toast.deleteSuccess")
-                        : t("admin.users.toast.deleteSuccessMultiple", { count })
+                        ? "User deleted successfully."
+                        : `${count} users deleted successfully.`
                 );
 
+                // remove deleted ids locally so UI updates instantly (optional)
                 setSelected((prev) => prev.filter((id) => !pendingDeleteIds.includes(id)));
+
+                // clear pending
                 setPendingDeleteIds([]);
 
+                // refetch parent data
                 if (onRefetch) onRefetch();
             } else {
-                toast.error(t("admin.users.toast.deleteFailed"));
+                toast.error("Failed to delete user(s).");
             }
         } catch (err) {
             console.error("Delete error:", err);
-            toast.error(t("admin.users.toast.deleteFailed"));
+            toast.error("Failed to delete user(s).");
         } finally {
+            // always close dialog and stop any local busy states
             setShowDeleteDialog(false);
         }
     }
 
+    // ------------------------------
     // Filter + Search Logic
+    // ------------------------------
     const filteredItems = useMemo(() => {
         let result = [...items];
 
@@ -91,7 +109,9 @@ export default function AdminListCard({
         return result;
     }, [items, search, itemKey]);
 
+    // ------------------------------
     // Selection Logic
+    // ------------------------------
     const toggleSelect = (id) => {
         setSelected((prev) =>
             prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -106,44 +126,58 @@ export default function AdminListCard({
         }
     };
 
+    // ------------------------------
+    // UI Rendering
+    // ------------------------------
     return (
         <Card className="w-full rounded-xl border bg-card p-4">
-            {/* ================= SEARCH BAR ================= */}
+            {/* ================= SEARCH BAR (Centered) ================= */}
             <div className="w-full flex justify-center mb-6">
                 <div className="relative w-full max-w-xl">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5" />
 
                     <Input
                         type="text"
-                        placeholder={t("admin.users.list.search")}
+                        placeholder="Search..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="pl-12 pr-12 h-12 text-base rounded-xl border border-border bg-background/60 focus:ring-2 focus:ring-primary/50 transition-all"
-                    />
-                    
+                        className="
+                                    pl-12 pr-12
+                                    h-12
+                                    text-base
+                                    rounded-xl
+                                    border border-border
+                                    bg-background/60
+                                    focus:ring-2 focus:ring-primary/50
+                                    transition-all"/>
                     {search && (
                         <X
-                            className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground cursor-pointer hover:text-foreground transition"
+                            className="
+                                        absolute right-4 top-1/2 -translate-y-1/2
+                                        h-5 w-5
+                                        text-muted-foreground cursor-pointer
+                                        hover:text-foreground transition "
                             onClick={() => setSearch("")}
                         />
                     )}
                 </div>
             </div>
 
-            {/* ================= DELETE SELECTED ================= */}
+            {/* ================= DELETE SELECTED (Right aligned) ================= */}
             <div className="flex justify-end mb-4">
                 {selected.length > 0 && (
                     <Button
                         variant="destructive"
-                        className="flex items-center gap-2 px-4 py-2 text-sm bg-red-600 hover:bg-red-700 hover:shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-200"
+                        className="
+                                    flex items-center gap-2 px-4 py-2 text-sm
+                                    bg-red-600 hover:bg-red-700
+                                    hover:shadow-[0_0_10px_rgba(255,0,0,0.5)]
+                                    transition-all duration-200"
                         onClick={openBulkDelete}
                         disabled={deleting}
                     >
                         <Trash size={14} />
-                        {deleting 
-                            ? t("admin.users.list.deleting")
-                            : t("admin.users.list.deletePermanently", { count: selected.length })
-                        }
+                        {deleting ? `Deleting...` : `Delete Permanently (${selected.length})`}
                     </Button>
                 )}
             </div>
@@ -151,9 +185,7 @@ export default function AdminListCard({
             {/* ================= USER LIST ================= */}
             <CardContent className="space-y-3">
                 {filteredItems.length === 0 && (
-                    <p className="text-muted-foreground text-sm">
-                        {t("admin.users.list.noUsers")}
-                    </p>
+                    <p className="text-muted-foreground text-sm">No users found.</p>
                 )}
 
                 {/* Select All */}
@@ -164,9 +196,7 @@ export default function AdminListCard({
                             checked={selected.length === filteredItems.length}
                             onChange={toggleSelectAll}
                         />
-                        <span className="text-sm text-muted-foreground">
-                            {t("admin.users.list.selectAll")}
-                        </span>
+                        <span className="text-sm text-muted-foreground">Select All</span>
                     </div>
                 )}
 
@@ -187,7 +217,6 @@ export default function AdminListCard({
                                 <img
                                     src={item[itemImageKey]}
                                     className="w-12 h-12 rounded-full object-cover border"
-                                    alt={item[itemKey]}
                                 />
                             ) : (
                                 <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
@@ -213,13 +242,13 @@ export default function AdminListCard({
 
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem onClick={() => onView(item)}>
-                                    {t("admin.users.list.viewDetails")}
+                                    View Details
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     className="text-red-500"
                                     onClick={() => openSingleDelete(item._id)}
                                 >
-                                    {t("admin.users.list.delete")}
+                                    Delete
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -231,7 +260,7 @@ export default function AdminListCard({
                 open={showDeleteDialog}
                 onClose={() => {
                     setShowDeleteDialog(false);
-                    setPendingDeleteIds([]);
+                    setPendingDeleteIds([]); // clear pending when dialog closed
                 }}
                 onConfirm={confirmDelete}
                 count={pendingDeleteIds.length}

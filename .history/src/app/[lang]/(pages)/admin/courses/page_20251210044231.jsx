@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -24,7 +23,6 @@ import CourseDetailsDrawer from "@/components/adminComponents/CourseDetailsDrawe
 import { DeleteConfirmDialog } from "@/components/adminComponents/DeleteConfirmDialog";
 
 export default function AdminCoursesPage() {
-    const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
     const [visibleCount, setVisibleCount] = useState(9);
@@ -35,6 +33,7 @@ export default function AdminCoursesPage() {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [courseToDelete, setCourseToDelete] = useState(null);
 
+    // IMPORTANT: we MUST have setCourses returned from the hook
     const { courses, setCourses, loading, error, refetch } = useAdminCourses({
         page: 1,
         limit: 1000,
@@ -63,20 +62,25 @@ export default function AdminCoursesPage() {
         const ok = await deleteCourse(courseToDelete._id);
 
         if (ok) {
-            toast.success(t("admin.courses.courseDeleted"));
+            toast.success("Course deleted successfully");
 
+            // IMPORTANT: immutable update
             setCourses((prev) => prev.filter(c => c._id !== courseToDelete._id));
 
+            // Close dialog
             setDeleteDialogOpen(false);
             setCourseToDelete(null);
 
+            // Close drawer if deleting opened course
             if (selectedCourse?._id === courseToDelete._id) {
                 closeDrawer();
             }
+
         } else {
-            toast.error(t("admin.courses.deleteFailed"));
+            toast.error("Failed to delete course");
         }
     };
+
 
     const filteredCourses = useMemo(() => {
         return courses.filter((course) => {
@@ -110,7 +114,7 @@ export default function AdminCoursesPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h1 className="text-2xl font-bold flex items-center gap-2">
                     <BookOpen className="h-6 w-6 text-muted-foreground" />
-                    {t("admin.courses.title")}
+                    All Courses
                 </h1>
 
                 {/* FILTERS */}
@@ -118,7 +122,7 @@ export default function AdminCoursesPage() {
                     <div className="relative w-full md:w-64">
                         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder={t("admin.courses.search")}
+                            placeholder="Search courses..."
                             className="pl-8"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -127,12 +131,10 @@ export default function AdminCoursesPage() {
 
                     <Select value={category} onValueChange={setCategory}>
                         <SelectTrigger className="w-40">
-                            <SelectValue placeholder={t("admin.courses.category")} />
+                            <SelectValue placeholder="Category" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">
-                                {t("admin.courses.allCategories")}
-                            </SelectItem>
+                            <SelectItem value="all">All</SelectItem>
                             {Array.from(new Set(courses.map((c) => c.category))).map(
                                 (cat) => (
                                     <SelectItem key={cat} value={cat}>
@@ -205,7 +207,7 @@ export default function AdminCoursesPage() {
                                     )}
 
                                     <div className="text-sm text-muted-foreground flex justify-between pt-2">
-                                        <span>{t("admin.courses.price")}: {course.price}$</span>
+                                        <span>Price: {course.price}$</span>
                                         <span>{course.level}</span>
                                     </div>
 
@@ -214,7 +216,7 @@ export default function AdminCoursesPage() {
                                             className="text-sm"
                                             onClick={() => openDrawer(course)}
                                         >
-                                            {t("admin.courses.details")}
+                                            Details
                                         </Button>
 
                                         <Button
@@ -224,10 +226,7 @@ export default function AdminCoursesPage() {
                                             disabled={deleteLoading}
                                         >
                                             <Trash size={14} />
-                                            {deleteLoading 
-                                                ? t("admin.courses.deleting")
-                                                : t("admin.courses.deleteCourse")
-                                            }
+                                            {deleteLoading ? "Deleting..." : "Delete Course"}
                                         </Button>
                                     </div>
                                 </CardContent>
@@ -240,7 +239,7 @@ export default function AdminCoursesPage() {
             {/* EMPTY */}
             {!loading && !error && filteredCourses.length === 0 && (
                 <p className="text-center text-muted-foreground py-10">
-                    {t("admin.courses.noCourses")}
+                    No courses found.
                 </p>
             )}
 

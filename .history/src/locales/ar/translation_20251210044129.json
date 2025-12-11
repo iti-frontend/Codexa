@@ -559,6 +559,37 @@
                 "close": "إغلاق",
                 "deleteUser": "حذف المستخدم"
             },
+            "courses": {
+                "title": "جميع الدورات",
+                "search": "ابحث عن دورات...",
+                "category": "الفئة",
+                "allCategories": "الكل",
+                "noCourses": "لم يتم العثور على دورات.",
+                "loading": "جاري التحميل...",
+                "price": "السعر",
+                "details": "التفاصيل",
+                "deleteCourse": "حذف الدورة",
+                "deleting": "جاري الحذف...",
+                "courseDeleted": "تم حذف الدورة بنجاح",
+                "deleteFailed": "فشل حذف الدورة",
+                "drawer": {
+                    "title": "تفاصيل الدورة",
+                    "loading": "جاري التحميل...",
+                    "noCourse": "لم يتم اختيار دورة.",
+                    "price": "السعر",
+                    "level": "المستوى",
+                    "status": "الحالة",
+                    "prerequisites": "المتطلبات الأساسية",
+                    "createdAt": "تاريخ الإنشاء",
+                    "lastUpdate": "آخر تحديث",
+                    "instructor": "المدرس",
+                    "statistics": "إحصائيات الدورة",
+                    "totalVideos": "إجمالي الفيديوهات",
+                    "enrolledStudents": "الطلاب المسجلين",
+                    "close": "إغلاق",
+                    "deleteCourse": "حذف الدورة"
+                }
+            },
             "deleteDialog": {
                 "title": "تأكيد الحذف",
                 "messageSingle": "هل أنت متأكد من حذف هذا المستخدم؟",
@@ -574,128 +605,6 @@
                 "deleteFailed": "فشل حذف المستخدم.",
                 "userRemoved": "تمت إزالة المستخدم \"{{name}}\"."
             }
-        },
-        "courses": {
-            "title": "جميع الدورات",
-            "search": "ابحث عن دورات...",
-            "category": "الفئة",
-            "allCategories": "الكل",
-            "noCourses": "لم يتم العثور على دورات.",
-            "loading": "جاري التحميل...",
-            "price": "السعر",
-            "details": "التفاصيل",
-            "deleteCourse": "حذف الدورة",
-            "deleting": "جاري الحذف...",
-            "courseDeleted": "تم حذف الدورة بنجاح",
-            "deleteFailed": "فشل حذف الدورة",
-            "drawer": {
-                "title": "تفاصيل الدورة",
-                "loading": "جاري التحميل...",
-                "noCourse": "لم يتم اختيار دورة.",
-                "price": "السعر",
-                "level": "المستوى",
-                "status": "الحالة",
-                "prerequisites": "المتطلبات الأساسية",
-                "createdAt": "تاريخ الإنشاء",
-                "lastUpdate": "آخر تحديث",
-                "instructor": "المدرس",
-                "statistics": "إحصائيات الدورة",
-                "totalVideos": "إجمالي الفيديوهات",
-                "enrolledStudents": "الطلاب المسجلين",
-                "close": "إغلاق",
-                "deleteCourse": "حذف الدورة"
-            }
-        },
-        "deleteDialog": {
-            "title": "حذف {{label}}؟",
-            "description": "هذا الإجراء",
-            "cannotUndo": "لا يمكن التراجع عنه",
-            "willBeRemoved": "سيتم إزالة {{type}}",
-            "permanently": "نهائياً من النظام",
-            "cancel": "إلغاء",
-            "confirmDelete": "حذف نهائياً",
-            "course": "الدورة",
-            "user": "المستخدم",
-            "item": "العنصر"
-        }
-    },
-    "home": {
-        "nav": {
-            "home": "الرئيسية",
-            "community": "المجتمع",
-            "courses": "الكورسات",
-            "testimonials": "آراء الطلاب",
-            "logout": "تسجيل الخروج",
-            "user": "أبانوب عبدالمسيح"
-        },
-        "hero": {
-            "cards": {
-                "expertCourses": {
-                    "title": "كورسات احترافية",
-                    "description": "تعلّم على يد محترفين في المجال."
-                },
-                "community": {
-                    "title": "مجتمع داعم",
-                    "description": "تواصل مع متعلمين مثلك."
-                },
-                "trackProgress": {
-                    "title": "تتبع تقدمك",
-                    "description": "راقب رحلتك التعليمية خطوة بخطوة."
-                }
-            }
-        },
-        "features": {
-            "learn": {
-                "title": "تعلم من الخبراء",
-                "description": "كورسات عالية الجودة مقدمة من متخصصين ذوي خبرة."
-            },
-            "connect": {
-                "title": "تواصل مع الآخرين",
-                "description": "شارك أفكارك وتفاعل مع مجتمع من المتعلمين."
-            },
-            "share": {
-                "title": "شارك معرفتك",
-                "description": "انقل خبرتك للعالم واكسب مكافآت."
-            }
-        },
-        "community": {
-            "forums": {
-                "title": "منتديات النقاش",
-                "description": "شارك في مناقشات هادفة مع المتعلمين والمدربين."
-            },
-            "studyGroups": {
-                "title": "مجموعات الدراسة",
-                "description": "انضم أو أنشئ مجموعة للتعلم الجماعي."
-            },
-            "knowledgeSharing": {
-                "title": "مشاركة المعرفة",
-                "description": "اسأل وأسهم بمعلوماتك لمساعدة الآخرين."
-            }
-        },
-        "stats": {
-            "students": "طالب نشط",
-            "courses": "كورس",
-            "instructors": "مدرب محترف",
-            "completion": "نسبة الإكمال"
-        },
-        "testimonials": {
-            "first": "Codexa غيرت مسيرتي المهنية بالكامل.",
-            "second": "أفضل منصة تعليمية استخدمتها.",
-            "third": "أحب روح التعاون بين المتعلمين هنا."
-        },
-        "footer": {
-            "platform": "المنصة",
-            "resources": "المصادر",
-            "legal": "قانوني",
-            "about": "من نحن",
-            "how": "كيف تعمل",
-            "pricing": "الأسعار",
-            "careers": "وظائف",
-            "blog": "المدونة",
-            "help": "مركز المساعدة",
-            "privacy": "سياسة الخصوصية",
-            "terms": "شروط الاستخدام",
-            "cookies": "سياسة الكوكيز"
         }
     }
 }
