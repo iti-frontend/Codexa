@@ -700,8 +700,16 @@
             "second": "The best e-learning platform I've ever used.",
             "third": "I love the community aspect of Codexa. Learning feels motivating here."
         },
+        "cta": {
+            "ready": "Ready to Start Your",
+            "learningJourney": "Learning Journey?",
+            "description": "Join thousands of students already learning on Codexa. Get access to expert courses, connect with a vibrant community, and achieve your goals.",
+            "getStarted": "Get Started for Free",
+            "browseCourses": "Browse Courses",
+            "trustBadge": "No credit card required • Free trial available • Cancel anytime"
+        },
         "footer": {
-            "description":"Empowering learners worldwide with quality education and a supportive community. Start your journey today.",
+            "description": "Empowering learners worldwide with quality education and a supportive community. Start your journey today.",
             "platform": "Platform",
             "resources": "Resources",
             "legal": "Legal",
@@ -716,8 +724,8 @@
             "privacy": "Privacy Policy",
             "terms": "Terms of Service",
             "cookies": "Cookie Policy",
-            "allRights":"All rights reserved.",
-            "madeWith":"Made with Codexa Team"
+            "allRights": "All rights reserved.",
+            "madeWith": "Made with Codexa Team"
         }
     }
 }
