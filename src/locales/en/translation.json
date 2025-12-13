@@ -701,6 +701,7 @@
             "third": "I love the community aspect of Codexa. Learning feels motivating here."
         },
         "footer": {
+            "description":"Empowering learners worldwide with quality education and a supportive community. Start your journey today.",
             "platform": "Platform",
             "resources": "Resources",
             "legal": "Legal",
@@ -714,7 +715,9 @@
             "help": "Help Center",
             "privacy": "Privacy Policy",
             "terms": "Terms of Service",
-            "cookies": "Cookie Policy"
+            "cookies": "Cookie Policy",
+            "allRights":"All rights reserved.",
+            "madeWith":"Made with Codexa Team"
         }
     }
 }
