@@ -109,6 +109,7 @@ export default HomeCourses;
 
 function BenefitCard({ benefit, index, t }) {
   const Icon = benefit.icon;
+  const isRTL = t("direction") === "rtl"; // ممكن تحدد في الـ i18n config
 
   return (
     <motion.div
@@ -128,11 +129,14 @@ function BenefitCard({ benefit, index, t }) {
             <Icon className={`w-8 h-8 ${benefit.iconColor}`} />
           </motion.div>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent
+          className={`space-y-3 ${isRTL ? "text-right leading-relaxed" : "text-left"}`}
+          style={isRTL ? { direction: "rtl", lineHeight: "1.8rem" } : {}}
+        >
           <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
             {t(benefit.titleKey)}
           </h3>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground">
             {t(benefit.descKey)}
           </p>
         </CardContent>

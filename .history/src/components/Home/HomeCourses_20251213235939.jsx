@@ -54,8 +54,8 @@ const benefits = [
   },
   {
     icon: MessageSquare,
-    titleKey: "home.courses.benefits.directSupport.title",
-    descKey: "home.courses.benefits.directSupport.desc",
+    titleKey: "home.benefits.directSupport.title",
+    descKey: "home.benefits.directSupport.desc",
     color: "from-cyan-500/10 to-cyan-500/5",
     iconColor: "text-cyan-500",
   },

@@ -685,36 +685,36 @@
                 "description": "Share insights, ask questions, and help other learners."
             }
         },
-        "courses": {
+    "courses": {
       "sectionTitle": "Why Learn With Codexa?",
       "sectionDesc": "Discover the benefits that make Codexa the best choice for your learning journey.",
-      "exploreAll": "Explore All Courses",
       "benefits": {
         "expertCourses": {
           "title": "Expert-Led Courses",
-          "desc": "Learn from industry professionals with years of real-world experience."
+          "description": "Learn from industry professionals with years of real-world experience."
         },
         "highQuality": {
           "title": "High-Quality Content",
-          "desc": "Access professionally produced video lessons and comprehensive materials."
+          "description": "Access professionally produced video lessons and comprehensive materials."
         },
         "activeCommunity": {
           "title": "Active Community",
-          "desc": "Connect with thousands of learners and get support when you need it."
+          "description": "Connect with thousands of learners and get support when you need it."
         },
         "trackProgress": {
           "title": "Track Your Progress",
-          "desc": "Monitor your learning journey with detailed analytics and achievements."
+          "description": "Monitor your learning journey with detailed analytics and achievements."
         },
         "lifetimeAccess": {
           "title": "Lifetime Access",
-          "desc": "Learn at your own pace with unlimited access to all course materials."
+          "description": "Learn at your own pace with unlimited access to all course materials."
         },
         "directSupport": {
           "title": "Direct Support",
-          "desc": "Get help from instructors and teaching assistants whenever you're stuck."
+          "description": "Get help from instructors and teaching assistants whenever you're stuck."
         }
-      }
+      },
+      "exploreAll": "Explore All Courses"
     },
         "stats": {
             "sectionTitle": "Our Impact in Numbers",

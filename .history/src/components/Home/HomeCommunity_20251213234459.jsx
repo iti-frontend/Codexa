@@ -36,7 +36,7 @@ function CommunityCard({ icon: Icon, translationKey }) {
     const { t } = useTranslation();
 
     return (
-        <Card className="max-w-xs gap-2 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 group hover:border-primary/50">
+        <Card className="max-w-xs gap-2 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 group border-primary/10 hover:border-primary/30">
             <CardHeader>
                 <div className="bg-primary p-3 w-fit rounded-full text-white shadow shadow-primary">
                     <Icon size={20} />

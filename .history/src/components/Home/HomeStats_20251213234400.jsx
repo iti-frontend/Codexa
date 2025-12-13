@@ -42,7 +42,7 @@ function StatCard({ icon: Icon, value, translationKey, index }) {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
-            <Card className="text-center shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 group hover:border-primary/50">
+            <Card className="text-center shadow-lg rounded-2xl hover:shadow-xl  transition-all duration-300 group border-primary/10 hover:border-primary/30">
                 <CardContent className="pt-6 space-y-3">
                     <div className="flex justify-center">
                         <div className="bg-primary/10 p-3 rounded-full">

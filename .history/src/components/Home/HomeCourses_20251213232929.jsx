@@ -1,4 +1,5 @@
 "use client";
+
 import HomeHeading from "./HomeHeading";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
@@ -14,48 +15,54 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { coursesData } from "@/Constants/Home-data";
 
-// بدل ما نحط النصوص صريحة، نستخدم translationKey
 const benefits = [
   {
     icon: Award,
-    titleKey: "home.courses.benefits.expertCourses.title",
-    descKey: "home.courses.benefits.expertCourses.desc",
+    title: "Expert-Led Courses",
+    description:
+      "Learn from industry professionals with years of real-world experience.",
     color: "from-blue-500/10 to-blue-500/5",
     iconColor: "text-blue-500",
   },
   {
     icon: Video,
-    titleKey: "home.courses.benefits.highQuality.title",
-    descKey: "home.courses.benefits.highQuality.desc",
+    title: "High-Quality Content",
+    description:
+      "Access professionally produced video lessons and comprehensive materials.",
     color: "from-purple-500/10 to-purple-500/5",
     iconColor: "text-purple-500",
   },
   {
     icon: Users,
-    titleKey: "home.courses.benefits.activeCommunity.title",
-    descKey: "home.courses.benefits.activeCommunity.desc",
+    title: "Active Community",
+    description:
+      "Connect with thousands of learners and get support when you need it.",
     color: "from-green-500/10 to-green-500/5",
     iconColor: "text-green-500",
   },
   {
     icon: TrendingUp,
-    titleKey: "home.courses.benefits.trackProgress.title",
-    descKey: "home.courses.benefits.trackProgress.desc",
+    title: "Track Your Progress",
+    description:
+      "Monitor your learning journey with detailed analytics and achievements.",
     color: "from-orange-500/10 to-orange-500/5",
     iconColor: "text-orange-500",
   },
   {
     icon: BookOpen,
-    titleKey: "home.courses.benefits.lifetimeAccess.title",
-    descKey: "home.courses.benefits.lifetimeAccess.desc",
+    title: "Lifetime Access",
+    description:
+      "Learn at your own pace with unlimited access to all course materials.",
     color: "from-pink-500/10 to-pink-500/5",
     iconColor: "text-pink-500",
   },
   {
     icon: MessageSquare,
-    titleKey: "home.courses.benefits.directSupport.title",
-    descKey: "home.courses.benefits.directSupport.desc",
+    title: "Direct Support",
+    description:
+      "Get help from instructors and teaching assistants whenever you're stuck.",
     color: "from-cyan-500/10 to-cyan-500/5",
     iconColor: "text-cyan-500",
   },
@@ -77,12 +84,14 @@ function HomeCourses() {
         )}
       />
 
+      {/* Benefits */}
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 max-w-6xl w-full">
         {benefits.map((benefit, index) => (
-          <BenefitCard key={index} benefit={benefit} index={index} t={t} />
+          <BenefitCard key={index} benefit={benefit} index={index} />
         ))}
       </main>
 
+      {/* Explore Button */}
       <motion.footer
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -101,15 +110,34 @@ function HomeCourses() {
           </Link>
         </Button>
       </motion.footer>
+
+      {/* Courses List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-w-6xl w-full">
+        {coursesData.map((course, idx) => (
+          <Card key={idx} className="shadow-lg rounded-2xl hover:shadow-xl transition-all overflow-hidden">
+            <CardContent className="space-y-2">
+              <div className="text-sm text-primary font-semibold">{course.category}</div>
+              <h3 className="text-lg font-bold">{course.title}</h3>
+              <p className="text-muted-foreground">{course.description}</p>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-sm text-muted-foreground">{course.lessons}</span>
+                <span className="font-semibold">{course.price}</span>
+              </div>
+              <Button size="sm" className="mt-2 w-full" asChild>
+                <Link href="/student/explore">Enroll Now</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </section>
   );
 }
 
 export default HomeCourses;
 
-function BenefitCard({ benefit, index, t }) {
+function BenefitCard({ benefit, index }) {
   const Icon = benefit.icon;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -130,11 +158,9 @@ function BenefitCard({ benefit, index, t }) {
         </CardHeader>
         <CardContent className="space-y-3">
           <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
-            {t(benefit.titleKey)}
+            {benefit.title}
           </h3>
-          <p className="text-muted-foreground leading-relaxed">
-            {t(benefit.descKey)}
-          </p>
+          <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
         </CardContent>
       </Card>
     </motion.div>

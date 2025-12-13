@@ -108,7 +108,7 @@ function HomeNavMenu(props) {
           >
             <a key={item.href} href={item.href}>
               <Icon className="w-4 h-4 lg:hidden" />
-              <span className="block transition-all hover:text-primary">{t(`home.nav.${item.translationKey}`)}</span>
+              <span className="block ">{t(`home.nav.${item.translationKey}`)}</span>
             </a>
           </Button>
         );
