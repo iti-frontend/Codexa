@@ -1,12 +1,26 @@
-'use client';
+"use client";
 
-import { useInstructorDashboard } from '@/hooks/useLiveSessions';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, Video, Users, Clock, BarChart3, Plus, TrendingUp } from 'lucide-react';
-import { format } from 'date-fns';
-import Link from 'next/link';
+import { useInstructorDashboard } from "@/hooks/useLiveSessions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Loader2,
+  Video,
+  Users,
+  Clock,
+  BarChart3,
+  Plus,
+  TrendingUp,
+} from "lucide-react";
+import { format } from "date-fns";
+import Link from "next/link";
 
 export default function InstructorDashboardPage() {
   const { dashboard, loading, error } = useInstructorDashboard();
@@ -29,60 +43,60 @@ export default function InstructorDashboardPage() {
 
   const stats = [
     {
-      title: 'Total Sessions',
+      title: "Total Sessions",
       value: dashboard.totalSessions,
       icon: Video,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
     },
     {
-      title: 'Live Now',
+      title: "Live Now",
       value: dashboard.liveSessions,
       icon: Video,
-      color: 'text-red-500',
-      bgColor: 'bg-red-500/10',
+      color: "text-red-500",
+      bgColor: "bg-red-500/10",
     },
     {
-      title: 'Scheduled',
+      title: "Scheduled",
       value: dashboard.scheduledSessions,
       icon: Clock,
-      color: 'text-yellow-500',
-      bgColor: 'bg-yellow-500/10',
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-500/10",
     },
     {
-      title: 'Completed',
+      title: "Completed",
       value: dashboard.endedSessions,
       icon: BarChart3,
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10',
+      color: "text-green-500",
+      bgColor: "bg-green-500/10",
     },
     {
-      title: 'Total Attendees',
+      title: "Total Attendees",
       value: dashboard.totalAttendees,
       icon: Users,
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-500/10',
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
     },
     {
-      title: 'Avg. Attendance',
+      title: "Avg. Attendance",
       value: Math.round(dashboard.averageAttendance),
       icon: TrendingUp,
-      color: 'text-indigo-500',
-      bgColor: 'bg-indigo-500/10',
+      color: "text-indigo-500",
+      bgColor: "bg-indigo-500/10",
     },
     {
-      title: 'Total Duration',
+      title: "Total Duration",
       value: `${dashboard.totalDuration}m`,
       icon: Clock,
-      color: 'text-cyan-500',
-      bgColor: 'bg-cyan-500/10',
+      color: "text-cyan-500",
+      bgColor: "bg-cyan-500/10",
     },
     {
-      title: 'Total Polls',
+      title: "Total Polls",
       value: dashboard.totalPolls,
       icon: BarChart3,
-      color: 'text-pink-500',
-      bgColor: 'bg-pink-500/10',
+      color: "text-pink-500",
+      bgColor: "bg-pink-500/10",
     },
   ];
 
@@ -107,13 +121,18 @@ export default function InstructorDashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
-          <Card key={index} className="border-2 hover:shadow-lg transition-shadow">
+          <Card
+            key={index}
+            className="border-2 hover:shadow-lg transition-shadow"
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    {stat.title}
+                  </p>
                   <p className="text-3xl font-bold">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-lg ${stat.bgColor}`}>
@@ -151,11 +170,11 @@ export default function InstructorDashboardPage() {
                       <h3 className="font-semibold text-lg">{session.title}</h3>
                       <Badge
                         variant={
-                          session.status === 'live'
-                            ? 'destructive'
-                            : session.status === 'scheduled'
-                            ? 'default'
-                            : 'secondary'
+                          session.status === "live"
+                            ? "destructive"
+                            : session.status === "scheduled"
+                            ? "default"
+                            : "secondary"
                         }
                       >
                         {session.status}
@@ -164,7 +183,10 @@ export default function InstructorDashboardPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        {format(new Date(session.scheduledAt), 'MMM dd, yyyy - hh:mm a')}
+                        {format(
+                          new Date(session.scheduledAt),
+                          "MMM dd, yyyy - hh:mm a"
+                        )}
                       </span>
                       {session.attendees > 0 && (
                         <span className="flex items-center gap-1">
@@ -181,16 +203,22 @@ export default function InstructorDashboardPage() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    {session.status === 'live' && (
-                      <Button asChild size="sm" className="bg-red-500 hover:bg-red-600">
+                    {session.status === "live" && (
+                      <Button
+                        asChild
+                        size="sm"
+                        className="bg-red-500 hover:bg-red-600"
+                      >
                         <Link href={`/live-sessions/${session._id}/room`}>
                           Join Live
                         </Link>
                       </Button>
                     )}
-                    {session.status === 'ended' && (
+                    {session.status === "ended" && (
                       <Button asChild size="sm" variant="outline">
-                        <Link href={`/live-sessions/instructor/${session._id}/analytics`}>
+                        <Link
+                          href={`/live-sessions/instructor/${session._id}/analytics`}
+                        >
                           <BarChart3 className="w-4 h-4 mr-2" />
                           Analytics
                         </Link>
@@ -208,8 +236,12 @@ export default function InstructorDashboardPage() {
           ) : (
             <div className="text-center py-12 bg-muted/30 rounded-lg border-2 border-dashed">
               <Video className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg text-muted-foreground font-medium">No sessions yet</p>
-              <p className="text-sm text-muted-foreground mt-2">Create your first live session to get started</p>
+              <p className="text-lg text-muted-foreground font-medium">
+                No sessions yet
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Create your first live session to get started
+              </p>
               <Button asChild className="mt-4">
                 <Link href="/live-sessions/create">
                   <Plus className="w-4 h-4 mr-2" />
@@ -222,7 +254,7 @@ export default function InstructorDashboardPage() {
       </Card>
 
       {/* Quick Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
         <Card className="border-2">
           <CardHeader>
             <CardTitle className="text-lg">Engagement Rate</CardTitle>
@@ -231,10 +263,14 @@ export default function InstructorDashboardPage() {
             <div className="text-center">
               <p className="text-4xl font-bold text-primary">
                 {dashboard.totalSessions > 0
-                  ? Math.round((dashboard.totalAttendees / dashboard.totalSessions) * 100) / 100
+                  ? Math.round(
+                      (dashboard.totalAttendees / dashboard.totalSessions) * 100
+                    ) / 100
                   : 0}
               </p>
-              <p className="text-sm text-muted-foreground mt-2">Avg. attendees per session</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Avg. attendees per session
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -248,7 +284,9 @@ export default function InstructorDashboardPage() {
               <p className="text-4xl font-bold text-primary">
                 {Math.round(dashboard.totalDuration / 60)}h
               </p>
-              <p className="text-sm text-muted-foreground mt-2">Across all sessions</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Across all sessions
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -262,7 +300,9 @@ export default function InstructorDashboardPage() {
               <p className="text-4xl font-bold text-primary">
                 {dashboard.totalPolls}
               </p>
-              <p className="text-sm text-muted-foreground mt-2">Total polls created</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Total polls created
+              </p>
             </div>
           </CardContent>
         </Card>
