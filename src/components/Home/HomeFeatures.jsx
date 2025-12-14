@@ -4,19 +4,22 @@ import { featuresData } from "@/Constants/Home-data";
 import HomeHeading from "./HomeHeading";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-
+import { useTranslation } from "react-i18next";
 function HomeFeatures() {
+  const { t } = useTranslation();
   return (
     <section className="flex flex-col items-center justify-center py-16 border-y bg-gradient-to-b from-background to-muted/20">
-      <HomeHeading
-        title="Why Choose Codexa?"
-        desc="Codexa offers a unique blend of learning and teaching, fostering a collaborative environment for growth"
-      />
+            <HomeHeading
+                titleKey="home.features.sectionTitle"
+                descKey="home.features.sectionDesc"
+            />
+      
       <main className="flex flex-col md:flex-row items-center justify-center flex-wrap gap-8 mt-8 px-4">
         {featuresData.map((feature, index) => (
           <FeaturesCard
             key={index}
             icon={feature.icon}
+            translationKey={feature.translationKey}
             title={feature.title}
             description={feature.description}
             index={index}
@@ -29,7 +32,8 @@ function HomeFeatures() {
 
 export default HomeFeatures;
 
-function FeaturesCard({ icon: Icon, title, description, index }) {
+function FeaturesCard({ icon: Icon, translationKey, index }) {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -50,10 +54,10 @@ function FeaturesCard({ icon: Icon, title, description, index }) {
         </CardHeader>
         <CardContent className="space-y-2">
           <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
-            {title}
+              {t(`home.features.cards.${translationKey}.title`)}
           </h3>
           <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-            {description}
+             {t(`home.features.cards.${translationKey}.description`)}
           </p>
         </CardContent>
       </Card>

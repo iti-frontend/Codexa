@@ -7,8 +7,11 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { HeroData } from "@/Constants/Home-data";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const HomeHero = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -31,7 +34,7 @@ const HomeHero = () => {
               className="gap-2 px-4 py-2 rounded-full border animate-bounce-slow"
             >
               <Sparkles className="w-3 h-3 text-primary" />
-              Your Journey Starts Here
+              {t("home.hero.badge")}
             </Badge>
           </motion.div>
 
@@ -43,14 +46,13 @@ const HomeHero = () => {
             className="space-y-4"
           >
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center tracking-tight">
-              Unlock your potential with{" "}
+              {t("home.hero.title")}{" "}
               <span className="text-primary bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 Codexa
               </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground text-center max-w-2xl mx-auto leading-relaxed">
-              Join a vibrant community of learners and educators. Explore
-              courses, share knowledge, and grow together.
+              {t("home.hero.subtitle")}
             </p>
           </motion.div>
 
@@ -67,7 +69,7 @@ const HomeHero = () => {
               asChild
             >
               <Link href="/login">
-                Get Started
+                {t("home.hero.getStarted")}
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             </Button>
@@ -79,7 +81,7 @@ const HomeHero = () => {
             >
               <a href="#courses">
                 <CirclePlay className="w-4 h-4" />
-                Explore Courses
+                {t("home.hero.exploreCourses")}
               </a>
             </Button>
           </motion.div>
@@ -89,9 +91,8 @@ const HomeHero = () => {
             {HeroData.map((item, index) => (
               <HeroCard
                 key={index}
+                translationKey={item.translationKey}
                 icon={item.icon}
-                title={item.title}
-                description={item.description}
                 index={index}
               />
             ))}
@@ -104,7 +105,9 @@ const HomeHero = () => {
 
 export default HomeHero;
 
-function HeroCard({ icon: Icon, title, description, index }) {
+function HeroCard({ icon: Icon, translationKey, index }) {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -118,9 +121,11 @@ function HeroCard({ icon: Icon, title, description, index }) {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          <h3 className="text-xl font-bold text-primary/90">{title}</h3>
+          <h3 className="text-xl font-bold text-primary/90">
+            {t(`home.hero.cards.${translationKey}.title`)}
+          </h3>
           <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-            {description}
+            {t(`home.hero.cards.${translationKey}.description`)}
           </p>
         </CardContent>
       </Card>

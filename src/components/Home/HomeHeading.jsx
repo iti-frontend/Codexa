@@ -1,9 +1,19 @@
-function HomeHeading({ title, desc }) {
+"use client";
+import { useTranslation } from "react-i18next";
+
+function HomeHeading({ title, desc, titleKey, descKey }) {
+  const { t } = useTranslation();
+
   return (
-    <header className="text-center py-5 px-3 space-y-4 max-w-2xl">
-      <h5 className="text-2xl md:text-4xl font-bold">{title}</h5>
-      <p className="text-sm md:text-lg text-foreground/80">{desc}</p>
-    </header>
+    <div className="text-center space-y-3 mb-12">
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+        {titleKey ? t(titleKey) : title}
+      </h2>
+      <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+        {descKey ? t(descKey) : desc}
+      </p>
+    </div>
   );
 }
+
 export default HomeHeading;
