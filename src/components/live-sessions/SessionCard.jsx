@@ -82,47 +82,51 @@ export default function SessionCard({ session }) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4 flex-1">
-        {/* Instructor Info */}
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10 border-2 border-primary/20">
-            <AvatarImage src={session.instructor?.profileImage} />
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-              {session.instructor?.name?.charAt(0) || "I"}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium text-sm">
-              {session.instructor?.name || "Instructor"}
-            </p>
-            <p className="text-xs text-muted-foreground">Instructor</p>
+      <CardContent className="space-y-4 flex-1 flex flex-col justify-between">
+        <div className="space-y-4">
+          {/* Instructor Info */}
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10 border-2 border-primary/20">
+              <AvatarImage src={session.instructor?.profileImage} />
+              <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                {session.instructor?.name?.charAt(0) || "I"}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium text-sm">
+                {session.instructor?.name || "Instructor"}
+              </p>
+              <p className="text-xs text-muted-foreground">Instructor</p>
+            </div>
           </div>
-        </div>
 
-        {/* Session Details */}
-        <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="w-4 h-4" />
-            <span>{format(new Date(session.scheduledAt), "MMM dd, yyyy")}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Clock className="w-4 h-4" />
-            <span>{format(new Date(session.scheduledAt), "hh:mm a")}</span>
-          </div>
-          {session.status !== "scheduled" && (
-            <>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users className="w-4 h-4" />
-                <span>{session.totalViewers || 0} viewers</span>
-              </div>
-              {session.duration > 0 && (
+          {/* Session Details */}
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Calendar className="w-4 h-4" />
+              <span>
+                {format(new Date(session.scheduledAt), "MMM dd, yyyy")}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>{format(new Date(session.scheduledAt), "hh:mm a")}</span>
+            </div>
+            {session.status !== "scheduled" && (
+              <>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Video className="w-4 h-4" />
-                  <span>{session.duration} min</span>
+                  <Users className="w-4 h-4" />
+                  <span>{session.totalViewers || 0} viewers</span>
                 </div>
-              )}
-            </>
-          )}
+                {session.duration > 0 && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Video className="w-4 h-4" />
+                    <span>{session.duration} min</span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
 
         {/* Course Info (if private) */}
