@@ -1,4 +1,3 @@
-
 "use client";
 import { useCommunity } from "@/hooks/useCommunity";
 import { Button } from "@/components/ui/button";
@@ -22,11 +21,11 @@ export default function Community() {
       <div className="container mx-auto p-6">
         <div className="border border-destructive rounded-lg p-6 text-center">
           <p className="text-destructive mb-4">
-            {t('community.errorLoading')}: {error}
+            {t("community.errorLoading")}: {error}
           </p>
           <Button onClick={refetch} variant="outline">
             <RefreshCw className="w-4 h-4 mr-2" />
-            {t('community.tryAgain')}
+            {t("community.tryAgain")}
           </Button>
         </div>
       </div>
@@ -35,17 +34,19 @@ export default function Community() {
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-          {t('community.title')}
+          {t("community.title")}
         </h1>
-        <div className="flex items-center gap-2">
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <Button onClick={refetch} disabled={loading} variant="outline">
             <RefreshCw
               className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
             />
-            {t('community.refresh')}
+            {t("community.refresh")}
           </Button>
+
           <CreatePostDialog onPostCreated={handlePostCreated} />
         </div>
       </div>
@@ -65,11 +66,7 @@ export default function Community() {
       ) : (
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard
-              key={post._id}
-              post={post}
-              onLike={likePost}
-            />
+            <PostCard key={post._id} post={post} onLike={likePost} />
           ))}
         </div>
       )}
