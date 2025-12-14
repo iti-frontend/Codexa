@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { LogOut, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { navItems } from "@/Constants/Home-data";
 import { Button } from "../ui/button";
 import {
@@ -70,22 +70,6 @@ function NavigationSheet() {
 
         {/* Mobile nav */}
         <HomeNavMenu className="flex flex-col gap-2 px-3" />
-
-        {/* Sheet Footer */}
-        <SheetFooter className="border-t gap-5">
-          <UserAvatar />
-
-          {/* Logout Button */}
-          <Button
-            asChild
-            variant="outline"
-            className="bg-transparent text-red-500 hover:text-red-500"
-          >
-            <Link href="/login">
-              <LogOut /> {t("home.nav.logout")}
-            </Link>
-          </Button>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
@@ -108,7 +92,9 @@ function HomeNavMenu(props) {
           >
             <a key={item.href} href={item.href}>
               <Icon className="w-4 h-4 lg:hidden" />
-              <span className="block transition-all hover:text-primary">{t(`home.nav.${item.translationKey}`)}</span>
+              <span className="block transition-all hover:text-primary">
+                {t(`home.nav.${item.translationKey}`)}
+              </span>
             </a>
           </Button>
         );
