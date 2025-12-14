@@ -1,60 +1,95 @@
 "use client";
 
-import { Users, GraduationCap, Video, MessageSquare, DollarSign } from "lucide-react";
+import { Users, GraduationCap, Video, MessageSquare } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useAdminActivity } from "@/hooks/useAdminAnalytics";
 
 export default function AdminRecentActivity() {
+    const { t } = useTranslation();
     const { activity, loading } = useAdminActivity();
 
-    if (loading) return <div>Loading recent activity...</div>;
-    if (!activity) return <div>No activity available</div>;
+    if (loading) {
+        return (
+            <Card className="rounded-xl border">
+                <CardHeader>
+                    <CardTitle>{t("admin.activity.title")}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground text-center py-8">
+                        {t("admin.activity.loading")}
+                    </p>
+                </CardContent>
+            </Card>
+        );
+    }
+    
+    if (!activity) {
+        return (
+            <Card className="rounded-xl border">
+                <CardHeader>
+                    <CardTitle>{t("admin.activity.title")}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground text-center py-8">
+                        {t("admin.activity.noActivity")}
+                    </p>
+                </CardContent>
+            </Card>
+        );
+    }
 
     const { latestPost, latestStudent, latestInstructor, latestCourse } = activity;
 
     const activities = [
         latestPost && {
             icon: <MessageSquare className="text-blue-500" />,
-            title: "New community post",
-            desc: `${latestPost.authorName} posted: "${latestPost.content.slice(0, 20)}..."`,
+            title: t("admin.activity.newPost"),
+            desc: `${latestPost.authorName} ${t("admin.activity.posted")}: "${latestPost.content.slice(0, 20)}${t("admin.activity.ellipsis")}"`,
             time: latestPost.createdAt,
         },
         latestStudent && {
             icon: <Users className="text-emerald-500" />,
-            title: "New student registered",
+            title: t("admin.activity.newStudent"),
             desc: latestStudent.name,
             time: latestStudent.createdAt,
         },
         latestInstructor && {
             icon: <GraduationCap className="text-purple-500" />,
-            title: "New instructor joined",
+            title: t("admin.activity.newInstructor"),
             desc: latestInstructor.name,
             time: latestInstructor.createdAt,
         },
         latestCourse && {
             icon: <Video className="text-primary" />,
-            title: "New course published",
+            title: t("admin.activity.newCourse"),
             desc: latestCourse.title,
             time: latestCourse.createdAt,
         },
-    ].filter(Boolean); // remove null values
+    ].filter(Boolean);
 
     return (
         <Card className="rounded-xl border">
             <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>{t("admin.activity.title")}</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-5">
-                {activities.map((activity, index) => (
-                    <ActivityItem
-                        key={index}
-                        icon={activity.icon}
-                        title={activity.title}
-                        desc={activity.desc}
-                        time={activity.time}
-                    />
-                ))}
+                {activities.length > 0 ? (
+                    activities.map((activity, index) => (
+                        <ActivityItem
+                            key={index}
+                            icon={activity.icon}
+                            title={activity.title}
+                            desc={activity.desc}
+                            time={activity.time}
+                        />
+                    ))
+                ) : (
+                    <p className="text-muted-foreground text-center py-8">
+                        {t("admin.activity.noActivity")}
+                    </p>
+                )}
             </CardContent>
         </Card>
     );
@@ -80,7 +115,7 @@ function ActivityItem({ icon, title, desc, time }) {
     );
 }
 
-/* ---------------------- Formatter ---------------------- */
+/* ---------------------- Date Formatter ---------------------- */
 
 function formatDate(dateString) {
     const date = new Date(dateString);

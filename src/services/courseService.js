@@ -47,6 +47,7 @@ export const getFeaturedCourses = async () => {
     }
 };
 
+
 /**
  * Fetch instructor's own courses
  * @returns {Promise} List of courses
@@ -69,3 +70,4 @@ const courseService = {
 };
 
 export default courseService;
+

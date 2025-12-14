@@ -153,7 +153,9 @@ function CourseDetails({
 
       {/* Description */}
       <div className="space-y-2">
-        <Label htmlFor="description">{t("createCourse.fields.description")} *</Label>
+        <Label htmlFor="description">
+          {t("createCourse.fields.description")} *
+        </Label>
         <Textarea
           id="description"
           {...register("description", {
@@ -175,7 +177,9 @@ function CourseDetails({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Category */}
         <div className="space-y-2">
-          <Label htmlFor="category">{t("createCourse.fields.category")} *</Label>
+          <Label htmlFor="category">
+            {t("createCourse.fields.category")} *
+          </Label>
           <Input
             id="category"
             {...register("category", {
@@ -222,13 +226,19 @@ function CourseDetails({
         <div className="space-y-2">
           <Label htmlFor="level">{t("createCourse.fields.level")}</Label>
           <Select value={level} onValueChange={setLevel}>
-            <SelectTrigger>
+            <SelectTrigger className={"w-full"}>
               <SelectValue placeholder={t("createCourse.placeholders.level")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="beginner">{t("createCourse.levels.beginner")}</SelectItem>
-              <SelectItem value="intermediate">{t("createCourse.levels.intermediate")}</SelectItem>
-              <SelectItem value="advanced">{t("createCourse.levels.advanced")}</SelectItem>
+              <SelectItem value="beginner">
+                {t("createCourse.levels.beginner")}
+              </SelectItem>
+              <SelectItem value="intermediate">
+                {t("createCourse.levels.intermediate")}
+              </SelectItem>
+              <SelectItem value="advanced">
+                {t("createCourse.levels.advanced")}
+              </SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
@@ -240,12 +250,18 @@ function CourseDetails({
         <div className="space-y-2">
           <Label htmlFor="status">{t("createCourse.fields.status")}</Label>
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger>
-              <SelectValue placeholder={t("createCourse.placeholders.status")} />
+            <SelectTrigger className={"w-full"}>
+              <SelectValue
+                placeholder={t("createCourse.placeholders.status")}
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="public">{t("createCourse.status.public")}</SelectItem>
-              <SelectItem value="private">{t("createCourse.status.private")}</SelectItem>
+              <SelectItem value="public">
+                {t("createCourse.status.public")}
+              </SelectItem>
+              <SelectItem value="private">
+                {t("createCourse.status.private")}
+              </SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
@@ -256,7 +272,9 @@ function CourseDetails({
 
       {/* Prerequisites */}
       <div className="space-y-2">
-        <Label htmlFor="prerequisites">{t("createCourse.fields.prerequisites")}</Label>
+        <Label htmlFor="prerequisites">
+          {t("createCourse.fields.prerequisites")}
+        </Label>
         <Textarea
           id="prerequisites"
           {...register("prerequisites")}
@@ -271,7 +289,9 @@ function CourseDetails({
 
       {/* Cover Image */}
       <div className="space-y-2">
-        <Label htmlFor="coverImage">{t("createCourse.fields.coverImage")} *</Label>
+        <Label htmlFor="coverImage">
+          {t("createCourse.fields.coverImage")} *
+        </Label>
         <Input
           id="coverImage"
           type="file"
@@ -290,7 +310,7 @@ function CourseDetails({
                 if (!files || !files.length) return true;
                 const file = files[0];
                 return (
-                  file.size <= 5 * 1024 * 1024 || 
+                  file.size <= 5 * 1024 * 1024 ||
                   t("createCourse.errors.imageSize")
                 );
               },
@@ -310,7 +330,9 @@ function CourseDetails({
       <div className="flex justify-end pt-4">
         <Button type="submit" disabled={isSubmitting} className="min-w-24">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSubmitting ? t("createCourse.buttons.creating") : t("createCourse.buttons.next")}
+          {isSubmitting
+            ? t("createCourse.buttons.creating")
+            : t("createCourse.buttons.next")}
         </Button>
       </div>
     </form>
@@ -368,7 +390,9 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
   return (
     <div className="mt-4 space-y-6">
       <div className="space-y-2">
-        <h3 className="text-lg font-medium">{t("createCourse.upload.title")}</h3>
+        <h3 className="text-lg font-medium">
+          {t("createCourse.upload.title")}
+        </h3>
         <p className="text-sm text-muted-foreground">
           {t("createCourse.upload.description")}
         </p>
@@ -376,7 +400,9 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="videos-upload">{t("createCourse.upload.selectFiles")}</Label>
+          <Label htmlFor="videos-upload">
+            {t("createCourse.upload.selectFiles")}
+          </Label>
           <Input
             id="videos-upload"
             type="file"
@@ -424,7 +450,9 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
           className="min-w-24"
         >
           {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isUploading ? t("createCourse.buttons.uploading") : t("createCourse.buttons.finish")}
+          {isUploading
+            ? t("createCourse.buttons.uploading")
+            : t("createCourse.buttons.finish")}
         </Button>
       </div>
     </div>

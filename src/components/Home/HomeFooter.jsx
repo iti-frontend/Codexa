@@ -1,10 +1,15 @@
+"use client";
+
 import { footerLinks } from "@/Constants/Home-data";
 import Link from "next/link";
 import { Facebook, Twitter, Linkedin, Instagram, Github } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from "react-i18next";
 
 function HomeFooter() {
+  const { t, i18n } = useTranslation();
   const currentYear = new Date().getFullYear();
+  const isRTL = i18n.dir() === "rtl";
 
   return (
     <footer className="bg-card border-t">
@@ -14,8 +19,7 @@ function HomeFooter() {
           <div className="lg:col-span-2 space-y-4">
             <h3 className="text-2xl font-bold text-primary">Codexa</h3>
             <p className="text-muted-foreground max-w-sm">
-              Empowering learners worldwide with quality education and a
-              supportive community. Start your journey today.
+              {t("home.footer.description")}
             </p>
             {/* Social Links */}
             <div className="flex gap-3 pt-2">
@@ -28,65 +32,25 @@ function HomeFooter() {
           </div>
 
           {/* Platform Links */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">Platform</h4>
-            <ul className="space-y-2">
-              {footerLinks.platform.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterSection title={t("home.footer.platform")} links={footerLinks.platform} />
 
           {/* Resources Links */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">Resources</h4>
-            <ul className="space-y-2">
-              {footerLinks.resources.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterSection title={t("home.footer.resources")} links={footerLinks.resources} />
 
           {/* Legal Links */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">Legal</h4>
-            <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterSection title={t("home.footer.legal")} links={footerLinks.legal} />
         </div>
 
         <Separator className="my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Codexa. All rights reserved.
+        <div className={`flex flex-col md:flex-row justify-between items-center gap-4 ${isRTL ? "text-right" : "text-left"}`}>
+          <p className="text-sm text-muted-foreground" dir="auto">
+            <span className="ltr:ml-1">© {currentYear} Codexa.</span> {t("home.footer.allRights")}
           </p>
-          <p className="text-sm text-muted-foreground">Made with Codexa Team</p>
+          <p className="text-sm text-muted-foreground">
+            {t("home.footer.madeWith")}
+          </p>
         </div>
       </div>
     </footer>
@@ -94,6 +58,28 @@ function HomeFooter() {
 }
 
 export default HomeFooter;
+
+function FooterSection({ title, links }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="space-y-4">
+      <h4 className="font-semibold text-foreground">{title}</h4>
+      <ul className="space-y-2">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              {t(`home.footer.${link.translationKey}`)}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function SocialLink({ href, icon: Icon, label }) {
   return (

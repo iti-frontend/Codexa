@@ -123,12 +123,12 @@ export default function CourseDetailsPage() {
     try {
       setEditing(true);
       await updateCourse(id, editData);
-      toast.success(t('instructor.courseDetails.courseUpdated'));
+      toast.success(t("instructor.courseDetails.courseUpdated"));
       setOpenEditDialog(false);
       const updated = await fetchCourseById(id);
       setCourse(updated);
     } catch (err) {
-      toast.error(t('instructor.courseDetails.updateFailed'));
+      toast.error(t("instructor.courseDetails.updateFailed"));
     } finally {
       setEditing(false);
     }
@@ -138,10 +138,10 @@ export default function CourseDetailsPage() {
     try {
       setDeleting(true);
       await deleteCourse(id);
-      toast.success(t('instructor.courseDetails.courseDeleted'));
+      toast.success(t("instructor.courseDetails.courseDeleted"));
       router.push("/instructor/courses");
     } catch {
-      toast.error(t('instructor.courseDetails.deleteFailed'));
+      toast.error(t("instructor.courseDetails.deleteFailed"));
     } finally {
       setDeleting(false);
     }
@@ -150,32 +150,32 @@ export default function CourseDetailsPage() {
   const handleDeleteVideo = async (videoId) => {
     try {
       await deleteCourseVideo(id, videoId);
-      toast.success(t('instructor.courseDetails.videoDeleted'));
+      toast.success(t("instructor.courseDetails.videoDeleted"));
       setVideoToDelete(null);
       const updated = await fetchCourseById(id);
       setCourse(updated);
     } catch {
-      toast.error(t('instructor.courseDetails.videoDeleteFailed'));
+      toast.error(t("instructor.courseDetails.videoDeleteFailed"));
     }
   };
 
   const handleUploadVideos = async () => {
     if (!selectedFiles.length) {
-      toast.error(t('instructor.courseDetails.selectVideoFile'));
+      toast.error(t("instructor.courseDetails.selectVideoFile"));
       return;
     }
 
     try {
       setUploading(true);
       await uploadNewVideoToCourse(id, selectedFiles);
-      toast.success(t('instructor.courseDetails.videosUploaded'));
+      toast.success(t("instructor.courseDetails.videosUploaded"));
       setOpenUploadDialog(false);
       setSelectedFiles([]);
 
       const updated = await fetchCourseById(id);
       setCourse(updated);
     } catch (error) {
-      toast.error(t('instructor.courseDetails.videoUploadFailed'));
+      toast.error(t("instructor.courseDetails.videoUploadFailed"));
     } finally {
       setUploading(false);
     }
@@ -183,14 +183,14 @@ export default function CourseDetailsPage() {
 
   const handleUploadCoverImage = async () => {
     if (!selectedCoverImage) {
-      toast.error(t('instructor.courseDetails.selectImageFile'));
+      toast.error(t("instructor.courseDetails.selectImageFile"));
       return;
     }
 
     try {
       setUploadingImage(true);
       await updateCourseWithCoverImage(id, {}, selectedCoverImage);
-      toast.success(t('instructor.courseDetails.coverUpdated'));
+      toast.success(t("instructor.courseDetails.coverUpdated"));
       setOpenImageDialog(false);
       setSelectedCoverImage(null);
       setImagePreview(null);
@@ -199,7 +199,7 @@ export default function CourseDetailsPage() {
       setCourse(updated);
     } catch (error) {
       console.error("Failed to upload cover image:", error);
-      toast.error(t('instructor.courseDetails.coverUploadFailed'));
+      toast.error(t("instructor.courseDetails.coverUploadFailed"));
     } finally {
       setUploadingImage(false);
     }
@@ -210,12 +210,12 @@ export default function CourseDetailsPage() {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(t('instructor.courseDetails.selectImageOnly'));
+      toast.error(t("instructor.courseDetails.selectImageOnly"));
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error(t('instructor.courseDetails.imageSizeLimit'));
+      toast.error(t("instructor.courseDetails.imageSizeLimit"));
       return;
     }
 
@@ -252,7 +252,7 @@ export default function CourseDetailsPage() {
   if (!course)
     return (
       <div className="min-h-screen flex items-center justify-center text-muted-foreground">
-        {t('instructor.courseDetails.courseNotFound')}
+        {t("instructor.courseDetails.courseNotFound")}
       </div>
     );
 
@@ -335,69 +335,206 @@ export default function CourseDetailsPage() {
   );
 }
 
-// ----------------------------
-// Sub Components
-// ----------------------------
-// نكمل الـ Components...
-// استورد useTranslation في أول كل component
-
-function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, deleting }) {
+function HeaderSection({
+  course,
+  onEdit,
+  onUpload,
+  onUploadImage,
+  onDelete,
+  deleting,
+}) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="bg-card border-b shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center ring-2 ring-primary/20">
-            <BookOpen className="w-6 h-6 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-card-foreground">{course.title}</h1>
-            <div className="flex items-center gap-2 mt-1.5">
-              <Badge variant={course.status === "public" ? "default" : "secondary"} className="font-medium">
-                {course.status || t('instructor.courseDetails.draft')}
-              </Badge>
-              <span className="text-sm text-muted-foreground font-medium">
-                {course.category || "General"}
-              </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-8 py-4 lg:py-5">
+        {/* Mobile & Tablet layout: vertical stack */}
+        <div className="lg:hidden flex flex-col gap-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center ring-2 ring-primary/20 flex-shrink-0">
+                <BookOpen className="w-5 h-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <h1 className="text-lg font-bold text-card-foreground truncate">
+                  {course.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                  <Badge
+                    variant={
+                      course.status === "public" ? "default" : "secondary"
+                    }
+                    className="font-medium text-xs"
+                  >
+                    {course.status || t("instructor.courseDetails.draft")}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground font-medium truncate">
+                    {course.category || "General"}
+                  </span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          {/* Mobile & Tablet buttons - full width */}
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onUpload}
+                className="w-full"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">
+                  {t("instructor.courseDetails.uploadVideos")}
+                </span>
+                <span className="sm:hidden">Upload</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onEdit}
+                className="w-full"
+              >
+                <Pencil className="w-4 h-4 mr-2" />
+                {t("instructor.courseDetails.edit")}
+              </Button>
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={deleting}
+                  className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  {deleting
+                    ? t("instructor.courseDetails.deleting")
+                    : t("instructor.courseDetails.delete")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="max-w-[95vw] lg:max-w-md">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("instructor.courseDetails.deleteConfirm")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("instructor.courseDetails.deleteDescription")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex-col lg:flex-row gap-2">
+                  <AlertDialogCancel
+                    disabled={deleting}
+                    className="w-full lg:w-auto"
+                  >
+                    {t("instructor.courseDetails.cancel")}
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={onDelete}
+                    disabled={deleting}
+                    className="w-full lg:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center justify-center gap-2"
+                  >
+                    {deleting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {t("instructor.courseDetails.deleting")}
+                      </>
+                    ) : (
+                      t("instructor.courseDetails.delete")
+                    )}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onUpload}>
-            <Upload className="w-4 h-4 mr-2" />
-            {t('instructor.courseDetails.uploadVideos')}
-          </Button>
-          <Button variant="outline" size="sm" onClick={onEdit}>
-            <Pencil className="w-4 h-4 mr-2" />
-            {t('instructor.courseDetails.edit')}
-          </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="outline" size="sm" disabled={deleting} className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20">
-                <Trash2 className="w-4 h-4 mr-2" />
-                {deleting ? t('instructor.courseDetails.deleting') : t('instructor.courseDetails.delete')}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>{t('instructor.courseDetails.deleteConfirm')}</AlertDialogTitle>
-                <AlertDialogDescription>{t('instructor.courseDetails.deleteDescription')}</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel disabled={deleting}>{t('instructor.courseDetails.cancel')}</AlertDialogCancel>
-                <AlertDialogAction onClick={onDelete} disabled={deleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-2">
-                  {deleting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      {t('instructor.courseDetails.deleting')}
-                    </>
-                  ) : t('instructor.courseDetails.delete')}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+        {/* Large Desktop layout: horizontal flex */}
+        <div className="hidden lg:flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center ring-2 ring-primary/20 flex-shrink-0">
+              <BookOpen className="w-6 h-6 text-primary" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold text-card-foreground truncate max-w-2xl">
+                {course.title}
+              </h1>
+              <div className="flex items-center gap-2 mt-1.5">
+                <Badge
+                  variant={course.status === "public" ? "default" : "secondary"}
+                  className="font-medium"
+                >
+                  {course.status || t("instructor.courseDetails.draft")}
+                </Badge>
+                <span className="text-sm text-muted-foreground font-medium truncate max-w-md">
+                  {course.category || "General"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={onUpload}>
+              <Upload className="w-4 h-4 mr-2" />
+              <span className="hidden xl:inline">
+                {t("instructor.courseDetails.uploadVideos")}
+              </span>
+              <span className="xl:hidden">Upload</span>
+            </Button>
+            <Button variant="outline" size="sm" onClick={onEdit}>
+              <Pencil className="w-4 h-4 mr-2" />
+              {t("instructor.courseDetails.edit")}
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={deleting}
+                  className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  <span className="hidden xl:inline">
+                    {deleting
+                      ? t("instructor.courseDetails.deleting")
+                      : t("instructor.courseDetails.delete")}
+                  </span>
+                  <span className="xl:hidden">Delete</span>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("instructor.courseDetails.deleteConfirm")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("instructor.courseDetails.deleteDescription")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={deleting}>
+                    {t("instructor.courseDetails.cancel")}
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={onDelete}
+                    disabled={deleting}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-2"
+                  >
+                    {deleting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {t("instructor.courseDetails.deleting")}
+                      </>
+                    ) : (
+                      t("instructor.courseDetails.delete")
+                    )}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       </div>
     </div>
@@ -406,32 +543,44 @@ function HeaderSection({ course, onEdit, onUpload, onUploadImage, onDelete, dele
 
 function CoverImageSection({ course, onUploadImage }) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="relative w-full h-80 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background border shadow-lg group">
       {course.coverImage?.url ? (
         <>
-          <img src={course.coverImage.url} alt={course.title} className="w-full h-full object-cover" />
+          <img
+            src={course.coverImage.url}
+            alt={course.title}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <ImageIcon className="w-16 h-16 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground font-medium">{t('instructor.courseDetails.noCoverImage')}</p>
+            <p className="text-muted-foreground font-medium">
+              {t("instructor.courseDetails.noCoverImage")}
+            </p>
           </div>
         </div>
       )}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
         <Button onClick={onUploadImage} size="lg" className="shadow-xl">
           <ImageIcon className="w-5 h-5 mr-2" />
-          {course.coverImage?.url ? t('instructor.courseDetails.changeCover') : t('instructor.courseDetails.uploadCover')}
+          {course.coverImage?.url
+            ? t("instructor.courseDetails.changeCover")
+            : t("instructor.courseDetails.uploadCover")}
         </Button>
       </div>
       {course.coverImage?.url && (
         <div className="absolute bottom-6 left-6 right-6">
-          <h2 className="text-3xl font-bold text-white drop-shadow-lg">{course.title}</h2>
-          <p className="text-white/90 mt-2 text-lg drop-shadow-md">{course.category}</p>
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+            {course.title}
+          </h2>
+          <p className="text-white/90 mt-2 text-lg drop-shadow-md">
+            {course.category}
+          </p>
         </div>
       )}
     </div>
@@ -440,10 +589,10 @@ function CoverImageSection({ course, onUploadImage }) {
 
 function StatsSection({ course }) {
   const { t } = useTranslation();
-  
+
   const stats = [
     {
-      label: t('instructor.courseDetails.price'),
+      label: t("instructor.courseDetails.price"),
       value: `$${course.price}`,
       icon: DollarSign,
       color: "text-emerald-600 dark:text-emerald-400",
@@ -451,7 +600,7 @@ function StatsSection({ course }) {
       borderColor: "border-emerald-200 dark:border-emerald-900",
     },
     {
-      label: t('instructor.courseDetails.duration'),
+      label: t("instructor.courseDetails.duration"),
       value: course.duration || "N/A",
       icon: Clock,
       color: "text-blue-600 dark:text-blue-400",
@@ -459,7 +608,7 @@ function StatsSection({ course }) {
       borderColor: "border-blue-200 dark:border-blue-900",
     },
     {
-      label: t('instructor.courseDetails.enrolledStudents'),
+      label: t("instructor.courseDetails.enrolledStudents"),
       value: course.enrolledStudents?.length || 0,
       icon: Users,
       color: "text-purple-600 dark:text-purple-400",
@@ -467,15 +616,15 @@ function StatsSection({ course }) {
       borderColor: "border-purple-200 dark:border-purple-900",
     },
     {
-      label: t('instructor.courseDetails.level'),
-      value: course.level || t('instructor.courseDetails.allLevels'),
+      label: t("instructor.courseDetails.level"),
+      value: course.level || t("instructor.courseDetails.allLevels"),
       icon: BarChart3,
       color: "text-orange-600 dark:text-orange-400",
       bgColor: "bg-orange-50 dark:bg-orange-950/30",
       borderColor: "border-orange-200 dark:border-orange-900",
     },
     {
-      label: t('instructor.courseDetails.progressTracking'),
+      label: t("instructor.courseDetails.progressTracking"),
       value: course.progress?.length || 0,
       icon: TrendingUp,
       color: "text-cyan-600 dark:text-cyan-400",
@@ -485,33 +634,52 @@ function StatsSection({ course }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {stats.map(({ label, value, icon: Icon, color, bgColor, borderColor }) => (
-        <div key={label} className={cn("bg-card rounded-xl p-5 border-2 shadow-sm hover:shadow-md transition-all", borderColor)}>
-          <div className="flex items-start justify-between mb-3">
-            <div className={cn("w-11 h-11 rounded-lg flex items-center justify-center", bgColor)}>
-              <Icon className={cn("w-5 h-5", color)} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
+      {stats.map(
+        ({ label, value, icon: Icon, color, bgColor, borderColor }) => (
+          <div
+            key={label}
+            className={cn(
+              "bg-card rounded-lg sm:rounded-xl p-4 sm:p-5 border-2 shadow-sm hover:shadow-md transition-all",
+              borderColor
+            )}
+          >
+            <div className="flex items-start justify-between mb-2 sm:mb-3">
+              <div
+                className={cn(
+                  "w-9 h-9 sm:w-11 sm:h-11 rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0",
+                  bgColor
+                )}
+              >
+                <Icon className={cn("w-4 h-4 sm:w-5 sm:h-5", color)} />
+              </div>
             </div>
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium mb-1 truncate">
+              {label}
+            </p>
+            <p className="text-lg sm:text-xl xl:text-2xl font-bold text-card-foreground truncate">
+              {value}
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground font-medium mb-1">{label}</p>
-          <p className="text-2xl font-bold text-card-foreground">{value}</p>
-        </div>
-      ))}
+        )
+      )}
     </div>
   );
 }
 
 function InfoSection({ course }) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <FileText className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold text-card-foreground">{t('instructor.courseDetails.courseDescription')}</h2>
+        <h2 className="text-xl font-bold text-card-foreground">
+          {t("instructor.courseDetails.courseDescription")}
+        </h2>
       </div>
       <p className="text-muted-foreground leading-relaxed text-base">
-        {course.description || t('instructor.courseDetails.noDescription')}
+        {course.description || t("instructor.courseDetails.noDescription")}
       </p>
     </div>
   );
@@ -519,35 +687,77 @@ function InfoSection({ course }) {
 
 function PrerequisitesSection({ course }) {
   const { t } = useTranslation();
-  
+
   if (!course.prerequisites) return null;
 
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <CheckCircle2 className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold text-card-foreground">{t('instructor.courseDetails.prerequisites')}</h2>
+        <h2 className="text-xl font-bold text-card-foreground">
+          {t("instructor.courseDetails.prerequisites")}
+        </h2>
       </div>
-      <p className="text-muted-foreground leading-relaxed text-base">{course.prerequisites}</p>
+      <p className="text-muted-foreground leading-relaxed text-base">
+        {course.prerequisites}
+      </p>
     </div>
   );
 }
 
 function DetailsCard({ course }) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
         <BookOpen className="w-5 h-5 text-primary" />
-        {t('instructor.courseDetails.courseDetails')}
+        {t("instructor.courseDetails.courseDetails")}
       </h2>
       <div className="space-y-4">
-        <DetailItem icon={Globe} label={t('instructor.courseDetails.language')} value={course.language || t('instructor.courseDetails.english')} />
-        <DetailItem icon={BarChart3} label={t('instructor.courseDetails.difficultyLevel')} value={course.level || t('instructor.courseDetails.allLevels')} />
-        <DetailItem icon={Video} label={t('instructor.courseDetails.totalVideos')} value={`${course.videos?.length || 0} ${t('instructor.courseDetails.lessons')}`} />
-        <DetailItem icon={Calendar} label={t('instructor.courseDetails.created')} value={course.createdAt ? new Date(course.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "N/A"} />
-        <DetailItem icon={Calendar} label={t('instructor.courseDetails.lastUpdated')} value={course.updatedAt ? new Date(course.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "N/A"} />
+        <DetailItem
+          icon={Globe}
+          label={t("instructor.courseDetails.language")}
+          value={course.language || t("instructor.courseDetails.english")}
+        />
+        <DetailItem
+          icon={BarChart3}
+          label={t("instructor.courseDetails.difficultyLevel")}
+          value={course.level || t("instructor.courseDetails.allLevels")}
+        />
+        <DetailItem
+          icon={Video}
+          label={t("instructor.courseDetails.totalVideos")}
+          value={`${course.videos?.length || 0} ${t(
+            "instructor.courseDetails.lessons"
+          )}`}
+        />
+        <DetailItem
+          icon={Calendar}
+          label={t("instructor.courseDetails.created")}
+          value={
+            course.createdAt
+              ? new Date(course.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
+        <DetailItem
+          icon={Calendar}
+          label={t("instructor.courseDetails.lastUpdated")}
+          value={
+            course.updatedAt
+              ? new Date(course.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"
+          }
+        />
       </div>
     </div>
   );
@@ -555,26 +765,34 @@ function DetailsCard({ course }) {
 
 function InstructorCard({ course }) {
   const { t } = useTranslation();
-  
+
   if (!course.instructor) return null;
 
   return (
     <div className="bg-card rounded-xl p-6 border shadow-sm">
       <h2 className="text-xl font-bold text-card-foreground mb-5 flex items-center gap-2">
         <UserCheck className="w-5 h-5 text-primary" />
-        {t('instructor.courseDetails.instructor')}
+        {t("instructor.courseDetails.instructor")}
       </h2>
       <div className="flex items-center gap-4">
         {course.instructor.profileImage ? (
-          <img src={"/auth/login.png"} alt={course.instructor.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" />
+          <img
+            src={"/auth/login.png"}
+            alt={course.instructor.name}
+            className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
+          />
         ) : (
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
             <UserCheck className="w-8 h-8 text-primary" />
           </div>
         )}
         <div>
-          <p className="font-bold text-card-foreground text-lg">{course.instructor.name}</p>
-          <p className="text-sm text-muted-foreground">{t('instructor.courseDetails.courseInstructor')}</p>
+          <p className="font-bold text-card-foreground text-lg">
+            {course.instructor.name}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t("instructor.courseDetails.courseInstructor")}
+          </p>
         </div>
       </div>
     </div>
@@ -588,7 +806,9 @@ function DetailItem({ icon: Icon, label, value }) {
         <Icon className="w-4 h-4 text-primary" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+          {label}
+        </p>
         <p className="font-semibold text-card-foreground">{value}</p>
       </div>
     </div>
@@ -608,13 +828,19 @@ function EnrollmentSection({ course }) {
           {t("instructor.courseDetails.enrolledStudents")}
         </h2>
         <Badge variant="secondary" className="text-base px-3 py-1">
-          {enrolledCount} {enrolledCount === 1 ? t("instructor.courseDetails.student") : t("instructor.courseDetails.students")}
+          {enrolledCount}{" "}
+          {enrolledCount === 1
+            ? t("instructor.courseDetails.student")
+            : t("instructor.courseDetails.students")}
         </Badge>
       </div>
       <p className="text-muted-foreground">
         {t("instructor.courseDetails.enrolledStudentsText", {
           count: enrolledCount,
-          text: enrolledCount === 1 ? t("instructor.courseDetails.student") : t("instructor.courseDetails.students")
+          text:
+            enrolledCount === 1
+              ? t("instructor.courseDetails.student")
+              : t("instructor.courseDetails.students"),
         })}
       </p>
     </div>
@@ -649,7 +875,9 @@ function VideosSection({ course, onPlay, onDelete }) {
         </h2>
         <Badge variant="secondary" className="text-base px-3 py-1">
           {course.videos.length}{" "}
-          {course.videos.length === 1 ? t("instructor.courseDetails.video") : t("instructor.courseDetails.videos")}
+          {course.videos.length === 1
+            ? t("instructor.courseDetails.video")
+            : t("instructor.courseDetails.videos")}
         </Badge>
       </div>
 
@@ -690,10 +918,12 @@ function VideosSection({ course, onPlay, onDelete }) {
             </div>
             <div className="p-4 bg-card">
               <p className="font-semibold text-sm text-card-foreground truncate">
-                {video.title || `${t("instructor.courseDetails.lesson")} ${i + 1}`}
+                {video.title ||
+                  `${t("instructor.courseDetails.lesson")} ${i + 1}`}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                {t("instructor.courseDetails.video")} {i + 1} {t("instructor.courseDetails.of")} {course.videos.length}
+                {t("instructor.courseDetails.video")} {i + 1}{" "}
+                {t("instructor.courseDetails.of")} {course.videos.length}
               </p>
             </div>
           </div>
@@ -791,7 +1021,9 @@ function EditCourseDialog({
                 </Label>
                 <Input
                   id="category"
-                  placeholder={t("instructor.courseDetails.categoryPlaceholder")}
+                  placeholder={t(
+                    "instructor.courseDetails.categoryPlaceholder"
+                  )}
                   value={editData.category}
                   onChange={(e) =>
                     handleInputChange("category", e.target.value)
@@ -806,7 +1038,9 @@ function EditCourseDialog({
                 </Label>
                 <Input
                   id="language"
-                  placeholder={t("instructor.courseDetails.languagePlaceholder")}
+                  placeholder={t(
+                    "instructor.courseDetails.languagePlaceholder"
+                  )}
                   value={editData.language}
                   onChange={(e) =>
                     handleInputChange("language", e.target.value)
@@ -833,13 +1067,23 @@ function EditCourseDialog({
                   onValueChange={(value) => handleInputChange("level", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t("instructor.courseDetails.selectLevel")} />
+                    <SelectValue
+                      placeholder={t("instructor.courseDetails.selectLevel")}
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beginner">{t("instructor.courseDetails.beginner")}</SelectItem>
-                    <SelectItem value="intermediate">{t("instructor.courseDetails.intermediate")}</SelectItem>
-                    <SelectItem value="advanced">{t("instructor.courseDetails.advanced")}</SelectItem>
-                    <SelectItem value="all levels">{t("instructor.courseDetails.allLevels")}</SelectItem>
+                    <SelectItem value="beginner">
+                      {t("instructor.courseDetails.beginner")}
+                    </SelectItem>
+                    <SelectItem value="intermediate">
+                      {t("instructor.courseDetails.intermediate")}
+                    </SelectItem>
+                    <SelectItem value="advanced">
+                      {t("instructor.courseDetails.advanced")}
+                    </SelectItem>
+                    <SelectItem value="all levels">
+                      {t("instructor.courseDetails.allLevels")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -853,12 +1097,20 @@ function EditCourseDialog({
                   onValueChange={(value) => handleInputChange("status", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t("instructor.courseDetails.selectStatus")} />
+                    <SelectValue
+                      placeholder={t("instructor.courseDetails.selectStatus")}
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="public">{t("instructor.courseDetails.public")}</SelectItem>
-                    <SelectItem value="private">{t("instructor.courseDetails.private")}</SelectItem>
-                    <SelectItem value="draft">{t("instructor.courseDetails.draft")}</SelectItem>
+                    <SelectItem value="public">
+                      {t("instructor.courseDetails.public")}
+                    </SelectItem>
+                    <SelectItem value="private">
+                      {t("instructor.courseDetails.private")}
+                    </SelectItem>
+                    <SelectItem value="draft">
+                      {t("instructor.courseDetails.draft")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -877,7 +1129,9 @@ function EditCourseDialog({
               </Label>
               <Textarea
                 id="prerequisites"
-                placeholder={t("instructor.courseDetails.prerequisitesPlaceholder")}
+                placeholder={t(
+                  "instructor.courseDetails.prerequisitesPlaceholder"
+                )}
                 value={editData.prerequisites}
                 onChange={(e) =>
                   handleInputChange("prerequisites", e.target.value)
@@ -949,7 +1203,9 @@ function UploadCoverImageDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("instructor.courseDetails.uploadCoverImage")}</DialogTitle>
+          <DialogTitle>
+            {t("instructor.courseDetails.uploadCoverImage")}
+          </DialogTitle>
           <DialogDescription>
             {t("instructor.courseDetails.uploadCoverDesc")}
           </DialogDescription>
@@ -959,7 +1215,9 @@ function UploadCoverImageDialog({
           {/* Current Cover Image Preview */}
           {currentCoverImage && (
             <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("instructor.courseDetails.currentCover")}</Label>
+              <Label className="text-sm font-medium">
+                {t("instructor.courseDetails.currentCover")}
+              </Label>
               <div className="border rounded-lg overflow-hidden">
                 <img
                   src={currentCoverImage}
@@ -972,7 +1230,9 @@ function UploadCoverImageDialog({
 
           {/* File Upload Area */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">{t("instructor.courseDetails.newCoverImage")}</Label>
+            <Label className="text-sm font-medium">
+              {t("instructor.courseDetails.newCoverImage")}
+            </Label>
             {!selectedCoverImage ? (
               <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/40 transition-colors">
                 <input
@@ -998,7 +1258,9 @@ function UploadCoverImageDialog({
             ) : (
               <div className="border rounded-lg p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-sm font-medium">{t("instructor.courseDetails.selectedImage")}</Label>
+                  <Label className="text-sm font-medium">
+                    {t("instructor.courseDetails.selectedImage")}
+                  </Label>
                   <Button
                     type="button"
                     variant="ghost"
@@ -1065,7 +1327,9 @@ function UploadVideosDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{t("instructor.courseDetails.uploadNewVideos")}</DialogTitle>
+          <DialogTitle>
+            {t("instructor.courseDetails.uploadNewVideos")}
+          </DialogTitle>
           <DialogDescription>
             {t("instructor.courseDetails.uploadVideosDesc")}
           </DialogDescription>
@@ -1095,7 +1359,8 @@ function UploadVideosDialog({
           {selectedFiles.length > 0 && (
             <div className="bg-muted/50 rounded-lg p-3">
               <p className="text-sm font-medium text-foreground mb-2">
-                {t("instructor.courseDetails.selectedFiles")} ({selectedFiles.length}):
+                {t("instructor.courseDetails.selectedFiles")} (
+                {selectedFiles.length}):
               </p>
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {selectedFiles.map((file, index) => (
@@ -1124,7 +1389,9 @@ function UploadVideosDialog({
             disabled={loading || !selectedFiles.length}
           >
             <Upload className="w-4 h-4 mr-2" />
-            {loading ? t("instructor.courseDetails.uploadingVideos") : t("instructor.courseDetails.uploadVideos")}
+            {loading
+              ? t("instructor.courseDetails.uploadingVideos")
+              : t("instructor.courseDetails.uploadVideos")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -1161,13 +1428,19 @@ function DeleteVideoDialog({ video, onCancel, onConfirm }) {
     <AlertDialog open={!!video} onOpenChange={onCancel}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("instructor.courseDetails.deleteVideo")}</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t("instructor.courseDetails.deleteVideo")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            {t("instructor.courseDetails.deleteVideoDesc", { title: video?.title })}
+            {t("instructor.courseDetails.deleteVideoDesc", {
+              title: video?.title,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("instructor.courseDetails.cancel")}</AlertDialogCancel>
+          <AlertDialogCancel>
+            {t("instructor.courseDetails.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             onClick={onConfirm}
@@ -1179,4 +1452,3 @@ function DeleteVideoDialog({ video, onCancel, onConfirm }) {
     </AlertDialog>
   );
 }
-

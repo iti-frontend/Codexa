@@ -5,117 +5,157 @@ import { getLocaleFromPathname, removeLocaleFromPathname, detectLocale } from ".
 export function middleware(req) {
     const { pathname } = req.nextUrl;
 
-    // Public routes (NO AUTH required)
+    // Public pages — no locale in URL
     const publicPaths = [
         "/",
         "/login",
         "/register",
         "/unauthorized",
-        "/admin-portal-iti-login" // admin login is public
+        "/admin-portal-iti-login",
     ];
 
-    // Remove locale (ex: /en/login → /login)
-    const cleanPath = removeLocaleFromPathname(pathname);
-
-    const isPublicPath = publicPaths.includes(cleanPath);
-
     const pathnameLocale = getLocaleFromPathname(pathname);
+    const cleanPath = removeLocaleFromPathname(pathname);
+    const cookieLocale = req.cookies.get("locale")?.value || defaultLocale;
 
-    // ========== 1. PUBLIC ROUTES ==========
-    if (isPublicPath) {
-        return handleAuthentication(req, cleanPath);
+    const isPublic = publicPaths.includes(cleanPath);
+
+    /* ------------------------------------------------------------
+       1) ROOT "/" → rewrite internally to /[locale], keep URL clean
+       ------------------------------------------------------------ */
+    if (pathname === "/") {
+        const locale = cookieLocale || detectLocale(req) || defaultLocale;
+
+        const res = NextResponse.rewrite(new URL(`/${locale}`, req.url));
+
+        // Preserve cookies
+        req.cookies.getAll().forEach(c =>
+            res.cookies.set(c.name, c.value, { path: "/", sameSite: "lax" })
+        );
+
+        res.cookies.set("locale", locale);
+        return handleAuth(req, "/", res);
     }
 
-    // ========== 2. NO LOCALE → ADD LOCALE ==========
+    /* ------------------------------------------------------------
+       2) Visiting /en or /ar → treat as localized root
+       ------------------------------------------------------------ */
+    if (pathnameLocale && pathname === `/${pathnameLocale}`) {
+        const res = NextResponse.next();
+        res.cookies.set("locale", pathnameLocale);
+        return res;
+    }
+
+    /* ------------------------------------------------------------
+       3) PUBLIC paths MUST NOT have locale in URL
+       ------------------------------------------------------------ */
+    if (isPublic && pathnameLocale) {
+        const res = NextResponse.redirect(new URL(cleanPath, req.url));
+        req.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value));
+        res.cookies.set("locale", pathnameLocale);
+        return handleAuth(req, cleanPath, res);
+    }
+
+    // Public & NO locale → allow but use cookie locale
+    if (isPublic && !pathnameLocale) {
+        const res = NextResponse.next();
+        res.cookies.set("locale", cookieLocale);
+        return handleAuth(req, cleanPath, res);
+    }
+
+    /* ------------------------------------------------------------
+       4) Protected routes MUST include locale
+       ------------------------------------------------------------ */
     if (!pathnameLocale) {
-        const locale = detectLocale(req);
-        const newUrl = new URL(`/${locale}${pathname}`, req.url);
-        const res = NextResponse.redirect(newUrl);
+        const locale = cookieLocale || detectLocale(req) || defaultLocale;
+        const res = NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
+        req.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value));
         res.cookies.set("locale", locale);
         return res;
     }
 
-    // ========== 3. INVALID LOCALE → FIX ==========
+    /* ------------------------------------------------------------
+       5) Invalid locale → fix it
+       ------------------------------------------------------------ */
     if (!locales.includes(pathnameLocale)) {
-        const newUrl = new URL(`/${defaultLocale}${cleanPath}`, req.url);
-        const res = NextResponse.redirect(newUrl);
+        const res = NextResponse.redirect(new URL(`/${defaultLocale}${cleanPath}`, req.url));
+        req.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value));
         res.cookies.set("locale", defaultLocale);
         return res;
     }
 
-    // ========== 4. UPDATE COOKIE IF NEEDED ==========
-    const cookieLocale = req.cookies.get("locale")?.value;
-    if (cookieLocale !== pathnameLocale) {
-        const res = NextResponse.next();
-        res.cookies.set("locale", pathnameLocale);
-        return handleAuthentication(req, cleanPath, res);
-    }
+    /* ------------------------------------------------------------
+       6) Update locale cookie on every localized route
+       ------------------------------------------------------------ */
+    const res = NextResponse.next();
+    res.cookies.set("locale", pathnameLocale);
 
-    // ========== 5. AUTH CHECK FOR PROTECTED ROUTES ==========
-    return handleAuthentication(req, cleanPath);
+    /* ------------------------------------------------------------
+       7) Auth logic
+       ------------------------------------------------------------ */
+    return handleAuth(req, cleanPath, res);
 }
 
-// -----------------------------------------------
-// AUTH LOGIC
-// -----------------------------------------------
-function handleAuthentication(req, pathname, response = null) {
+
+/* ------------------------------------------------------------
+   AUTH HANDLER
+------------------------------------------------------------ */
+function handleAuth(req, pathname, response = null) {
     const token = req.cookies.get("token")?.value;
-    const userInfoCookie = req.cookies.get("userInfo")?.value;
+    const userInfo = req.cookies.get("userInfo")?.value;
 
     let role = "";
-    if (userInfoCookie) {
-        try {
-            role = JSON.parse(userInfoCookie)?.role?.toLowerCase() || "";
-        } catch {
-            console.error("Failed to parse userInfo cookie");
-        }
-    }
+    try {
+        if (userInfo) role = JSON.parse(userInfo)?.role?.toLowerCase() || "";
+    } catch { }
 
     const publicPaths = [
         "/",
         "/login",
         "/register",
         "/unauthorized",
-        "/admin-portal-iti-login"
+        "/admin-portal-iti-login",
     ];
+
     const isPublic = publicPaths.includes(pathname);
+    const localeFromPath = getLocaleFromPathname(req.nextUrl.pathname);
+    const locale = localeFromPath || req.cookies.get("locale")?.value || defaultLocale;
 
-    const locale = getLocaleFromPathname(req.nextUrl.pathname) || defaultLocale;
+    const redirectWithCookies = (to) => {
+        const res = NextResponse.redirect(new URL(to, req.url));
+        req.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value));
+        return res;
+    };
 
-    // ---------- Logged-in user trying to access login/register/admin-login ----------
+    // Logged-in user trying to access login/register/admin-login
     if (token && ["/login", "/register", "/admin-portal-iti-login"].includes(pathname)) {
-        if (role === "student") return NextResponse.redirect(new URL(`/${locale}/student`, req.url));
-        if (role === "instructor") return NextResponse.redirect(new URL(`/${locale}/instructor`, req.url));
-        if (role === "admin") return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
+        if (role === "student") return redirectWithCookies(`/${locale}/student`);
+        if (role === "instructor") return redirectWithCookies(`/${locale}/instructor`);
+        if (role === "admin") return redirectWithCookies(`/${locale}/admin`);
     }
 
-    // ---------- Unauthenticated visiting protected route ----------
+    // Unauthenticated user accessing protected route
     if (!token && !isPublic) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return redirectWithCookies("/login");
     }
 
-    // ---------- Role-based protection ----------
-    if (
-        pathname.startsWith("/admin") &&
-        pathname !== "/admin-portal-iti-login" && // IMPORTANT FIX
-        role !== "admin"
-    ) {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+    if (pathname === "/admin-portal-iti-login") {
+        return response || NextResponse.next();
     }
-
+    // Role-based protection
+    if (pathname.startsWith("/admin") && role !== "admin") {
+        return redirectWithCookies(`/${locale}/unauthorized`);
+    }
     if (pathname.startsWith("/student") && role !== "student") {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+        return redirectWithCookies(`/${locale}/unauthorized`);
     }
-
     if (pathname.startsWith("/instructor") && role !== "instructor") {
-        return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
+        return redirectWithCookies(`/${locale}/unauthorized`);
     }
 
     return response || NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        "/((?!_next|static|.*\\..*).*)" // intercept all pages except internal files
-    ],
+    matcher: ["/((?!_next|static|.*\\..*).*)"],
 };

@@ -1,17 +1,8 @@
 "use client";
 
-import {
-    ArrowUpRight,
-} from "lucide-react";
-
-import {
-    BarChart,
-    Bar,
-    ResponsiveContainer,
-    XAxis,
-    YAxis,
-    Cell,
-} from "recharts";
+import { ArrowUpRight } from "lucide-react";
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Cell } from "recharts";
+import { useTranslation } from "react-i18next";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -20,17 +11,20 @@ import { AdminStatsCards, ChartData } from "@/Constants/AdminContent";
 import AdminRecentActivity from "@/components/adminComponents/AdminRecentActivity";
 
 export default function AdminDashboard() {
-    // Admin Analytics
+    const { t } = useTranslation();
     const { analytics, loading } = useAdminAnalytics();
 
     if (loading) {
         return (
-            <div className="min-h-screen flex  justify-center bg-background">
+            <div className="min-h-screen flex justify-center items-center bg-background">
                 <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
             </div>
         );
     }
-    if (!analytics) return <div>No analytics found.</div>;
+    
+    if (!analytics) {
+        return <div>{t("admin.dashboard.noAnalytics")}</div>;
+    }
 
     const dynamicStats = AdminStatsCards.map((item) => ({
         ...item,
@@ -41,9 +35,11 @@ export default function AdminDashboard() {
         <div className="p-6 space-y-8">
             {/* ================= HEADER ================= */}
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+                <h1 className="text-3xl font-bold tracking-tight">
+                    {t("admin.dashboard.title")}
+                </h1>
                 <p className="text-muted-foreground">
-                    Overview of platform growth, activity & performance.
+                    {t("admin.dashboard.subtitle")}
                 </p>
             </div>
 
@@ -56,7 +52,7 @@ export default function AdminDashboard() {
                     >
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-sm font-medium">
-                                {item.title}
+                                {t(item.title)}
                             </CardTitle>
 
                             {/* Icon using theme chart colors */}
@@ -74,12 +70,12 @@ export default function AdminDashboard() {
                             </div>
 
                             <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                <ArrowUpRight size={14} /> Updated now
+                                <ArrowUpRight size={14} /> 
+                                {t("admin.dashboard.updatedNow")}
                             </p>
                         </CardContent>
                     </Card>
                 ))}
-
             </div>
 
             <Separator />
@@ -87,9 +83,9 @@ export default function AdminDashboard() {
             {/* ================= CHART SECTION ================= */}
             <Card className="w-full rounded-xl border">
                 <CardHeader>
-                    <CardTitle>Revenue Growth</CardTitle>
+                    <CardTitle>{t("admin.chart.title")}</CardTitle>
                     <p className="text-sm text-muted-foreground">
-                        Monthly revenue analytics
+                        {t("admin.chart.subtitle")}
                     </p>
                 </CardHeader>
 
@@ -116,8 +112,6 @@ export default function AdminDashboard() {
                             </Bar>
                         </BarChart>
                     </ResponsiveContainer>
-
-
                 </CardContent>
             </Card>
 

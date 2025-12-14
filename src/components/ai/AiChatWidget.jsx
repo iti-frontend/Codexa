@@ -108,31 +108,6 @@ export default function AiChatWidget({ open, onClose }) {
         return res.data;
     };
 
-    // -----------------------
-    // Text → Speech (WORKING)
-    // -----------------------
-    // const playAiVoice = async (text) => {
-    //     if (!enableTts) return;
-
-    //     // const { userToken } = useAuthStore.getState();
-
-    //     try {
-    //         const res = await api.post(
-    //             ENDPOINTS.TEXT_TO_VOICE,
-    //             { text },
-    //             {
-    //                 responseType: "arraybuffer",
-    //                 headers: { Authorization: `Bearer ${userToken}` }
-    //             }
-    //         );
-
-    //         const blob = new Blob([res.data], { type: "audio/mpeg" });
-    //         const url = URL.createObjectURL(blob);
-    //         new Audio(url).play();
-    //     } catch (err) {
-    //         console.error("TTS Error:", err);
-    //     }
-    // };
     const playAiVoice = async (text) => {
         if (!enableTts) return;
 
@@ -176,6 +151,11 @@ export default function AiChatWidget({ open, onClose }) {
             ...prev,
             { role: "assistant", content: aiRes.response, timestamp: new Date() }
         ]);
+        if (!userToken) {
+            alert("Please login to use Codexa AI");
+            return;
+        }
+
 
         playAiVoice(aiRes.response);
     };
@@ -244,7 +224,7 @@ export default function AiChatWidget({ open, onClose }) {
                                 {/* User avatar (optional) */}
                                 {m.role === "user" && (
                                     <Image
-                                        src={userInfo.profileImage}
+                                        src={userInfo?.profileImage || "/default-avatar.png"}
                                         width={26}
                                         height={26}
                                         alt="me"

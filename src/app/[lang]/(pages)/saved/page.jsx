@@ -6,7 +6,12 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "next/navigation";
 import { Heart, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default function Saved() {
@@ -47,7 +52,10 @@ export default function Saved() {
           {t("saved.title")}
         </h1>
         <Badge variant="secondary" className="text-base px-3 py-1">
-          {favourites.length} {favourites.length === 1 ? t("explore.stats.courses").slice(0, -1) : t("explore.stats.courses")}
+          {favourites.length}{" "}
+          {favourites.length === 1
+            ? t("explore.stats.courses").slice(0, -1)
+            : t("explore.stats.courses")}
         </Badge>
       </div>
 
@@ -68,7 +76,7 @@ export default function Saved() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {favourites.map((fav) => (
             <Link
               href={`/${lang}/student/explore/${fav.course?._id}`}
@@ -91,7 +99,10 @@ export default function Saved() {
                       </div>
                     )}
                     <div className="absolute top-3 right-3">
-                      <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
+                      <Badge
+                        variant="secondary"
+                        className="bg-background/80 backdrop-blur-sm"
+                      >
                         <Heart className="w-3 h-3 mr-1 fill-red-500 text-red-500" />
                         {t("saved.savedOn")}
                       </Badge>
@@ -108,21 +119,33 @@ export default function Saved() {
                   {/* Course Details */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{t("saved.price")}:</span>
-                      <span className="font-semibold text-primary">${fav.course?.price}</span>
+                      <span className="text-muted-foreground">
+                        {t("saved.price")}:
+                      </span>
+                      <span className="font-semibold text-primary">
+                        ${fav.course?.price}
+                      </span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{t("saved.level")}:</span>
+                      <span className="text-muted-foreground">
+                        {t("saved.level")}:
+                      </span>
                       <Badge variant="outline" className="capitalize">
                         {fav.course?.level}
                       </Badge>
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{t("saved.status")}:</span>
-                      <Badge 
-                        variant={fav.course?.status === "public" ? "default" : "secondary"}
+                      <span className="text-muted-foreground">
+                        {t("saved.status")}:
+                      </span>
+                      <Badge
+                        variant={
+                          fav.course?.status === "public"
+                            ? "default"
+                            : "secondary"
+                        }
                         className="capitalize"
                       >
                         {fav.course?.status}
@@ -130,9 +153,14 @@ export default function Saved() {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{t("saved.videos")}:</span>
+                      <span className="text-muted-foreground">
+                        {t("saved.videos")}:
+                      </span>
                       <span className="font-medium">
-                        {fav.course?.videos?.length || 0} {fav.course?.videos?.length === 1 ? t("courseDetailsPage.video") : t("courseDetailsPage.videos")}
+                        {fav.course?.videos?.length || 0}{" "}
+                        {fav.course?.videos?.length === 1
+                          ? t("courseDetailsPage.video")
+                          : t("courseDetailsPage.videos")}
                       </span>
                     </div>
                   </div>
@@ -142,7 +170,9 @@ export default function Saved() {
                   <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
                     <span>{t("saved.savedOn")}:</span>
                     <span className="font-medium">
-                      {new Date(fav.createdAt).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
+                      {new Date(fav.createdAt).toLocaleDateString(
+                        lang === "ar" ? "ar-EG" : "en-US"
+                      )}
                     </span>
                   </div>
                 </CardFooter>

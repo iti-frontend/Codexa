@@ -3,41 +3,6 @@ import api from "@/lib/axios";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 
-// export function useAdminCourses({ page = 1, limit = 10 }) {
-//     const { userToken } = useAuthStore();
-
-//     const [courses, setCourses] = useState([]);
-//     const [count, setCount] = useState(0);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         async function fetchCourses() {
-//             try {
-//                 setLoading(true);
-
-//                 const res = await api.get(ENDPOINTS.ADMIN_COURSES, {
-//                     params: { page, limit },
-//                     headers: {
-//                         Authorization: `Bearer ${userToken}`,
-//                     },
-//                 });
-
-//                 setCourses(res.data.courses || []);
-//                 setCount(res.data.count || 0);
-//             } catch (err) {
-//                 console.error("useAdminCourses error:", err);
-//                 setError(err.response?.data?.message || "Failed to load courses");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         }
-
-//         fetchCourses();
-//     }, [page, limit, userToken]);
-
-//     return { courses, count, loading, error, setCourses };
-// }
 export function useAdminCourses({ page = 1, limit = 10 }) {
     const { userToken } = useAuthStore();
 
