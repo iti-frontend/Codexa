@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Loader2, Video, Users, ArrowLeft, PhoneOff, Mic, MicOff, Video as VideoIcon, VideoOff, MonitorUp, MessageSquare, BarChart2, Power } from 'lucide-react';
 import { toast } from 'sonner';
 import PollComponent from '@/components/live-sessions/PollComponent';
+import CreatePollComponent from '@/components/live-sessions/CreatePollComponent';
 import VideoTile from '@/components/live-sessions/VideoTile';
 import ChatComponent from '@/components/live-sessions/ChatComponent';
 import SessionTimer from '@/components/live-sessions/SessionTimer';
@@ -27,7 +28,8 @@ import {
   selectPeers,
   selectIsLocalAudioEnabled,
   selectIsLocalVideoEnabled,
-  selectLocalPeer
+  selectLocalPeer,
+  selectIsLocalScreenShared
 } from "@100mslive/react-sdk";
 
 // Inner component that uses HMS hooks
@@ -41,6 +43,7 @@ function LiveRoomContent({ session, sessionId }) {
   const localPeer = useHMSStore(selectLocalPeer);
   const isAudioEnabled = useHMSStore(selectIsLocalAudioEnabled);
   const isVideoEnabled = useHMSStore(selectIsLocalVideoEnabled);
+  const isScreenShared = useHMSStore(selectIsLocalScreenShared);
 
   const [joining, setJoining] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -155,6 +158,15 @@ function LiveRoomContent({ session, sessionId }) {
     await hmsActions.setLocalVideoEnabled(!isVideoEnabled);
   };
 
+  const toggleScreenShare = async () => {
+    try {
+      await hmsActions.setScreenShareEnabled(!isScreenShared);
+    } catch (error) {
+      console.error('Error toggling screen share:', error);
+      toast.error(error.message || 'Failed to toggle screen share');
+    }
+  };
+
   if (!isConnected) {
     return (
       <div className="lg:col-span-2 space-y-6">
@@ -248,6 +260,12 @@ function LiveRoomContent({ session, sessionId }) {
           {getUniquePeers(peers).map((peer) => (
             <VideoTile key={peer.id} peer={peer} />
           ))}
+          {/* Render Screen Shares */}
+          {getUniquePeers(peers).map((peer) => (
+             peer.auxiliaryTracks?.map((trackId) => (
+               <VideoTile key={trackId} peer={peer} trackId={trackId} isScreenShare={true} />
+             ))
+          ))}
           {peers.length === 0 && (
             <div className="col-span-full flex items-center justify-center text-white/50 h-full">
               Waiting for others to join...
@@ -276,10 +294,10 @@ function LiveRoomContent({ session, sessionId }) {
           </Button>
 
           <Button 
-            variant="outline" 
+            variant={isScreenShared ? "default" : "outline"} 
             size="icon"
-            className="rounded-full w-12 h-12"
-            onClick={() => toast.info('Screen sharing coming soon!')}
+            className={`rounded-full w-12 h-12 ${isScreenShared ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}`}
+            onClick={toggleScreenShare}
           >
             <MonitorUp className="w-5 h-5" />
           </Button>
@@ -335,6 +353,17 @@ function LiveRoomContent({ session, sessionId }) {
             
             <TabsContent value="polls" className="flex-1 mt-2 overflow-y-auto">
                 <div className="space-y-4">
+                    {localPeer?.roleName === 'host' && (
+                        <CreatePollComponent 
+                            sessionId={sessionId} 
+                            onPollCreated={() => {
+                                // Ideally trigger a refresh of session data here
+                                // For now, we can perhaps assume socket/polling or just toast
+                                window.location.reload(); // Temporary brute force refresh to show new poll
+                            }} 
+                        />
+                    )}
+
                     {session.polls?.length > 0 ? (
                         session.polls.map((poll) => (
                             <PollComponent

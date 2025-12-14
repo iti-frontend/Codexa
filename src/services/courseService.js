@@ -46,3 +46,26 @@ export const getFeaturedCourses = async () => {
         return [];
     }
 };
+
+/**
+ * Fetch instructor's own courses
+ * @returns {Promise} List of courses
+ */
+export const getMyCourses = async () => {
+    try {
+        const response = await api.get("/courses/my-courses");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching my courses:", error);
+        throw error;
+    }
+};
+
+const courseService = {
+    getCourses,
+    getCourseById,
+    getFeaturedCourses,
+    getMyCourses
+};
+
+export default courseService;
