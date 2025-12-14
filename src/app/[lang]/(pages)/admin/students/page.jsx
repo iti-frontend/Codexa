@@ -8,57 +8,57 @@ import { useAdminUserDetails } from "@/hooks/useAdminUserDetails";
 import { useState } from "react";
 
 export default function StudentsPage() {
-    const { t } = useTranslation();
-    const { loading, data: students, count, refetch } = useAdminUsers("students");
-    const [viewUser, setViewUser] = useState(null);
-    
-    const {
-        data: userDetails,
-        loading: userLoading,
-        error: userError,
-    } = useAdminUserDetails(viewUser?._id, "student");
+  const { t } = useTranslation();
+  const { loading, data: students, count, refetch } = useAdminUsers("students");
+  const [viewUser, setViewUser] = useState(null);
 
-    return (
-        <div className="p-6 space-y-6">
-            {/* ===== Page Header ===== */}
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">
-                    {t("admin.users.students.title")}
-                </h1>
+  const {
+    data: userDetails,
+    loading: userLoading,
+    error: userError,
+  } = useAdminUserDetails(viewUser?._id, "student");
 
-                <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    {t("admin.users.students.total")}: {count}
-                </span>
-            </div>
+  return (
+    <div className="p-6 space-y-6">
+      {/* ===== Page Header ===== */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
+          {t("admin.users.students.title")}
+        </h1>
 
-            {/* ===== Loading ===== */}
-            {loading ? (
-                <div className="min-h-screen flex justify-center items-center">
-                    <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
-                </div>
-            ) : (
-                <>
-                    <AdminListCard
-                        items={students}
-                        itemKey="name"
-                        itemImageKey="image"
-                        itemSubKey="email"
-                        onView={(s) => setViewUser(s)}
-                        onRefetch={refetch}
-                        role="students"
-                    />
+        <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          {t("admin.users.students.total")}: {count}
+        </span>
+      </div>
 
-                    <UserDetailsDrawer
-                        open={!!viewUser}
-                        onClose={() => setViewUser(null)}
-                        user={userDetails}
-                        loading={userLoading}
-                        error={userError}
-                        onRefetch={refetch}
-                        role="students"
-                    />
-                </>
-            )}
+      {/* ===== Loading ===== */}
+      {loading ? (
+        <div className="min-h-screen flex justify-center items-center">
+          <div className="animate-spin h-12 w-12 border-b-2 border-indigo-500 rounded-full"></div>
         </div>
-    );
+      ) : (
+        <>
+          <AdminListCard
+            items={students}
+            itemKey="name"
+            itemImageKey="image"
+            itemSubKey="email"
+            onView={(s) => setViewUser(s)}
+            onRefetch={refetch}
+            role="students"
+          />
+
+          <UserDetailsDrawer
+            open={!!viewUser}
+            onClose={() => setViewUser(null)}
+            user={userDetails}
+            loading={userLoading}
+            error={userError}
+            onRefetch={refetch}
+            role="students"
+          />
+        </>
+      )}
+    </div>
+  );
 }

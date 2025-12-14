@@ -16,7 +16,7 @@ import AiChatWidget from "../ai/AiChatWidget";
 import { useState } from "react";
 import { ToolsLinks } from "@/Constants/sidebar-links";
 import { useTranslation } from "react-i18next";
-function SidebarComponent({ Links,side="left",ToolsLinks }) {
+function SidebarComponent({ Links, side = "left", ToolsLinks }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
@@ -29,7 +29,7 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
   };
 
   return (
-    <Sidebar side={side} className="!border-0">
+    <Sidebar side={side} className="border-x">
       <SidebarHeader>
         <UserMenu />
       </SidebarHeader>
@@ -52,7 +52,9 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
             </Link>
           </Button>
         ))}
-        <h6 className="px-3 pt-4 text-sm text-foreground/70">{t("sidebar.tools")}</h6>
+        <h6 className="px-3 pt-4 text-sm text-foreground/70">
+          {t("sidebar.tools")}
+        </h6>
         {ToolsLinks.map((tool, index) => (
           <Button
             key={index}
@@ -60,7 +62,7 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
             className={cn(
               "justify-start",
               pathName === tool.href &&
-              "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
+                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
             )}
             variant="ghost"
           >
@@ -107,7 +109,6 @@ function SidebarComponent({ Links,side="left",ToolsLinks }) {
         </Button>
       </SidebarFooter>
       <AiChatWidget open={isAiOpen} onClose={() => setIsAiOpen(false)} />
-
     </Sidebar>
   );
 }
