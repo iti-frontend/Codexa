@@ -134,7 +134,7 @@ export default function SessionDetailsPage() {
                     <div className="flex gap-3 pt-4 border-t">
                         {/* Edit only for scheduled */}
                         {session.status === 'scheduled' && (isInstructor || isAdmin) && (
-                            <Button variant="outline" className="flex-1" onClick={() => router.push(`/live-sessions/create?edit=${session._id}`)}>
+                           <Button variant="outline" className="flex-1" onClick={() => router.push(`/live-sessions/${session._id}/edit`)}>
                                 Edit Session
                             </Button>
                         )}
