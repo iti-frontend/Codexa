@@ -16,6 +16,8 @@ import liveSessionService from '@/services/liveSessionService';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
+import { useHMSActions, useHMSNotifications, HMSNotificationTypes } from "@100mslive/react-sdk";
+
 export default function ChatComponent({ sessionId, initialComments = [], currentUser }) {
   const [comments, setComments] = useState(initialComments);
   const [newMessage, setNewMessage] = useState('');
@@ -23,12 +25,47 @@ export default function ChatComponent({ sessionId, initialComments = [], current
   const [editingComment, setEditingComment] = useState(null); // { id, text, isReply, parentId }
   const scrollRef = useRef(null);
 
+  const hmsActions = useHMSActions();
+  const notification = useHMSNotifications();
+
   // Auto-scroll to bottom on new message
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [comments]);
+
+  // Listen for Real-time Messages (100ms Broadcast)
+  useEffect(() => {
+    if (!notification) return;
+
+    if (notification.type === HMSNotificationTypes.NEW_MESSAGE) {
+      // notification.data.message contains the string we sent
+      try {
+        const data = JSON.parse(notification.data.message);
+        
+        if (data.type === 'NEW_COMMENT' && data.payload) {
+             setComments(prev => {
+                 // Avoid duplicates
+                 if (prev.find(c => c._id === data.payload._id)) return prev;
+                 return [...prev, data.payload];
+             });
+        } else if (data.type === 'NEW_REPLY' && data.payload && data.parentId) {
+             setComments(prev => prev.map(c => {
+                 if (c._id === data.parentId) {
+                     // Avoid duplicates in replies
+                     if (c.replies.find(r => r._id === data.payload._id)) return c;
+                     return { ...c, replies: [...c.replies, data.payload] };
+                 }
+                 return c;
+             }));
+        }
+      } catch (err) {
+        // Ignore non-JSON messages or other formats
+        console.log("Received non-JSON broadcast:", notification.data.message);
+      }
+    }
+  }, [notification]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -43,12 +80,17 @@ export default function ChatComponent({ sessionId, initialComments = [], current
             c._id === replyingTo ? { ...c, replies: [...c.replies, reply] } : c
           )
         );
+        
+        // Broadcast Reply
+        await hmsActions.sendBroadcastMessage(JSON.stringify({
+            type: 'NEW_REPLY',
+            parentId: replyingTo,
+            payload: reply
+        }));
+
         setReplyingTo(null);
       } else if (editingComment) {
-        // Edit Comment/Reply
-        // Note: Backend edit logic is generic, but frontend state update differs
-        // For simplicity, we assume editing main comments for now or handle both
-        // Actually, let's implement edit properly
+         // Edit Comment Logic (Skipping broadcast for edit for simplicity as discussed, can be added if needed)
          await liveSessionService.editComment(sessionId, editingComment.id, newMessage);
          
          if (editingComment.isReply) {
@@ -70,6 +112,12 @@ export default function ChatComponent({ sessionId, initialComments = [], current
         // Send New Comment
         const comment = await liveSessionService.addComment(sessionId, newMessage);
         setComments((prev) => [...prev, comment]);
+        
+        // Broadcast New Comment
+        await hmsActions.sendBroadcastMessage(JSON.stringify({
+            type: 'NEW_COMMENT',
+            payload: comment
+        }));
       }
       setNewMessage('');
     } catch (error) {
@@ -83,6 +131,7 @@ export default function ChatComponent({ sessionId, initialComments = [], current
 
       try {
           await liveSessionService.deleteComment(sessionId, commentId);
+          // Optimistic update locally
           if (isReply) {
               setComments(prev => prev.map(c => {
                   if (c._id === parentId) {
@@ -162,12 +211,12 @@ export default function ChatComponent({ sessionId, initialComments = [], current
                       )}
                       {isMe && (
                           <DropdownMenuItem onClick={() => startEdit(item, isReply, parentId)}>
-                              <Edit2 className="w-3 h-3 mr-2" /> Edit
+                            <Edit2 className="w-3 h-3 mr-2" /> Edit
                           </DropdownMenuItem>
                       )}
                       {canDelete && (
                           <DropdownMenuItem onClick={() => handleDelete(item._id, isReply, parentId)} className="text-destructive">
-                              <Trash2 className="w-3 h-3 mr-2" /> Delete
+                            <Trash2 className="w-3 h-3 mr-2" /> Delete
                           </DropdownMenuItem>
                       )}
                     </DropdownMenuContent>
