@@ -8,25 +8,45 @@ import {
   Users,
 } from "lucide-react";
 
-// Performance Structure
+// Performance Metrics Structure
 export const PerformanceStructure = [
-  { text: "Total Students", key: "totalStudents", icon: Users },
-  { text: "Active Courses", key: "activeCourses", icon: BookOpen },
-  { text: "Rating", key: "rating", icon: Star },
-  { text: "Revenue", key: "revenue", icon: DollarSign },
+  { text: "instructor.performance.totalStudents", key: "totalStudents", icon: Users },
+  { text: "instructor.performance.activeCourses", key: "activeCourses", icon: BookOpen },
+  { text: "instructor.performance.rating", key: "rating", icon: Star },
+  { text: "instructor.performance.revenue", key: "revenue", icon: DollarSign },
 ];
 
-// Quick Links 
+// Quick Links
 export const quickLinks = [
-  { text: "Create New Courses", icon: Upload, action: "create-course" },
-  { text: "New Announcement", icon: Megaphone, action: "announcement" },
-  { text: "View Analytics", icon: ChartArea, action: "analytics" },
+  { text: "instructor.quickLinks.createCourse", icon: Upload, action: "create-course" },
+  { text: "instructor.quickLinks.announcement", icon: Megaphone, action: "announcement" },
+  { text: "instructor.quickLinks.analytics", icon: ChartArea, action: "analytics" },
 ];
 
-
-// Recent Activity (could also be dynamic later)
+// Recent Activity with translation keys
 export const recentActivity = [
-  { name: "Abdullah Omar", text: "just enrolled in 'Next.Js'.", time: "2 minutes ago", imgSrc: "" },
-  { name: "Zein Mohamed", text: "completed 'Web Development Fundamentals'.", time: "1 hour ago", imgSrc: "" },
-  { name: "Lina Ahmed", text: "asked a question.", time: "3 hours ago", imgSrc: "" },
+  { 
+    name: "Abdullah Omar", 
+    action: "enrolled",
+    course: "Next.js",
+    time: "twoMinutes",
+    imgSrc: "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png",
+    badge: null
+  },
+  { 
+    name: "Zein Mohamed", 
+    action: "completed",
+    course: "Web Development Fundamentals",
+    time: "oneHour",
+    imgSrc: "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png",
+    badge: "Completed"
+  },
+  { 
+    name: "Lina Ahmed", 
+    action: "question",
+    course: null,
+    time: "threeHours",
+    imgSrc: "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png",
+    badge: "Question"
+  },
 ];

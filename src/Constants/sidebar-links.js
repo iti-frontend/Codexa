@@ -13,7 +13,8 @@ import {
   Video,
   BarChart3,
   UserCheck,
-  Settings
+  Settings,
+  Radio
 } from "lucide-react";
 
 // Instructor Info
@@ -46,45 +47,49 @@ export const adminInfo = [
   },
 ];
 
+// Instructor SideBar Links 
+export const getInstructorLinks = (lang = 'en') => {
+  const ins = `/${lang}/instructor`;
+  return [
+    { icon: Home, nameKey: "home", href: `${ins}` },
+    { icon: Video, nameKey: "courses", href: `${ins}/courses` },
+    { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
+    { icon: Users, nameKey: "community", href: `/${lang}/community` },
+    { icon: Radio, nameKey: "liveSessions", href: `/${lang}/live-sessions/instructor` },
+  ];
+};
 
-//  Instructor SideBar Links
-const ins = "/instructor";
+// Student SideBar Links 
+export const getStudentsLinks = (lang = 'en') => {
+  const stu = `/${lang}/student`;
+  return [
+    { icon: Home, nameKey: "home", href: `${stu}` },
+    { icon: Video, nameKey: "myCourses", href: `${stu}/courses` },
+    { icon: Grid2x2X, nameKey: "exploreMore", href: `${stu}/explore` },
+    { icon: Award, nameKey: "certifications", href: `${stu}/certifications` },
+    { icon: Users, nameKey: "community", href: `/${lang}/community` },
+    { icon: Radio, nameKey: "liveSessions", href: `/${lang}/live-sessions` },
+    { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
+    { icon: ShoppingCart, nameKey: "cart", href: `/${lang}/cart` }
+  ];
+};
 
-export const InstructorLinks = [
-  { icon: Home, name: "Home", href: `${ins}` },
-  { icon: Video, name: "Courses", href: `${ins}/courses` },
-  { icon: ChartLine, name: "Analytics", href: `${ins}/analytics` },
-  { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
-  { icon: Users, name: "Community", href: "/community" },
+// Admin SideBar Links 
+export const getAdminLinks = (lang = 'en') => {
+  const adm = `/${lang}/admin`;
+  return [
+    { icon: Home, nameKey: "dashboard", href: `${adm}` },
+    { icon: Users, nameKey: "students", href: `${adm}/students` },
+    { icon: UserCheck, nameKey: "instructors", href: `${adm}/instructors` },
+    { icon: Video, nameKey: "courses", href: `${adm}/courses` },
+  ];
+};
+
+// Tools SideBar Links
+export const getToolsLinks = (lang = 'en') => [
+  { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
 ];
-
-
-//  Student SideBar Links
-
-const stu = "/student";
-
-export const StudentsLinks = [
-  { icon: Home, name: "Home", href: `${stu}` },
-  { icon: Video, name: "My Courses", href: `${stu}/courses` },
-  { icon: Grid2x2X, name: "Explore More", href: `${stu}/explore` },
-  { icon: Award, name: "Certifications", href: `${stu}/certifications` },
-  { icon: Users, name: "Community", href: "/community" },
-  { icon: CheckCircleIcon, name: "Todos", href: "/todo" },
-  { icon: ShoppingCart, name: "Cart", href: `/cart` }
-];
-
-//  Admin SideBar Links
-const adm = "/admin";
-
-export const AdminLinks = [
-  { icon: Home, name: "Dashboard", href: `${adm}` },
-  { icon: Users, name: "Students", href: `${adm}/students` },
-  { icon: UserCheck, name: "Instructors", href: `${adm}/instructors` },
-  { icon: Video, name: "Courses", href: `${adm}/courses` },
-];
-
-//  Tools SideBar Links
-export const ToolsLinks = [
-  { icon: Bell, name: "Notification", href: "/notification" },
-  { icon: Bookmark, name: "Saved", href: "/saved" },
-];
+export const InstructorLinks = getInstructorLinks('en');
+export const StudentsLinks = getStudentsLinks('en');
+export const AdminLinks = getAdminLinks('en');
+export const ToolsLinks = getToolsLinks('en');

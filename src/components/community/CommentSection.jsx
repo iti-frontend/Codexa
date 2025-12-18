@@ -7,8 +7,10 @@ import { MessageCircle, Send, Edit, Trash2 } from "lucide-react";
 import { useCommunityStore } from "@/store/useCommunityStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export function CommentSection({ post }) {
+  const { t } = useTranslation();
   const [commentText, setCommentText] = useState("");
   const [editingComment, setEditingComment] = useState(null);
   const [editText, setEditText] = useState("");
@@ -24,7 +26,7 @@ export function CommentSection({ post }) {
     try {
       await addComment(post._id, commentText, userToken);
       setCommentText("");
-      toast.success("Comment added successfully");
+      toast.success(t('community.toast.commentAdded'));
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -39,7 +41,7 @@ export function CommentSection({ post }) {
       await editComment(post._id, commentId, editText, userToken);
       setEditingComment(null);
       setEditText("");
-      toast.success("Comment updated successfully");
+      toast.success(t('community.toast.commentUpdated'));
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -48,10 +50,10 @@ export function CommentSection({ post }) {
   };
 
   const handleDeleteComment = async (commentId) => {
-    if (!confirm("Are you sure you want to delete this comment?")) return;
+    if (!confirm(t('community.comments.deleteConfirm'))) return;
     try {
       await deleteComment(post._id, commentId, userToken);
-      toast.success("Comment deleted successfully");
+      toast.success(t('community.toast.commentDeleted'));
     } catch (err) {
       toast.error(err.message);
     }
@@ -79,7 +81,7 @@ export function CommentSection({ post }) {
         </Avatar>
         <div className="flex-1 flex gap-2">
           <Textarea
-            placeholder="Write a comment..."
+            placeholder={t('community.comments.addComment')}
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             className="min-h-[60px] resize-none"
@@ -101,7 +103,7 @@ export function CommentSection({ post }) {
         {post.comments?.map((comment) => (
           <div key={comment._id} className="flex gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={comment.user?.avatar} alt={comment.user?.name || "Anonymous"} />
+              <AvatarImage src={comment.user?.avatar} alt={comment.user?.name || t('community.post.anonymous')} />
               <AvatarFallback className="bg-secondary text-xs">
                 {comment.user?.name?.charAt(0) || "A"}
               </AvatarFallback>
@@ -110,7 +112,7 @@ export function CommentSection({ post }) {
               <div className="bg-secondary rounded-lg p-3">
                 <div className="flex items-center justify-between mb-1">
                   <div>
-                    <p className="font-semibold text-sm">{comment.user?.name || "Anonymous"}</p>
+                    <p className="font-semibold text-sm">{comment.user?.name || t('community.post.anonymous')}</p>
                     <span className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</span>
                   </div>
                   {isOwner(comment.user?.userId) && (
@@ -147,7 +149,7 @@ export function CommentSection({ post }) {
                     />
                     <div className="flex gap-2">
                       <Button size="sm" onClick={() => handleEditComment(comment._id)} disabled={isSubmitting}>
-                        Save
+                        {t('community.comments.save')}
                       </Button>
                       <Button
                         size="sm"
@@ -157,7 +159,7 @@ export function CommentSection({ post }) {
                           setEditText("");
                         }}
                       >
-                        Cancel
+                        {t('community.comments.cancel')}
                       </Button>
                     </div>
                   </div>
@@ -173,7 +175,7 @@ export function CommentSection({ post }) {
       {post.comments?.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           <MessageCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">No comments yet. Be the first to comment!</p>
+          <p className="text-sm">{t('community.comments.noComments')}</p>
         </div>
       )}
     </div>

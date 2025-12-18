@@ -40,11 +40,14 @@ export const ENDPOINTS = {
   ADMIN_ANALYTICS: "/admin/stats",
   ADMIN_ACTIVITY: "/admin/activity",
   ADMIN_STUDENTS: "/admin/students",
-  ADMIN_STUDENT_BY_ID: "/admin/students/{studentId}",
   ADMIN_COURSES: "/admin/courses",
   ADMIN_COURSE_BY_ID: "/admin/courses/{courseId}",
   ADMIN_INSTRUCTORS: "/admin/instructors",
-  ADMIN_INSTRUCTOR_BY_ID: "/admin/instructors/{instructorId}",
+
+  AI_CHAT: "/ai/chat",
+  TEXT_TO_VOICE: "/ai/text-to-voice",
+  VOICE_TO_TEXT: "/ai/voice-to-text",
+
 };
 // api's we  need  get from backend
 // update student and admin profile (1)

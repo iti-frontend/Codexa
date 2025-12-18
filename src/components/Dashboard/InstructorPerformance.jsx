@@ -3,12 +3,14 @@ import { PerformanceStructure } from "@/Constants/InstructorContent";
 import { useInstructorCourse } from "@/hooks/useInstructorCourse";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function InstructorPerformance() {
+    const { t } = useTranslation();
     const { courses, fetchInstructorCourses } = useInstructorCourse();
+
     useEffect(() => { fetchInstructorCourses(); }, []);
 
-    // Compute dynamic values
     const totalStudents = courses.reduce(
         (acc, course) => acc + course.enrolledStudents.length,
         0
@@ -21,9 +23,8 @@ function InstructorPerformance() {
         0
     );
 
-    const rating = 4.8; // or dynamic later
+    const rating = 4.8;
 
-    // Build dynamic performance array
     const dynamicPerformances = PerformanceStructure.map((item) => {
         switch (item.key) {
             case "totalStudents":
@@ -46,7 +47,9 @@ function InstructorPerformance() {
             transition={{ duration: 0.5 }}
             className="rounded-xl bg-foreground/5 p-5 shadow-sm w-full"
         >
-            <h2 className="text-lg font-semibold mb-4">Performance Metrics</h2>
+            <h2 className="text-lg font-semibold mb-4">
+                {t("instructor.performance.title")}
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 cursor-pointer">
                 {dynamicPerformances.map((performance, index) => {
@@ -55,9 +58,6 @@ function InstructorPerformance() {
                     return (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: index * 0.2 }}
                             whileHover={{
                                 scale: 1.01,
                                 boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
@@ -67,7 +67,7 @@ function InstructorPerformance() {
                         >
                             <Icon size={24} className="text-primary" />
                             <h3 className="text-sm text-foreground/70 my-1.5">
-                                {performance.text}
+                                {t(performance.text)}
                             </h3>
                             <p className="text-xl font-bold text-foreground">
                                 {performance.number}

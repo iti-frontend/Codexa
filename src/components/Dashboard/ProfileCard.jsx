@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Mail, Globe, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileCard({ profile, editLink }) {
+  const { t } = useTranslation();
+  
   if (!profile) return null;
 
   const updatedDate = profile.updatedAt
@@ -40,7 +43,7 @@ export default function ProfileCard({ profile, editLink }) {
           >
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold text-white flex gap-3 items-center">
-                {profile.name || "Unnamed"}
+                {profile.name || t('profile.unnamed')}
               </h1>
 
               <p className="flex items-center gap-2 text-gray-400 mt-1">
@@ -54,7 +57,7 @@ export default function ProfileCard({ profile, editLink }) {
 
                 {profile.emailVerified && (
                   <span className="flex items-center gap-1 text-green-400 text-sm font-medium">
-                    <CheckCircle size={16} /> Verified
+                    <CheckCircle size={16} /> {t('profile.verified')}
                   </span>
                 )}
               </div>
@@ -64,7 +67,7 @@ export default function ProfileCard({ profile, editLink }) {
               href={editLink}
               className="w-full sm:w-auto px-4 py-2 sm:px-5 sm:py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition text-center"
             >
-              Edit Profile
+              {t('profile.editProfile')}
             </Link>
           </motion.div>
 
@@ -76,7 +79,7 @@ export default function ProfileCard({ profile, editLink }) {
               transition={{ duration: 0.7 }}
               className="mt-8 bg-[#161b22] p-6 rounded-xl shadow-md"
             >
-              <h3 className="text-lg font-semibold text-white mb-2">About</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">{t('profile.about')}</h3>
               <p className="text-gray-300 leading-relaxed whitespace-pre-line">
                 {profile.bio}
               </p>
@@ -91,7 +94,7 @@ export default function ProfileCard({ profile, editLink }) {
               transition={{ duration: 0.8 }}
               className="mt-8 bg-[#161b22] p-6 rounded-xl shadow-md"
             >
-              <h3 className="text-lg font-semibold text-white mb-3">Links</h3>
+              <h3 className="text-lg font-semibold text-white mb-3">{t('profile.links')}</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profile.links.map((link, i) => (
@@ -129,12 +132,12 @@ export default function ProfileCard({ profile, editLink }) {
             className="mt-8 bg-[#161b22] p-6 rounded-xl shadow-md"
           >
             <h3 className="text-lg font-semibold text-white mb-4">
-              Account Details
+              {t('profile.accountDetails')}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
               <div>
-                <span className="text-gray-500 text-sm">Member Since</span>
+                <span className="text-gray-500 text-sm">{t('profile.memberSince')}</span>
                 <p className="font-medium">
                   {profile.createdAt
                     ? new Date(profile.createdAt).toLocaleDateString()
@@ -143,23 +146,23 @@ export default function ProfileCard({ profile, editLink }) {
               </div>
 
               <div>
-                <span className="text-gray-500 text-sm">Last Updated</span>
+                <span className="text-gray-500 text-sm">{t('profile.lastUpdated')}</span>
                 <p className="font-medium text-indigo-400">{updatedDate}</p>
               </div>
 
               <div>
-                <span className="text-gray-500 text-sm">Account Status</span>
+                <span className="text-gray-500 text-sm">{t('profile.accountStatus')}</span>
                 <p
                   className={`font-medium ${
                     profile.isActive ? "text-green-400" : "text-red-500"
                   }`}
                 >
-                  {profile.isActive ? "Active" : "Inactive"}
+                  {profile.isActive ? t('profile.active') : t('profile.inactive')}
                 </p>
               </div>
 
               <div>
-                <span className="text-gray-500 text-sm">Auth Provider</span>
+                <span className="text-gray-500 text-sm">{t('profile.authProvider')}</span>
                 <p className="font-medium capitalize">
                   {profile.authProvider || "email"}
                 </p>

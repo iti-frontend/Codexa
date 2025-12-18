@@ -10,21 +10,26 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ToolsLinks } from "@/Constants/sidebar-links";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
-
-function SidebarComponent({ Links }) {
+import AiChatWidget from "../ai/AiChatWidget";
+import { useState } from "react";
+import { ToolsLinks } from "@/Constants/sidebar-links";
+import { useTranslation } from "react-i18next";
+function SidebarComponent({ Links, side = "left", ToolsLinks }) {
+  const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const logOut = () => {
     handleLogout();
     router.push("/login");
   };
+
   return (
-    <Sidebar className="!border-0">
+    <Sidebar side={side} className="border-x">
       <SidebarHeader>
         <UserMenu />
       </SidebarHeader>
@@ -43,11 +48,13 @@ function SidebarComponent({ Links }) {
             variant="ghost"
           >
             <Link href={link.href} className="items-center gap-2 font-semibold">
-              <link.icon size={18} /> {link.name}
+              <link.icon size={18} /> {t(`sidebar.${link.nameKey}`)}
             </Link>
           </Button>
         ))}
-        <h6 className="px-3 pt-4 text-sm text-foreground/70">Tools</h6>
+        <h6 className="px-3 pt-4 text-sm text-foreground/70">
+          {t("sidebar.tools")}
+        </h6>
         {ToolsLinks.map((tool, index) => (
           <Button
             key={index}
@@ -60,7 +67,7 @@ function SidebarComponent({ Links }) {
             variant="ghost"
           >
             <Link href={tool.href} className="items-center gap-2 font-semibold">
-              <tool.icon size={18} /> {tool.name}
+              <tool.icon size={18} /> {t(`sidebar.${tool.nameKey}`)}
             </Link>
           </Button>
         ))}
@@ -68,6 +75,7 @@ function SidebarComponent({ Links }) {
       <SidebarFooter className="p-5">
         {/* AI Button */}
         <Button
+          onClick={() => setIsAiOpen(true)}
           variant="ghost"
           className="
     group/button relative flex items-center justify-start
@@ -87,7 +95,7 @@ function SidebarComponent({ Links }) {
       whitespace-nowrap
     "
           >
-            Codexa AI
+            {t("sidebar.codexaAI")}
           </span>
         </Button>
 
@@ -97,9 +105,10 @@ function SidebarComponent({ Links }) {
           onClick={logOut}
           className="bg-transparent text-red-500 hover:text-red-500 w-full"
         >
-          <LogOut /> Sign out
+          <LogOut /> {t("sidebar.signout")}
         </Button>
       </SidebarFooter>
+      <AiChatWidget open={isAiOpen} onClose={() => setIsAiOpen(false)} />
     </Sidebar>
   );
 }

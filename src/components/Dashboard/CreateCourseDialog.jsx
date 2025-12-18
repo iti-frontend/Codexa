@@ -23,8 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 export default function CreateCourseDialog({ open, onOpenChange }) {
+  const { t } = useTranslation();
   const {
     createCourse,
     register,
@@ -87,15 +89,15 @@ function CourseDetails({
   setStatus,
 }) {
   const { nextStep } = useWizard();
+  const { t } = useTranslation();
 
   const onSubmit = async (data) => {
     if (!data.coverImage || !data.coverImage.length) {
-      toast.error("Cover image is required!");
+      toast.error(t("createCourse.errors.coverImageRequired"));
       return;
     }
 
     try {
-      // Prepare course data with all fields
       const courseData = {
         title: data.title,
         description: data.description,
@@ -109,11 +111,10 @@ function CourseDetails({
 
       const newCourse = await createCourse(courseData);
       setCourseId(newCourse._id);
-      toast.success("Course created successfully!");
+      toast.success(t("createCourse.toast.courseCreated"));
       nextStep();
     } catch (err) {
       console.error("Failed to create course:", err);
-      // Error is handled in the hook
     }
   };
 
@@ -124,24 +125,25 @@ function CourseDetails({
       encType="multipart/form-data"
     >
       <div className="space-y-2">
-        <h3 className="text-lg font-medium">Create New Course</h3>
+        <h3 className="text-lg font-medium">{t("createCourse.title")}</h3>
         <p className="text-sm text-muted-foreground">
-          Create a new course by filling in the details and uploading content.
+          {t("createCourse.description")}
         </p>
       </div>
+
       {/* Title */}
       <div className="space-y-2">
-        <Label htmlFor="title">Title *</Label>
+        <Label htmlFor="title">{t("createCourse.fields.title")} *</Label>
         <Input
           id="title"
           {...register("title", {
-            required: "Title is required",
+            required: t("createCourse.errors.titleRequired"),
             minLength: {
               value: 3,
-              message: "Title must be at least 3 characters",
+              message: t("createCourse.errors.titleMinLength"),
             },
           })}
-          placeholder="Enter course title"
+          placeholder={t("createCourse.placeholders.title")}
           disabled={isSubmitting}
         />
         {errors.title && (
@@ -151,17 +153,19 @@ function CourseDetails({
 
       {/* Description */}
       <div className="space-y-2">
-        <Label htmlFor="description">Description *</Label>
+        <Label htmlFor="description">
+          {t("createCourse.fields.description")} *
+        </Label>
         <Textarea
           id="description"
           {...register("description", {
-            required: "Description is required",
+            required: t("createCourse.errors.descriptionRequired"),
             minLength: {
               value: 10,
-              message: "Description must be at least 10 characters",
+              message: t("createCourse.errors.descriptionMinLength"),
             },
           })}
-          placeholder="Describe what students will learn in this course"
+          placeholder={t("createCourse.placeholders.description")}
           disabled={isSubmitting}
           rows={4}
         />
@@ -173,17 +177,19 @@ function CourseDetails({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Category */}
         <div className="space-y-2">
-          <Label htmlFor="category">Category *</Label>
+          <Label htmlFor="category">
+            {t("createCourse.fields.category")} *
+          </Label>
           <Input
             id="category"
             {...register("category", {
-              required: "Category is required",
+              required: t("createCourse.errors.categoryRequired"),
               minLength: {
                 value: 2,
-                message: "Category must be at least 2 characters",
+                message: t("createCourse.errors.categoryMinLength"),
               },
             })}
-            placeholder="e.g., Web Development"
+            placeholder={t("createCourse.placeholders.category")}
             disabled={isSubmitting}
           />
           {errors.category && (
@@ -193,15 +199,15 @@ function CourseDetails({
 
         {/* Price */}
         <div className="space-y-2">
-          <Label htmlFor="price">Price ($) *</Label>
+          <Label htmlFor="price">{t("createCourse.fields.price")} *</Label>
           <Input
             id="price"
             type="number"
             {...register("price", {
-              required: "Price is required",
+              required: t("createCourse.errors.priceRequired"),
               min: {
                 value: 0,
-                message: "Price must be 0 or greater",
+                message: t("createCourse.errors.priceMin"),
               },
               valueAsNumber: true,
             })}
@@ -218,77 +224,94 @@ function CourseDetails({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Level */}
         <div className="space-y-2">
-          <Label htmlFor="level">Level</Label>
+          <Label htmlFor="level">{t("createCourse.fields.level")}</Label>
           <Select value={level} onValueChange={setLevel}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select level" />
+            <SelectTrigger className={"w-full"}>
+              <SelectValue placeholder={t("createCourse.placeholders.level")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="beginner">Beginner</SelectItem>
-              <SelectItem value="intermediate">Intermediate</SelectItem>
-              <SelectItem value="advanced">Advanced</SelectItem>
+              <SelectItem value="beginner">
+                {t("createCourse.levels.beginner")}
+              </SelectItem>
+              <SelectItem value="intermediate">
+                {t("createCourse.levels.intermediate")}
+              </SelectItem>
+              <SelectItem value="advanced">
+                {t("createCourse.levels.advanced")}
+              </SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            Choose the difficulty level
+            {t("createCourse.hints.level")}
           </p>
         </div>
 
         {/* Status */}
         <div className="space-y-2">
-          <Label htmlFor="status">Status</Label>
+          <Label htmlFor="status">{t("createCourse.fields.status")}</Label>
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select status" />
+            <SelectTrigger className={"w-full"}>
+              <SelectValue
+                placeholder={t("createCourse.placeholders.status")}
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="public">Public</SelectItem>
-              <SelectItem value="private">Private</SelectItem>
+              <SelectItem value="public">
+                {t("createCourse.status.public")}
+              </SelectItem>
+              <SelectItem value="private">
+                {t("createCourse.status.private")}
+              </SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            Public: Visible to all, Private: Only you can see
+            {t("createCourse.hints.status")}
           </p>
         </div>
       </div>
 
       {/* Prerequisites */}
       <div className="space-y-2">
-        <Label htmlFor="prerequisites">Prerequisites</Label>
+        <Label htmlFor="prerequisites">
+          {t("createCourse.fields.prerequisites")}
+        </Label>
         <Textarea
           id="prerequisites"
           {...register("prerequisites")}
-          placeholder="What should students know before taking this course?"
+          placeholder={t("createCourse.placeholders.prerequisites")}
           disabled={isSubmitting}
           rows={3}
         />
         <p className="text-xs text-muted-foreground">
-          Optional - list any required knowledge or skills
+          {t("createCourse.hints.prerequisites")}
         </p>
       </div>
 
       {/* Cover Image */}
       <div className="space-y-2">
-        <Label htmlFor="coverImage">Cover Image *</Label>
+        <Label htmlFor="coverImage">
+          {t("createCourse.fields.coverImage")} *
+        </Label>
         <Input
           id="coverImage"
           type="file"
           {...register("coverImage", {
-            required: "Cover image is required",
+            required: t("createCourse.errors.coverImageRequired"),
             validate: {
               isImage: (files) => {
                 if (!files || !files.length) return true;
                 const file = files[0];
                 return (
                   file.type.startsWith("image/") ||
-                  "Please select an image file"
+                  t("createCourse.errors.imageType")
                 );
               },
               maxSize: (files) => {
                 if (!files || !files.length) return true;
                 const file = files[0];
                 return (
-                  file.size <= 5 * 1024 * 1024 || "Image must be less than 5MB"
+                  file.size <= 5 * 1024 * 1024 ||
+                  t("createCourse.errors.imageSize")
                 );
               },
             },
@@ -300,14 +323,16 @@ function CourseDetails({
           <p className="text-sm text-red-500">{errors.coverImage.message}</p>
         )}
         <p className="text-xs text-muted-foreground">
-          Recommended: 1280x720 pixels, max 5MB
+          {t("createCourse.hints.coverImage")}
         </p>
       </div>
 
       <div className="flex justify-end pt-4">
         <Button type="submit" disabled={isSubmitting} className="min-w-24">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSubmitting ? "Creating..." : "Next"}
+          {isSubmitting
+            ? t("createCourse.buttons.creating")
+            : t("createCourse.buttons.next")}
         </Button>
       </div>
     </form>
@@ -318,15 +343,16 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const { previousStep } = useWizard();
+  const { t } = useTranslation();
 
   const handleUpload = async () => {
     if (!courseId) {
-      toast.error("Course creation failed. Please try again.");
+      toast.error(t("createCourse.toast.courseCreationFailed"));
       return;
     }
 
     if (!files.length) {
-      toast.info("No videos selected. Course created successfully!");
+      toast.info(t("createCourse.toast.noVideos"));
       onClose();
       return;
     }
@@ -334,11 +360,10 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
     try {
       setIsUploading(true);
       await uploadCourseVideos(courseId, files);
-      toast.success("Videos uploaded successfully!");
+      toast.success(t("createCourse.toast.videosUploaded"));
       onClose();
     } catch (err) {
       console.error("Failed to upload videos:", err);
-      // Error is handled in the hook
     } finally {
       setIsUploading(false);
     }
@@ -347,15 +372,13 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
   const handleFileSelect = (e) => {
     const selectedFiles = Array.from(e.target.files);
 
-    // Validate file types and sizes
     const validFiles = selectedFiles.filter((file) => {
       if (!file.type.startsWith("video/")) {
-        toast.error(`"${file.name}" is not a video file`);
+        toast.error(t("createCourse.errors.notVideoFile", { name: file.name }));
         return false;
       }
       if (file.size > 100 * 1024 * 1024) {
-        // 100MB limit
-        toast.error(`"${file.name}" is too large (max 100MB)`);
+        toast.error(t("createCourse.errors.fileTooLarge", { name: file.name }));
         return false;
       }
       return true;
@@ -367,15 +390,19 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
   return (
     <div className="mt-4 space-y-6">
       <div className="space-y-2">
-        <h3 className="text-lg font-medium">Upload Course Videos</h3>
+        <h3 className="text-lg font-medium">
+          {t("createCourse.upload.title")}
+        </h3>
         <p className="text-sm text-muted-foreground">
-          Add videos to your course. You can skip this and add videos later.
+          {t("createCourse.upload.description")}
         </p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="videos-upload">Select Video Files</Label>
+          <Label htmlFor="videos-upload">
+            {t("createCourse.upload.selectFiles")}
+          </Label>
           <Input
             id="videos-upload"
             type="file"
@@ -385,14 +412,14 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
             disabled={isUploading}
           />
           <p className="text-xs text-muted-foreground">
-            Supported formats: MP4, MOV, AVI, etc. Max 100MB per file
+            {t("createCourse.upload.hint")}
           </p>
         </div>
 
         {files.length > 0 && (
           <div className="border rounded-lg p-4 space-y-2">
             <h4 className="font-medium text-sm">
-              Selected Files ({files.length}):
+              {t("createCourse.upload.selectedFiles", { count: files.length })}
             </h4>
             <div className="max-h-32 overflow-y-auto space-y-1">
               {files.map((file, index) => (
@@ -414,7 +441,7 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
       <div className="flex justify-between pt-4">
         <div className="flex gap-2">
           <Button onClick={onClose} variant="outline" disabled={isUploading}>
-            Skip for now
+            {t("createCourse.buttons.skipNow")}
           </Button>
         </div>
         <Button
@@ -423,7 +450,9 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
           className="min-w-24"
         >
           {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isUploading ? "Uploading..." : "Finish"}
+          {isUploading
+            ? t("createCourse.buttons.uploading")
+            : t("createCourse.buttons.finish")}
         </Button>
       </div>
     </div>
