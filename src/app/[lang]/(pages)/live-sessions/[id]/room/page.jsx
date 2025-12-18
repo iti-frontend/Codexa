@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from '@/hooks/useLiveSessions';
 import liveSessionService from '@/services/liveSessionService';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Video, Users, ArrowLeft, PhoneOff, Mic, MicOff, Video as VideoIcon, VideoOff, MonitorUp, MessageSquare, BarChart2, Power } from 'lucide-react';
+import { Loader2, Video, Users, ArrowLeft, PhoneOff, Mic, MicOff, Video as VideoIcon, VideoOff, MonitorUp, MessageSquare, BarChart2, Power, Maximize, Minimize } from 'lucide-react';
 import { toast } from 'sonner';
 import PollComponent from '@/components/live-sessions/PollComponent';
 import CreatePollComponent from '@/components/live-sessions/CreatePollComponent';
@@ -33,7 +33,7 @@ import {
 } from "@100mslive/react-sdk";
 
 // Inner component that uses HMS hooks
-function LiveRoomContent({ session, sessionId }) {
+function LiveRoomContent({ session, sessionId, refetchSession }) {
   const router = useRouter();
   const hmsActions = useHMSActions();
   const notification = useHMSNotifications();
@@ -47,6 +47,29 @@ function LiveRoomContent({ session, sessionId }) {
 
   const [joining, setJoining] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const videoContainerRef = useRef(null);
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      videoContainerRef.current?.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+    };
+  }, []);
 
   // ✅ Utility function to filter duplicate peers
   const getUniquePeers = (peersList) => {
@@ -254,9 +277,9 @@ function LiveRoomContent({ session, sessionId }) {
     </div>
 
     <div className="lg:col-span-2 space-y-6">
-      <Card className="overflow-hidden border-2 bg-black">
+      <div ref={videoContainerRef} className="overflow-hidden border-2 bg-black rounded-xl shadow-sm flex flex-col">
         {/* Video Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 min-h-[400px]">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 p-4 min-h-[400px] flex-1 ${isFullScreen ? 'h-full' : ''}`}>
           {getUniquePeers(peers).map((peer) => (
             <VideoTile key={peer.id} peer={peer} />
           ))}
@@ -302,6 +325,15 @@ function LiveRoomContent({ session, sessionId }) {
             <MonitorUp className="w-5 h-5" />
           </Button>
 
+          <Button 
+            variant="outline" 
+            size="icon"
+            className="rounded-full w-12 h-12"
+            onClick={toggleFullScreen}
+          >
+            {isFullScreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+          </Button>
+
           {/* Leave / End Buttons */}
           <div className="flex items-center gap-2 ml-4 border-l pl-4">
               <Button 
@@ -325,7 +357,7 @@ function LiveRoomContent({ session, sessionId }) {
               )}
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Session Info (Collapsed when joined) */}
       <div className="flex items-center justify-between text-sm text-muted-foreground px-2">
@@ -357,9 +389,8 @@ function LiveRoomContent({ session, sessionId }) {
                         <CreatePollComponent 
                             sessionId={sessionId} 
                             onPollCreated={() => {
-                                // Ideally trigger a refresh of session data here
-                                // For now, we can perhaps assume socket/polling or just toast
-                                window.location.reload(); // Temporary brute force refresh to show new poll
+                                // Refresh session data without reloading the page
+                                refetchSession();
                             }} 
                         />
                     )}
@@ -422,7 +453,7 @@ export default function LiveRoomPage() {
   const router = useRouter();
   const sessionId = params.id;
 
-  const { session, loading: sessionLoading } = useSession(sessionId);
+  const { session, loading: sessionLoading, refetch } = useSession(sessionId);
 
   if (sessionLoading) {
     return (
@@ -449,7 +480,7 @@ export default function LiveRoomPage() {
         <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Content is handled inside LiveRoomContent to access HMS hooks */}
-            <LiveRoomContent session={session} sessionId={sessionId} />
+            <LiveRoomContent session={session} sessionId={sessionId} refetchSession={refetch} />
           </div>
         </div>
       </div>
