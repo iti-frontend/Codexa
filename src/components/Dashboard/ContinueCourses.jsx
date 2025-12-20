@@ -16,6 +16,7 @@ import EmptyCourses from "./EmptyCourses";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useParams } from "next/navigation";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 
 export default function ContinueWatching() {
@@ -33,7 +34,7 @@ export default function ContinueWatching() {
             </div>
         );
     }
-    
+
     if (!courses.length) {
         return (
             <EmptyCourses courses={courses} />
@@ -89,10 +90,12 @@ export default function ContinueWatching() {
                                         </CardContent>
 
                                         <CardFooter className="flex items-center gap-3 py-2 px-3 border border-t-2">
-                                            <img
+                                            <OptimizedImg
                                                 src={course.instructor?.profileImage || "https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"}
                                                 alt={course.instructor?.name}
-                                                className="w-9 h-9 rounded-full object-cover"
+                                                fallbackSrc="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
+                                                containerClassName="w-9 h-9 rounded-full overflow-hidden"
+                                                className="w-full h-full object-cover"
                                             />
                                             <span className="text-sm text-primary font-medium">
                                                 {course.instructor?.name}

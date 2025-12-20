@@ -31,6 +31,7 @@ import api from "@/lib/axios";
 import { useFavouritesStore } from "@/store/useFavouritesStore";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 export default function CourseDetailsPage() {
   const { t } = useTranslation();
@@ -71,9 +72,9 @@ export default function CourseDetailsPage() {
   const moveToCart = async (courseId) => {
     try {
       setAddingToCart(true);
-      
+
       await api.post("/cart", { courseId });
-      
+
       toast.success(t('explore.toast.addedToCart'), {
         description: t('explore.toast.addedDescription'),
         duration: 3000,
@@ -102,8 +103,8 @@ export default function CourseDetailsPage() {
       console.error("Error fetching course details:", err);
       setError(
         err.response?.data?.message ||
-          err.message ||
-          t('courseDetailsPage.errorTitle')
+        err.message ||
+        t('courseDetailsPage.errorTitle')
       );
     } finally {
       setLoading(false);
@@ -118,7 +119,7 @@ export default function CourseDetailsPage() {
       const result = await toggleFavouriteInStore(course._id);
 
       if (result.success) {
-        const message = result.status === "added" 
+        const message = result.status === "added"
           ? t('courseDetailsPage.pricing.addToFavourites')
           : t('courseDetailsPage.pricing.removeFromFavourites');
         toast.success(message);
@@ -225,10 +226,12 @@ export default function CourseDetailsPage() {
             {/* Course Image */}
             <div className="relative rounded-lg overflow-hidden bg-muted">
               {course.coverImage ? (
-                <img
+                <OptimizedImg
                   src={course.coverImage?.url || "/auth/login.png"}
                   alt={course.title}
-                  className="w-full h-96 object-cover"
+                  fallbackSrc="/auth/login.png"
+                  containerClassName="w-full h-96"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-96 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
@@ -253,9 +256,8 @@ export default function CourseDetailsPage() {
                   className="bg-background/80 backdrop-blur-sm hover:bg-background"
                 >
                   <Heart
-                    className={`h-5 w-5 ${
-                      isFavourite ? "fill-red-500 text-red-500" : ""
-                    }`}
+                    className={`h-5 w-5 ${isFavourite ? "fill-red-500 text-red-500" : ""
+                      }`}
                   />
                 </Button>
               </div>

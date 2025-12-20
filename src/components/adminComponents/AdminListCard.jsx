@@ -16,14 +16,15 @@ import {
 import { useAdminDeleteUsers } from "@/hooks/useAdminDelete";
 import { toast } from "sonner";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 export default function AdminListCard({
   items = [],
   itemKey = "name",
   itemImageKey = "profileImage",
   itemSubKey = "email",
-  onView = () => {},
-  onRefetch = () => {},
+  onView = () => { },
+  onRefetch = () => { },
   role = "",
 }) {
   const { t } = useTranslation();
@@ -145,8 +146,8 @@ export default function AdminListCard({
             {deleting
               ? t("admin.users.list.deleting")
               : t("admin.users.list.deletePermanently", {
-                  count: selected.length,
-                })}
+                count: selected.length,
+              })}
           </Button>
         )}
       </div>
@@ -187,10 +188,12 @@ export default function AdminListCard({
 
               {/* Avatar */}
               {item[itemImageKey] ? (
-                <img
+                <OptimizedImg
                   src={item[itemImageKey]}
-                  className="w-12 h-12 rounded-full object-cover border"
                   alt={item[itemKey]}
+                  fallbackSrc="/auth/login.png"
+                  containerClassName="w-12 h-12 rounded-full overflow-hidden border"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">

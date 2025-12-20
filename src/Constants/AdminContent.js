@@ -7,11 +7,16 @@ export const AdminStatsCards = [
     { title: "admin.stats.totalRevenue", key: "totalRevenue", icon: DollarSign },
 ];
 
-export const ChartData = [
-    { month: "Jan", revenue: 1200 },
-    { month: "Feb", revenue: 1600 },
-    { month: "Mar", revenue: 2200 },
-    { month: "Apr", revenue: 1900 },
-    { month: "May", revenue: 2600 },
-    { month: "Jun", revenue: 3100 },
-];
+// Default profit distribution data (until backend integration)
+// Platform takes 30%, Instructors get 70%
+export const ProfitDistributionConfig = {
+    platformCommission: 0.30, // 30% platform commission
+    defaultTotalRevenue: 12600, // Default total revenue for display
+};
+
+// Pre-calculated default values for display
+export const DefaultProfitData = {
+    totalRevenue: 12600,
+    platformProfit: 3780, // 30% of 12600
+    instructorProfit: 8820, // 70% of 12600
+};

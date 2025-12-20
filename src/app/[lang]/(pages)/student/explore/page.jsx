@@ -35,6 +35,7 @@ import {
 import api from "@/lib/axios";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 export default function Explore() {
   const { t, i18n } = useTranslation();
@@ -72,21 +73,21 @@ export default function Explore() {
 
   const addToCart = async (courseId, event) => {
     event.stopPropagation();
-    
+
     try {
       setAddingToCart(prev => ({ ...prev, [courseId]: true }));
-      
+
       await api.post("/cart", { courseId });
-      
+
       toast.success(t('explore.toast.addedToCart'), {
         description: t('explore.toast.addedDescription'),
         duration: 3000,
       });
-      
+
     } catch (error) {
       console.error("Error adding to cart:", error);
       const errorMessage = error.response?.data?.message || t('explore.toast.failedToAdd');
-      
+
       toast.error(t('explore.toast.failedToAdd'), {
         description: errorMessage,
         duration: 4000,
@@ -341,10 +342,12 @@ export default function Explore() {
                 {/* Course Image */}
                 <div className="relative overflow-hidden bg-muted">
                   {course.coverImage ? (
-                    <img
+                    <OptimizedImg
                       src={course.coverImage?.url || "/auth/login.png"}
                       alt={course.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      fallbackSrc="/auth/login.png"
+                      containerClassName="w-full h-48"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
                     <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
@@ -403,7 +406,7 @@ export default function Explore() {
                   <div className="flex items-baseline gap-1">
                     <span className="text-2xl font-bold">${course.price}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Button
                       size="sm"
@@ -424,7 +427,7 @@ export default function Explore() {
                         </>
                       )}
                     </Button>
-                    
+
                     <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>
                 </CardFooter>

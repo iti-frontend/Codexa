@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useInstructorCourse } from "@/hooks/useInstructorCourse";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 function InstructorsActivity() {
   const { t } = useTranslation();
@@ -40,13 +41,15 @@ function InstructorsActivity() {
           >
             <div className="flex gap-4 items-start w-full sm:w-auto">
               <div className="relative shrink-0">
-                <img
+                <OptimizedImg
                   src={
                     course.coverImage.url ??
                     "https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
                   }
                   alt={course.title}
-                  className="w-14 h-14 object-cover rounded-xl border border-border shadow-sm shrink-0"
+                  fallbackSrc="https://static.vecteezy.com/system/resources/previews/024/914/580/non_2x/course-icon-vector.jpg"
+                  containerClassName="w-14 h-14 rounded-xl overflow-hidden border border-border shadow-sm shrink-0"
+                  className="w-full h-full object-cover"
                 />
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border border-background" />
               </div>

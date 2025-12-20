@@ -19,6 +19,7 @@ import { toast } from "sonner";
 
 import { useAdminCourses } from "@/hooks/useAdminCourses";
 import { useAdminDeleteCourse } from "@/hooks/useAdminDelete";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 import CourseDetailsDrawer from "@/components/adminComponents/CourseDetailsDrawer";
 import { DeleteConfirmDialog } from "@/components/adminComponents/DeleteConfirmDialog";
@@ -92,8 +93,8 @@ export default function AdminCoursesPage() {
   const handleScroll = (e) => {
     const bottom =
       e.currentTarget.scrollHeight -
-        e.currentTarget.scrollTop -
-        e.currentTarget.clientHeight <
+      e.currentTarget.scrollTop -
+      e.currentTarget.clientHeight <
       50;
 
     if (bottom) {
@@ -163,10 +164,12 @@ export default function AdminCoursesPage() {
                 key={course._id}
                 className="rounded-2xl overflow-hidden border hover:shadow-lg hover:scale-[1.03] transition-transform duration-300"
               >
-                <img
+                <OptimizedImg
                   src={course.coverImage?.url}
                   alt={course.title}
-                  className="w-full h-40 object-cover"
+                  fallbackSrc="/auth/login.png"
+                  containerClassName="w-full h-40"
+                  className="w-full h-full object-cover"
                 />
 
                 <CardContent className="p-4 space-y-3">
@@ -185,10 +188,12 @@ export default function AdminCoursesPage() {
                   {/* Instructor */}
                   {course.instructor && (
                     <div className="flex items-center gap-3 pt-2">
-                      <img
+                      <OptimizedImg
                         src={course.instructor.profileImage}
                         alt={course.instructor.name}
-                        className="w-8 h-8 rounded-full object-cover border"
+                        fallbackSrc="/auth/login.png"
+                        containerClassName="w-8 h-8 rounded-full overflow-hidden border"
+                        className="w-full h-full object-cover"
                       />
                       <span className="text-sm font-medium">
                         {course.instructor.name}
