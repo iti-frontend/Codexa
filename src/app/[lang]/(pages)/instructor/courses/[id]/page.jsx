@@ -58,6 +58,7 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 export default function CourseDetailsPage() {
   const { t } = useTranslation();
@@ -548,9 +549,11 @@ function CoverImageSection({ course, onUploadImage }) {
     <div className="relative w-full h-80 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background border shadow-lg group">
       {course.coverImage?.url ? (
         <>
-          <img
+          <OptimizedImg
             src={course.coverImage.url}
             alt={course.title}
+            fallbackSrc="/auth/login.png"
+            containerClassName="w-full h-full"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -738,10 +741,10 @@ function DetailsCard({ course }) {
           value={
             course.createdAt
               ? new Date(course.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : "N/A"
           }
         />
@@ -751,10 +754,10 @@ function DetailsCard({ course }) {
           value={
             course.updatedAt
               ? new Date(course.updatedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : "N/A"
           }
         />
@@ -776,10 +779,12 @@ function InstructorCard({ course }) {
       </h2>
       <div className="flex items-center gap-4">
         {course.instructor.profileImage ? (
-          <img
-            src={"/auth/login.png"}
+          <OptimizedImg
+            src={course.instructor.profileImage}
             alt={course.instructor.name}
-            className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
+            fallbackSrc="/auth/login.png"
+            containerClassName="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20"
+            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
@@ -1219,10 +1224,12 @@ function UploadCoverImageDialog({
                 {t("instructor.courseDetails.currentCover")}
               </Label>
               <div className="border rounded-lg overflow-hidden">
-                <img
+                <OptimizedImg
                   src={currentCoverImage}
                   alt="Current cover"
-                  className="w-full h-32 object-cover"
+                  fallbackSrc="/auth/login.png"
+                  containerClassName="w-full h-32"
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>
@@ -1272,10 +1279,12 @@ function UploadCoverImageDialog({
                   </Button>
                 </div>
                 <div className="border rounded-lg overflow-hidden">
-                  <img
+                  <OptimizedImg
                     src={imagePreview}
                     alt="Preview"
-                    className="w-full h-40 object-cover"
+                    fallbackSrc="/auth/login.png"
+                    containerClassName="w-full h-40"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <p className="text-xs text-muted-foreground truncate">

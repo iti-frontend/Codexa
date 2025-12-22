@@ -28,6 +28,7 @@ import { useAdminDeleteCourse } from "@/hooks/useAdminDelete";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 export default function CourseDetailsDrawer({
     open,
@@ -128,10 +129,12 @@ export default function CourseDetailsDrawer({
 
                             {/* COVER + TITLE */}
                             <div className="flex flex-col items-center gap-3 text-center">
-                                <img
+                                <OptimizedImg
                                     src={course.coverImage?.url}
                                     alt={course.title}
-                                    className="w-full h-48 object-cover rounded-xl shadow"
+                                    fallbackSrc="/auth/login.png"
+                                    containerClassName="w-full h-48 rounded-xl shadow overflow-hidden"
+                                    className="w-full h-full object-cover"
                                 />
 
                                 <h2 className="text-xl font-semibold">{course.title}</h2>
@@ -147,32 +150,32 @@ export default function CourseDetailsDrawer({
 
                             {/* DETAILS */}
                             <Section>
-                                <InfoRow 
-                                    icon={<BadgeDollarSign />} 
-                                    label={t("admin.courses.drawer.price")} 
-                                    value={`$${course.price}`} 
+                                <InfoRow
+                                    icon={<BadgeDollarSign />}
+                                    label={t("admin.courses.drawer.price")}
+                                    value={`$${course.price}`}
                                 />
-                                <InfoRow 
-                                    icon={<Layers />} 
-                                    label={t("admin.courses.drawer.level")} 
-                                    value={course.level} 
+                                <InfoRow
+                                    icon={<Layers />}
+                                    label={t("admin.courses.drawer.level")}
+                                    value={course.level}
                                 />
-                                <InfoRow 
-                                    icon={<Tag />} 
-                                    label={t("admin.courses.drawer.status")} 
-                                    value={course.status} 
+                                <InfoRow
+                                    icon={<Tag />}
+                                    label={t("admin.courses.drawer.status")}
+                                    value={course.status}
                                 />
-                                <InfoRow 
-                                    icon={<Info />} 
-                                    label={t("admin.courses.drawer.prerequisites")} 
-                                    value={course.prerequisites || "—"} 
+                                <InfoRow
+                                    icon={<Info />}
+                                    label={t("admin.courses.drawer.prerequisites")}
+                                    value={course.prerequisites || "—"}
                                 />
 
                                 <InfoRow
                                     icon={<Calendar />}
                                     label={t("admin.courses.drawer.createdAt")}
-                                    value={course.statistics?.createdAt 
-                                        ? new Date(course.statistics.createdAt).toLocaleDateString() 
+                                    value={course.statistics?.createdAt
+                                        ? new Date(course.statistics.createdAt).toLocaleDateString()
                                         : "—"
                                     }
                                 />
@@ -180,8 +183,8 @@ export default function CourseDetailsDrawer({
                                 <InfoRow
                                     icon={<Calendar />}
                                     label={t("admin.courses.drawer.lastUpdate")}
-                                    value={course.statistics?.updatedAt 
-                                        ? new Date(course.statistics.updatedAt).toLocaleDateString() 
+                                    value={course.statistics?.updatedAt
+                                        ? new Date(course.statistics.updatedAt).toLocaleDateString()
                                         : "—"
                                     }
                                 />
@@ -245,7 +248,7 @@ export default function CourseDetailsDrawer({
                                     onClick={() => setShowDeleteDialog(true)}
                                 >
                                     <Trash size={16} />
-                                    {deleteLoading 
+                                    {deleteLoading
                                         ? t("admin.courses.deleting")
                                         : t("admin.courses.drawer.deleteCourse")
                                     }

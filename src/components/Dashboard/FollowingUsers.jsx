@@ -5,6 +5,7 @@ import { followingUsers } from "@/Constants/StudentContent";
 import { Button } from "../ui/button";
 import { UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 function FollowingUsers() {
     const { t } = useTranslation();
@@ -30,10 +31,12 @@ function FollowingUsers() {
                         className="flex justify-between items-center rounded-xl bg-background/60 p-4 cursor-pointer"
                     >
                         <div className="flex items-center gap-3">
-                            <img
+                            <OptimizedImg
                                 src="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
                                 alt={user.name}
-                                className="w-12 h-12 lg:w-12 lg:h-12 object-cover rounded-full"
+                                fallbackSrc="https://static.vecteezy.com/system/resources/previews/036/885/313/non_2x/blue-profile-icon-free-png.png"
+                                containerClassName="w-12 h-12 lg:w-12 lg:h-12 rounded-full overflow-hidden"
+                                className="w-full h-full object-cover"
                             />
                             <div className="flex flex-col gap-1">
                                 <p className="font-bold text-foreground">{user.name}</p>

@@ -7,6 +7,7 @@ import useProfile from "@/hooks/useProfile";
 import api from "@/lib/axios";
 import { ENDPOINTS } from "@/Constants/api-endpoints";
 import Cookies from "js-cookie";
+import { OptimizedImg } from "@/components/ui/optimized-image";
 
 
 export default function ProfileEditCard() {
@@ -184,10 +185,12 @@ export default function ProfileEditCard() {
                         <label className="block text-gray-200 mb-2">{t('profile.edit.profileImage')}</label>
                         <div className="flex flex-col sm:flex-row items-center gap-4">
                             {imagePreview && (
-                                <img
+                                <OptimizedImg
                                     src={imagePreview}
                                     alt="Preview"
-                                    className="w-24 h-24 rounded-full object-cover border border-gray-500 shadow-sm cursor-pointer"
+                                    fallbackSrc="/auth/login.png"
+                                    containerClassName="w-24 h-24 rounded-full overflow-hidden border border-gray-500 shadow-sm cursor-pointer"
+                                    className="w-full h-full object-cover"
                                 />
                             )}
                             <input
