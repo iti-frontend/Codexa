@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from 'react-i18next';
 import {
   Search,
@@ -10,7 +10,10 @@ import {
   X,
   ShoppingCart,
   Loader2,
+  ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
+import { useStudentCourses } from "@/hooks/useStudentCourses";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +53,19 @@ export default function Explore() {
 
   // Get current language from pathname
   const currentLang = pathname.split('/')[1] || 'en';
+
+  // Fetch enrolled courses to check ownership
+  const { courses: enrolledCourses, loading: enrolledLoading } = useStudentCourses();
+
+  // Create a Set of enrolled course IDs for O(1) lookup
+  const enrolledCourseIds = useMemo(() => {
+    return new Set(enrolledCourses.map(course => course._id));
+  }, [enrolledCourses]);
+
+  // Helper function to check if a course is purchased
+  const isPurchased = (courseId) => {
+    return enrolledCourseIds.has(courseId);
+  };
 
   useEffect(() => {
     fetchCourses();
@@ -98,6 +114,10 @@ export default function Explore() {
   };
 
   const handleCourseClick = (courseId) => {
+    if (isPurchased(courseId)) {
+      router.push(`/${currentLang}/student/courses/${courseId}`);
+      return;
+    }
     // Make sure we're using the correct path with student prefix
     const coursePath = `/${currentLang}/student/explore/${courseId}`;
     console.log('Navigating to:', coursePath); // For debugging
@@ -382,7 +402,7 @@ export default function Explore() {
                   </CardTitle>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-1">
                   <CardDescription className="line-clamp-2">
                     {course.description}
                   </CardDescription>
@@ -408,25 +428,40 @@ export default function Explore() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
-                      onClick={(e) => addToCart(course._id, e)}
-                      disabled={addingToCart[course._id]}
-                    >
-                      {addingToCart[course._id] ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span className="hidden sm:inline">{t('explore.adding')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingCart className="h-4 w-4" />
-                          <span className="hidden sm:inline">{t('explore.addToCart')}</span>
-                        </>
-                      )}
-                    </Button>
+                    {isPurchased(course._id) ? (
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="flex items-center gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/${currentLang}/student/courses/${course._id}`);
+                        }}
+                      >
+                        <BookOpen className="h-4 w-4" />
+                        <span className="hidden sm:inline">{t('explore.goToCourseAction')}</span>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex items-center gap-2 hover:bg-primary hover:text-white transition-colors"
+                        onClick={(e) => addToCart(course._id, e)}
+                        disabled={addingToCart[course._id]}
+                      >
+                        {addingToCart[course._id] ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span className="hidden sm:inline">{t('explore.adding')}</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart className="h-4 w-4" />
+                            <span className="hidden sm:inline">{t('explore.addToCart')}</span>
+                          </>
+                        )}
+                      </Button>
+                    )}
 
                     <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>

@@ -1,6 +1,6 @@
 "use client";
 import ContinueCourses from "@/components/Dashboard/ContinueCourses";
-import FollowingUsers from "@/components/Dashboard/FollowingUsers";
+import SavedCourses from "@/components/Dashboard/SavedCourses";
 import StudentActivity from "@/components/Dashboard/StudentActivity";
 import StudentHeader from "@/components/Dashboard/StudentHeader";
 function StudentDashboard() {
@@ -14,7 +14,7 @@ function StudentDashboard() {
             </div>
 
             <div className="flex flex-col gap-8 w-full xl:col-span-4">
-                <FollowingUsers />
+                <SavedCourses />
             </div>
         </div>
     );
