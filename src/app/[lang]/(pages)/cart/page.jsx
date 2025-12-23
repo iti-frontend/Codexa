@@ -284,11 +284,6 @@ export default function Cart() {
                         <p className="text-xs text-gray-600 text-center mt-3">
                             {t("cart.noCharge")}
                         </p>
-
-                        <button className="w-full flex items-center justify-center gap-2 px-6 py-3 mt-4 bg-white hover:bg-gray-50 text-primary text-base font-bold border border-primary rounded-lg">
-                            <Tag className="w-4 h-4" />
-                            {t("cart.coupon")}
-                        </button>
                     </div>
                 </div>
             ) : (
