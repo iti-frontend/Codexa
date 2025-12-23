@@ -3,7 +3,7 @@
 import InstructorPerformance from "@/components/Dashboard/InstructorPerformance";
 import InstructorsActivity from "@/components/Dashboard/InstructorsActivity";
 import QuickLinks from "@/components/Dashboard/QuickLinks";
-import RecentActivity from "@/components/Dashboard/RecentActivity";
+import CommunityPosts from "@/components/Dashboard/CommunityPosts";
 
 export default function InstructorDashboard() {
     return (
@@ -15,7 +15,7 @@ export default function InstructorDashboard() {
 
             <div className="flex flex-col gap-8 w-full xl:col-span-4">
                 <QuickLinks />
-                <RecentActivity />
+                <CommunityPosts />
             </div>
         </div>
     );
