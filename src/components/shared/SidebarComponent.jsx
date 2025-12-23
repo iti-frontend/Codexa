@@ -13,14 +13,26 @@ import { cn } from "@/lib/utils";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import AiChatWidget from "../ai/AiChatWidget";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/ui/badge";
+import { useLiveSessions } from "@/hooks/useLiveSessions";
+
 function SidebarComponent({ Links, side = "left", ToolsLinks }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
   const { handleLogout } = useAuthStore();
   const pathName = usePathname();
   const router = useRouter();
   const { t } = useTranslation();
+
+  // Fetch live sessions to check for active status
+  const { sessions, refetch } = useLiveSessions();
+  const hasActiveSession = sessions?.some((session) => session.status === "live");
+
+  // Refetch sessions when pathname changes to keep status updated
+  useEffect(() => {
+    refetch();
+  }, [pathName, refetch]);
 
   const logOut = () => {
     handleLogout();
@@ -48,6 +60,11 @@ function SidebarComponent({ Links, side = "left", ToolsLinks }) {
           >
             <Link href={link.href} className="items-center gap-2 font-semibold">
               <link.icon size={18} /> {t(`sidebar.${link.nameKey}`)}
+              {link.nameKey === "liveSessions" && hasActiveSession && (
+                <Badge className="bg-transparent animate-pulse border-none">
+                  🔴
+                </Badge>
+              )}
             </Link>
           </Button>
         ))}
