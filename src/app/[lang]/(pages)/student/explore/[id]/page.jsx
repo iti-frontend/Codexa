@@ -406,7 +406,7 @@ export default function CourseDetailsPage() {
                               <PlayCircle className="h-4 w-4 text-muted-foreground" />
                               <div className="flex-1 min-w-0">
                                 <p className="font-medium truncate">
-                                  {video.title}
+                                  {video.title.split(" ").slice(0, 7).join(" ")}
                                 </p>
                               </div>
                             </div>
