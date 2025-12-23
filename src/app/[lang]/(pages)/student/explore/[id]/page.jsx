@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   BookOpen,
@@ -45,7 +45,7 @@ export default function CourseDetailsPage() {
   const [addingToCart, setAddingToCart] = useState(false);
 
   // Get current language from pathname
-  const currentLang = pathname.split('/')[1] || 'en';
+  const currentLang = pathname.split("/")[1] || "en";
 
   const {
     toggleFavourite: toggleFavouriteInStore,
@@ -63,7 +63,7 @@ export default function CourseDetailsPage() {
   }, [initialized, initializeFavourites]);
 
   useEffect(() => {
-    console.log('Course ID from params:', params?.id);
+    console.log("Course ID from params:", params?.id);
     if (params?.id) {
       fetchCourseDetails();
     }
@@ -75,14 +75,15 @@ export default function CourseDetailsPage() {
 
       await api.post("/cart", { courseId });
 
-      toast.success(t('explore.toast.addedToCart'), {
-        description: t('explore.toast.addedDescription'),
+      toast.success(t("explore.toast.addedToCart"), {
+        description: t("explore.toast.addedDescription"),
         duration: 3000,
       });
     } catch (error) {
       console.error("Error moving to cart:", error);
-      toast.error(t('explore.toast.failedToAdd'), {
-        description: error.response?.data?.message || t('explore.toast.failedToAdd'),
+      toast.error(t("explore.toast.failedToAdd"), {
+        description:
+          error.response?.data?.message || t("explore.toast.failedToAdd"),
         duration: 4000,
       });
     } finally {
@@ -95,16 +96,16 @@ export default function CourseDetailsPage() {
       setLoading(true);
       setError(null);
 
-      console.log('Fetching course details for ID:', params.id);
+      console.log("Fetching course details for ID:", params.id);
       const res = await api.get(`/courses/${params.id}`);
-      console.log('Course data received:', res.data);
+      console.log("Course data received:", res.data);
       setCourse(res.data);
     } catch (err) {
       console.error("Error fetching course details:", err);
       setError(
         err.response?.data?.message ||
-        err.message ||
-        t('courseDetailsPage.errorTitle')
+          err.message ||
+          t("courseDetailsPage.errorTitle")
       );
     } finally {
       setLoading(false);
@@ -119,9 +120,10 @@ export default function CourseDetailsPage() {
       const result = await toggleFavouriteInStore(course._id);
 
       if (result.success) {
-        const message = result.status === "added"
-          ? t('courseDetailsPage.pricing.addToFavourites')
-          : t('courseDetailsPage.pricing.removeFromFavourites');
+        const message =
+          result.status === "added"
+            ? t("courseDetailsPage.pricing.addToFavourites")
+            : t("courseDetailsPage.pricing.removeFromFavourites");
         toast.success(message);
       } else {
         console.error("Failed to toggle favourite:", result.error);
@@ -149,8 +151,12 @@ export default function CourseDetailsPage() {
   };
 
   const formatDuration = (videos) => {
-    if (!videos?.length) return `0 ${t('courseDetailsPage.videos')}`;
-    return `${videos.length} ${videos.length === 1 ? t('courseDetailsPage.video') : t('courseDetailsPage.videos')}`;
+    if (!videos?.length) return `0 ${t("courseDetailsPage.videos")}`;
+    return `${videos.length} ${
+      videos.length === 1
+        ? t("courseDetailsPage.video")
+        : t("courseDetailsPage.videos")
+    }`;
   };
 
   if (loading) {
@@ -187,14 +193,17 @@ export default function CourseDetailsPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-md">
-          <AlertTitle>{t('courseDetailsPage.errorTitle')}</AlertTitle>
+          <AlertTitle>{t("courseDetailsPage.errorTitle")}</AlertTitle>
           <AlertDescription className="mt-2">{error}</AlertDescription>
           <div className="flex gap-2 mt-4">
             <Button onClick={fetchCourseDetails} variant="outline">
-              {t('courseDetailsPage.tryAgain')}
+              {t("courseDetailsPage.tryAgain")}
             </Button>
-            <Button onClick={() => router.push(`/${currentLang}/student/explore`)} variant="ghost">
-              {t('courseDetailsPage.backToCourses')}
+            <Button
+              onClick={() => router.push(`/${currentLang}/student/explore`)}
+              variant="ghost"
+            >
+              {t("courseDetailsPage.backToCourses")}
             </Button>
           </div>
         </Alert>
@@ -217,7 +226,7 @@ export default function CourseDetailsPage() {
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          {t('courseDetailsPage.back')}
+          {t("courseDetailsPage.back")}
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -243,7 +252,9 @@ export default function CourseDetailsPage() {
                   {course.level}
                 </Badge>
                 {course.status === "public" && (
-                  <Badge variant="secondary">{t('courseDetailsPage.public')}</Badge>
+                  <Badge variant="secondary">
+                    {t("courseDetailsPage.public")}
+                  </Badge>
                 )}
               </div>
 
@@ -256,8 +267,9 @@ export default function CourseDetailsPage() {
                   className="bg-background/80 backdrop-blur-sm hover:bg-background"
                 >
                   <Heart
-                    className={`h-5 w-5 ${isFavourite ? "fill-red-500 text-red-500" : ""
-                      }`}
+                    className={`h-5 w-5 ${
+                      isFavourite ? "fill-red-500 text-red-500" : ""
+                    }`}
                   />
                 </Button>
               </div>
@@ -270,7 +282,7 @@ export default function CourseDetailsPage() {
                 {isFavourite && (
                   <Badge variant="default" className="bg-red-500 text-white">
                     <Heart className="h-3 w-3 mr-1 fill-white" />
-                    {t('courseDetailsPage.favourited')}
+                    {t("courseDetailsPage.favourited")}
                   </Badge>
                 )}
               </div>
@@ -283,7 +295,10 @@ export default function CourseDetailsPage() {
               <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  <span>{course.enrolledStudents?.length || 0} {t('courseDetailsPage.students')}</span>
+                  <span>
+                    {course.enrolledStudents?.length || 0}{" "}
+                    {t("courseDetailsPage.students")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <PlayCircle className="h-4 w-4" />
@@ -291,7 +306,7 @@ export default function CourseDetailsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span>
-                    {t('courseDetailsPage.lastUpdated')}{" "}
+                    {t("courseDetailsPage.lastUpdated")}{" "}
                     {new Date(course.updatedAt).toLocaleDateString()}
                   </span>
                 </div>
@@ -303,15 +318,23 @@ export default function CourseDetailsPage() {
             {/* Tabs Content */}
             <Tabs defaultValue="overview" className="w-full">
               <TabsList className="w-full justify-start">
-                <TabsTrigger value="overview">{t('courseDetailsPage.tabs.overview')}</TabsTrigger>
-                <TabsTrigger value="content">{t('courseDetailsPage.tabs.content')}</TabsTrigger>
-                <TabsTrigger value="instructor">{t('courseDetailsPage.tabs.instructor')}</TabsTrigger>
+                <TabsTrigger value="overview">
+                  {t("courseDetailsPage.tabs.overview")}
+                </TabsTrigger>
+                <TabsTrigger value="content">
+                  {t("courseDetailsPage.tabs.content")}
+                </TabsTrigger>
+                <TabsTrigger value="instructor">
+                  {t("courseDetailsPage.tabs.instructor")}
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{t('courseDetailsPage.overview.about')}</CardTitle>
+                    <CardTitle>
+                      {t("courseDetailsPage.overview.about")}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground leading-relaxed">
@@ -323,7 +346,9 @@ export default function CourseDetailsPage() {
                 {course.prerequisites && (
                   <Card>
                     <CardHeader>
-                      <CardTitle>{t('courseDetailsPage.overview.prerequisites')}</CardTitle>
+                      <CardTitle>
+                        {t("courseDetailsPage.overview.prerequisites")}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground">
@@ -335,7 +360,9 @@ export default function CourseDetailsPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>{t('courseDetailsPage.overview.whatYouLearn')}</CardTitle>
+                    <CardTitle>
+                      {t("courseDetailsPage.overview.whatYouLearn")}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
@@ -343,7 +370,8 @@ export default function CourseDetailsPage() {
                         <li key={video._id} className="flex items-start gap-3">
                           <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <span className="text-muted-foreground">
-                            {t('courseDetailsPage.overview.masterConcepts')} {video.title}
+                            {t("courseDetailsPage.overview.masterConcepts")}{" "}
+                            {video.title.split(" ").slice(0, 7).join(" ")}
                           </span>
                         </li>
                       ))}
@@ -355,9 +383,12 @@ export default function CourseDetailsPage() {
               <TabsContent value="content" className="mt-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{t('courseDetailsPage.content.title')}</CardTitle>
+                    <CardTitle>
+                      {t("courseDetailsPage.content.title")}
+                    </CardTitle>
                     <CardDescription>
-                      {course.videos?.length || 0} {t('courseDetailsPage.content.lectures')}
+                      {course.videos?.length || 0}{" "}
+                      {t("courseDetailsPage.content.lectures")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -382,7 +413,7 @@ export default function CourseDetailsPage() {
                           ))
                         ) : (
                           <p className="text-muted-foreground text-center py-8">
-                            {t('courseDetailsPage.content.noVideos')}
+                            {t("courseDetailsPage.content.noVideos")}
                           </p>
                         )}
                       </div>
@@ -394,7 +425,9 @@ export default function CourseDetailsPage() {
               <TabsContent value="instructor" className="mt-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{t('courseDetailsPage.instructor.about')}</CardTitle>
+                    <CardTitle>
+                      {t("courseDetailsPage.instructor.about")}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-start gap-4">
@@ -406,10 +439,11 @@ export default function CourseDetailsPage() {
                       </Avatar>
                       <div className="space-y-2">
                         <h3 className="text-xl font-semibold">
-                          {course.instructor?.name || t('courseDetailsPage.instructor.unknownInstructor')}
+                          {course.instructor?.name ||
+                            t("courseDetailsPage.instructor.unknownInstructor")}
                         </h3>
                         <p className="text-muted-foreground">
-                          {t('courseDetailsPage.instructor.expertIn')}{" "}
+                          {t("courseDetailsPage.instructor.expertIn")}{" "}
                           {course.category}
                         </p>
                       </div>
@@ -436,7 +470,9 @@ export default function CourseDetailsPage() {
                   onClick={() => moveToCart(course._id)}
                   disabled={addingToCart}
                 >
-                  {addingToCart ? t('courseDetailsPage.pricing.addingToCart') : t('courseDetailsPage.pricing.addToCart')}
+                  {addingToCart
+                    ? t("courseDetailsPage.pricing.addingToCart")
+                    : t("courseDetailsPage.pricing.addToCart")}
                 </Button>
 
                 {/* Favourite Button */}
@@ -453,12 +489,12 @@ export default function CourseDetailsPage() {
                   {isFavourite ? (
                     <>
                       <Heart className="h-4 w-4 mr-2 fill-white" />
-                      {t('courseDetailsPage.pricing.removeFromFavourites')}
+                      {t("courseDetailsPage.pricing.removeFromFavourites")}
                     </>
                   ) : (
                     <>
                       <Heart className="h-4 w-4 mr-2" />
-                      {t('courseDetailsPage.pricing.addToFavourites')}
+                      {t("courseDetailsPage.pricing.addToFavourites")}
                     </>
                   )}
                 </Button>
@@ -466,7 +502,9 @@ export default function CourseDetailsPage() {
                 <Separator />
 
                 <div className="space-y-3">
-                  <h4 className="font-semibold">{t('courseDetailsPage.pricing.includes')}</h4>
+                  <h4 className="font-semibold">
+                    {t("courseDetailsPage.pricing.includes")}
+                  </h4>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center gap-3">
                       <PlayCircle className="h-4 w-4" />
@@ -474,15 +512,19 @@ export default function CourseDetailsPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <Download className="h-4 w-4" />
-                      <span>{t('courseDetailsPage.pricing.downloadableResources')}</span>
+                      <span>
+                        {t("courseDetailsPage.pricing.downloadableResources")}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="h-4 w-4" />
-                      <span>{t('courseDetailsPage.pricing.lifetimeAccess')}</span>
+                      <span>
+                        {t("courseDetailsPage.pricing.lifetimeAccess")}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Share2 className="h-4 w-4" />
-                      <span>{t('courseDetailsPage.pricing.certificate')}</span>
+                      <span>{t("courseDetailsPage.pricing.certificate")}</span>
                     </div>
                   </div>
                 </div>
@@ -491,7 +533,7 @@ export default function CourseDetailsPage() {
 
                 <Button variant="ghost" className="w-full">
                   <Share2 className="h-4 w-4 mr-2" />
-                  {t('courseDetailsPage.pricing.share')}
+                  {t("courseDetailsPage.pricing.share")}
                 </Button>
               </CardContent>
             </Card>
@@ -499,7 +541,9 @@ export default function CourseDetailsPage() {
             {/* Instructor Card */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">{t('courseDetailsPage.tabs.instructor')}</CardTitle>
+                <CardTitle className="text-lg">
+                  {t("courseDetailsPage.tabs.instructor")}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
@@ -511,10 +555,11 @@ export default function CourseDetailsPage() {
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">
-                      {course.instructor?.name || t('courseDetailsPage.instructor.unknownInstructor')}
+                      {course.instructor?.name ||
+                        t("courseDetailsPage.instructor.unknownInstructor")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {t('courseDetailsPage.instructor.expertInstructor')}
+                      {t("courseDetailsPage.instructor.expertInstructor")}
                     </p>
                   </div>
                 </div>
