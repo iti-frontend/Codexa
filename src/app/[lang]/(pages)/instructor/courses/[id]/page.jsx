@@ -603,14 +603,6 @@ function StatsSection({ course }) {
       borderColor: "border-emerald-200 dark:border-emerald-900",
     },
     {
-      label: t("instructor.courseDetails.duration"),
-      value: course.duration || "N/A",
-      icon: Clock,
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-950/30",
-      borderColor: "border-blue-200 dark:border-blue-900",
-    },
-    {
       label: t("instructor.courseDetails.enrolledStudents"),
       value: course.enrolledStudents?.length || 0,
       icon: Users,
@@ -741,10 +733,10 @@ function DetailsCard({ course }) {
           value={
             course.createdAt
               ? new Date(course.createdAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
               : "N/A"
           }
         />
@@ -754,10 +746,10 @@ function DetailsCard({ course }) {
           value={
             course.updatedAt
               ? new Date(course.updatedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
               : "N/A"
           }
         />
