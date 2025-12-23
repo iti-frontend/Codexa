@@ -2,7 +2,7 @@
 import React from "react";
 import SidebarComponent from "@/components/shared/SidebarComponent";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
-import { getAdminLinks, getInstructorLinks, getStudentsLinks, getToolsLinks } from "@/Constants/sidebar-links";
+import { getAdminLinks, getInstructorLinks, getStudentsLinks } from "@/Constants/sidebar-links";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import Cookies from "js-cookie";
@@ -22,14 +22,13 @@ function PagesLayout({ children, params }) {
   // اختيار اللينكس حسب الدور مع تمرير اللغة
   const Links = selectedRole === "Admin" ? getAdminLinks(lang)
     : selectedRole === "Instructor" ? getInstructorLinks(lang)
-    : getStudentsLinks(lang);
-  
-  const ToolsLinks = getToolsLinks(lang);
+      : getStudentsLinks(lang);
+
 
   return (
     <SidebarProvider>
       {/* Sidebar */}
-      <SidebarComponent side={sidebarSide} Links={Links} ToolsLinks={ToolsLinks} />
+      <SidebarComponent side={sidebarSide} Links={Links} />
 
       {/* Main Content - استخدام SidebarInset عشان ياخد المساحة الصح */}
       <SidebarInset>

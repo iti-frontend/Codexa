@@ -14,7 +14,6 @@ import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import AiChatWidget from "../ai/AiChatWidget";
 import { useState } from "react";
-import { ToolsLinks } from "@/Constants/sidebar-links";
 import { useTranslation } from "react-i18next";
 function SidebarComponent({ Links, side = "left", ToolsLinks }) {
   const [isAiOpen, setIsAiOpen] = useState(false);
@@ -49,25 +48,6 @@ function SidebarComponent({ Links, side = "left", ToolsLinks }) {
           >
             <Link href={link.href} className="items-center gap-2 font-semibold">
               <link.icon size={18} /> {t(`sidebar.${link.nameKey}`)}
-            </Link>
-          </Button>
-        ))}
-        <h6 className="px-3 pt-4 text-sm text-foreground/70">
-          {t("sidebar.tools")}
-        </h6>
-        {ToolsLinks.map((tool, index) => (
-          <Button
-            key={index}
-            asChild
-            className={cn(
-              "justify-start",
-              pathName === tool.href &&
-                "bg-primary-foreground text-primary/80 hover:bg-primary-foreground hover:text-primary/80"
-            )}
-            variant="ghost"
-          >
-            <Link href={tool.href} className="items-center gap-2 font-semibold">
-              <tool.icon size={18} /> {t(`sidebar.${tool.nameKey}`)}
             </Link>
           </Button>
         ))}

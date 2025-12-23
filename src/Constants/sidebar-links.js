@@ -66,10 +66,10 @@ export const getStudentsLinks = (lang = 'en') => {
     { icon: Home, nameKey: "home", href: `${stu}` },
     { icon: Video, nameKey: "myCourses", href: `${stu}/courses` },
     { icon: Grid2x2X, nameKey: "exploreMore", href: `${stu}/explore` },
-    { icon: Award, nameKey: "certifications", href: `${stu}/certifications` },
     { icon: Users, nameKey: "community", href: `/${lang}/community` },
     { icon: Radio, nameKey: "liveSessions", href: `/${lang}/live-sessions` },
     { icon: CheckCircleIcon, nameKey: "todos", href: `/${lang}/todo` },
+    { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
     { icon: ShoppingCart, nameKey: "cart", href: `/${lang}/cart` }
   ];
 };
@@ -86,10 +86,10 @@ export const getAdminLinks = (lang = 'en') => {
 };
 
 // Tools SideBar Links
-export const getToolsLinks = (lang = 'en') => [
-  { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
-];
+// export const getToolsLinks = (lang = 'en') => [
+//   { icon: Bookmark, nameKey: "saved", href: `/${lang}/saved` },
+// ];
 export const InstructorLinks = getInstructorLinks('en');
 export const StudentsLinks = getStudentsLinks('en');
 export const AdminLinks = getAdminLinks('en');
-export const ToolsLinks = getToolsLinks('en');
+// export const ToolsLinks = getToolsLinks('en');
