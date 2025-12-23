@@ -157,6 +157,7 @@
         "unknownInstructor": "Unknown Instructor",
         "addToCart": "Add to Cart",
         "adding": "Adding...",
+        "goToCourseAction": "Go to Course",
         "toast": {
             "addedToCart": "Added to cart!",
             "addedDescription": "Course has been added to your cart successfully.",
