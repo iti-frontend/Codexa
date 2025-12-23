@@ -402,7 +402,7 @@ export default function Explore() {
                   </CardTitle>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-1">
                   <CardDescription className="line-clamp-2">
                     {course.description}
                   </CardDescription>
