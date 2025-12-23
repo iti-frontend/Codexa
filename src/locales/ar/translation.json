@@ -155,6 +155,7 @@
         "unknownInstructor": "مدرس غير معروف",
         "addToCart": "أضف للسلة",
         "adding": "جاري الإضافة...",
+        "goToCourseAction": "انتقل للدورة",
         "toast": {
             "addedToCart": "تمت الإضافة للسلة!",
             "addedDescription": "تمت إضافة الدورة إلى سلة التسوق بنجاح.",
