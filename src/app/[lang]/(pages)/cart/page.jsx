@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Heart, ArrowRight, Tag, Star } from "lucide-react";
 import api from "@/lib/axios";
@@ -19,6 +19,21 @@ export default function Cart() {
         fetchCart();
         fetchWishlist();
     }, []);
+
+    // Calculate total price on client side to ensure accuracy
+    const calculatedTotal = useMemo(() => {
+        if (!cart?.courses || cart.courses.length === 0) {
+            return 0;
+        }
+
+        const total = cart.courses.reduce((sum, course) => {
+            const price = parseFloat(course.price) || 0;
+            return sum + price;
+        }, 0);
+
+        // Return with 2 decimal places
+        return total.toFixed(2);
+    }, [cart?.courses]);
 
     const fetchCart = async () => {
         try {
@@ -255,7 +270,7 @@ export default function Cart() {
                         </p>
 
                         <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                            £E{cart.totalPrice || "0.00"}
+                            £E{calculatedTotal}
                         </h2>
 
                         <button
