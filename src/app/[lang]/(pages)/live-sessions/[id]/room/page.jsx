@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from '@/hooks/useLiveSessions';
 import liveSessionService from '@/services/liveSessionService';
@@ -74,9 +74,9 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
     };
   }, []);
 
-  // ✅ Utility function to filter duplicate peers
-  const getUniquePeers = (peersList) => {
-    return peersList.reduce((acc, peer) => {
+  // ✅ Memoized utility function to filter duplicate peers
+  const getUniquePeers = useMemo(() => {
+    return peers.reduce((acc, peer) => {
       const userId = peer.customerUserId || peer.name;
       const existingIndex = acc.findIndex(p => 
         (p.customerUserId || p.name) === userId
@@ -91,7 +91,7 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
       
       return acc;
     }, []);
-  };
+  }, [peers]);
 
   // Handle Room Ended Notification (For Students)
   useEffect(() => {
@@ -290,7 +290,7 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
                 {isRecording && <Badge className="bg-red-700 animate-pulse flex items-center gap-1"><Disc className="w-3 h-3" /> REC</Badge>}
                 <SessionTimer startedAt={session.startedAt} />
                 <span className="text-sm text-muted-foreground">
-                    {getUniquePeers(peers).length} Live Viewers
+                    {getUniquePeers.length} Live Viewers
                 </span>
                 </div>
             </div>
@@ -302,7 +302,7 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
       <div ref={videoContainerRef} className="overflow-hidden border-2 bg-black rounded-xl shadow-sm flex flex-col">
         {/* Video Grid - Responsive Layout */}
         {(() => {
-          const uniquePeers = getUniquePeers(peers);
+          const uniquePeers = getUniquePeers;
           const screenShares = uniquePeers.flatMap(peer => 
             peer.auxiliaryTracks?.map(trackId => ({ peer, trackId })) || []
           );
@@ -525,43 +525,36 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
             
             <TabsContent value="people" className="flex-1 mt-2 overflow-y-auto">
                 <Card className="p-4">
-                    {(() => {
-                        const uniquePeers = getUniquePeers(peers);
-                        return (
-                            <>
-                                <h3 className="font-semibold mb-4">In this room ({uniquePeers.length})</h3>
-                                <div className="space-y-3">
-                                    {uniquePeers.map((peer) => {
-                                        let meta = {};
-                                        try {
-                                            meta = peer.metadata ? JSON.parse(peer.metadata) : {};
-                                        } catch (e) {
-                                            // Ignore parsing errors
-                                        }
+                    <h3 className="font-semibold mb-4">In this room ({getUniquePeers.length})</h3>
+                    <div className="space-y-3">
+                        {getUniquePeers.map((peer) => {
+                            let meta = {};
+                            try {
+                                meta = peer.metadata ? JSON.parse(peer.metadata) : {};
+                            } catch (e) {
+                                // Ignore parsing errors
+                            }
 
-                                        return (
-                                        <div key={peer.id} className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden relative border text-primary font-bold">
-                                                {meta.image ? (
-                                                    <img src={meta.image} alt={peer.name} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    peer.name?.charAt(0)
-                                                )}
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-medium">
-                                                    {peer.name} {peer.isLocal && '(You)'}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground capitalize">
-                                                    {peer.roleName}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    )})}
+                            return (
+                            <div key={peer.id} className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden relative border text-primary font-bold">
+                                    {meta.image ? (
+                                        <img src={meta.image} alt={peer.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                        peer.name?.charAt(0)
+                                    )}
                                 </div>
-                            </>
-                        );
-                    })()}
+                                <div>
+                                    <p className="text-sm font-medium">
+                                        {peer.name} {peer.isLocal && '(You)'}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground capitalize">
+                                        {peer.roleName}
+                                    </p>
+                                </div>
+                            </div>
+                        )})}
+                    </div>
                 </Card>
             </TabsContent>
         </Tabs>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -67,7 +67,7 @@ export default function ChatComponent({ sessionId, initialComments = [], current
     }
   }, [notification]);
 
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
@@ -124,9 +124,9 @@ export default function ChatComponent({ sessionId, initialComments = [], current
       toast.error('Failed to send message');
       console.error(error);
     }
-  };
+  }, [newMessage, replyingTo, editingComment, sessionId, hmsActions]);
 
-  const handleDelete = async (commentId, isReply = false, parentId = null) => {
+  const handleDelete = useCallback(async (commentId, isReply = false, parentId = null) => {
       if(!confirm("Are you sure you want to delete this message?")) return;
 
       try {
@@ -149,7 +149,7 @@ export default function ChatComponent({ sessionId, initialComments = [], current
       } catch (error) {
           toast.error("Failed to delete message");
       }
-  };
+  }, [sessionId]);
 
   const startReply = (comment) => {
       setReplyingTo(comment._id);

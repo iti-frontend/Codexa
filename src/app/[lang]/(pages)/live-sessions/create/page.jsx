@@ -143,35 +143,35 @@ export default function CreateSessionPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-3xl">
       {/* Back Button */}
-      <Button asChild variant="ghost" className="mb-6">
+      <Button asChild variant="ghost" className="mb-4 sm:mb-6 -ml-2 sm:ml-0">
         <Link href="/live-sessions">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Sessions
+          <span className="text-sm sm:text-base">Back to Sessions</span>
         </Link>
       </Button>
 
       {/* Loading state while fetching session data */}
       {loadingSession ? (
-        <Card className="border-2">
-          <CardContent className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary mr-3" />
-            <span className="text-lg">Loading session data...</span>
+        <Card className="border-2 shadow-sm">
+          <CardContent className="flex flex-col items-center justify-center py-12 sm:py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
+            <span className="text-base sm:text-lg font-medium text-muted-foreground">Loading session data...</span>
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-2">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Video className="w-6 h-6 text-primary" />
+        <Card className="border-2 shadow-sm overflow-hidden">
+          <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="p-3 bg-primary/10 rounded-xl w-fit">
+                <Video className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
-              <div>
-                <CardTitle className="text-2xl">
+              <div className="space-y-1">
+                <CardTitle className="text-xl sm:text-2xl font-bold tracking-tight">
                   {isEditMode ? 'Edit Live Session' : 'Create Live Session'}
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-sm sm:text-base">
                   {isEditMode 
                     ? 'Update your live session details' 
                     : 'Schedule a new live session for your students'}
@@ -180,38 +180,39 @@ export default function CreateSessionPage() {
             </div>
           </CardHeader>
 
-          <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <CardContent className="p-4 sm:p-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
             {/* Title */}
             <div className="space-y-2">
-              <Label htmlFor="title">
+              <Label htmlFor="title" className="text-sm sm:text-base font-semibold">
                 Session Title <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="title"
                 placeholder="e.g., Introduction to React Hooks"
                 {...register('title', { required: 'Title is required' })}
-                className={errors.title ? 'border-destructive' : ''}
+                className={`h-10 sm:h-12 text-sm sm:text-base ${errors.title ? 'border-destructive ring-destructive/20' : ''}`}
               />
               {errors.title && (
-                <p className="text-sm text-destructive">{errors.title.message}</p>
+                <p className="text-xs sm:text-sm text-destructive font-medium">{errors.title.message}</p>
               )}
             </div>
 
             {/* Description */}
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="text-sm sm:text-base font-semibold">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Describe what you'll cover in this session..."
                 rows={4}
+                className="text-sm sm:text-base resize-none"
                 {...register('description')}
               />
             </div>
 
             {/* Session Type */}
             <div className="space-y-2">
-              <Label>
+              <Label className="text-sm sm:text-base font-semibold">
                 Session Type <span className="text-destructive">*</span>
               </Label>
               <Select 
@@ -219,58 +220,61 @@ export default function CreateSessionPage() {
                 onValueChange={setSessionType}
                 disabled={isEditMode}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="public">
-                    <div className="flex items-center gap-2">
-                      <span>🌍</span>
-                      <div>
-                        <p className="font-medium">Public</p>
-                        <p className="text-xs text-muted-foreground">Anyone can join</p>
+                    <div className="flex items-start gap-3 py-1">
+                      <span className="text-lg">🌍</span>
+                      <div className="text-left">
+                        <p className="font-semibold text-sm sm:text-base">Public</p>
+                        <p className="text-xs text-muted-foreground">Open to everyone on the platform</p>
                       </div>
                     </div>
                   </SelectItem>
                   <SelectItem value="private">
-                    <div className="flex items-center gap-2">
-                      <span>🔒</span>
-                      <div>
-                        <p className="font-medium">Private</p>
-                        <p className="text-xs text-muted-foreground">Only enrolled students</p>
+                    <div className="flex items-start gap-3 py-1">
+                      <span className="text-lg">🔒</span>
+                      <div className="text-left">
+                        <p className="font-semibold text-sm sm:text-base">Private</p>
+                        <p className="text-xs text-muted-foreground">Exclusive to enrolled course students</p>
                       </div>
                     </div>
                   </SelectItem>
                 </SelectContent>
               </Select>
               {isEditMode && (
-                <p className="text-xs text-muted-foreground">
-                  Session type cannot be changed after creation
+                <p className="text-xs text-muted-foreground mt-1">
+                  Session type is locked for existing sessions
                 </p>
               )}
             </div>
 
             {/* Course Selection (if private) */}
             {sessionType === 'private' && (
-              <div className="space-y-2">
-                <Label htmlFor="courseName">
+              <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                <Label htmlFor="courseName" className="text-sm sm:text-base font-semibold">
                   Select Course <span className="text-destructive">*</span>
                 </Label>
                 {loadingCourses ? (
-                  <div className="flex items-center justify-center p-4 border rounded-md">
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    <span className="text-sm text-muted-foreground">Loading courses...</span>
+                  <div className="flex items-center justify-center p-6 border-2 border-dashed rounded-xl bg-muted/20">
+                    <Loader2 className="w-5 h-5 mr-3 animate-spin text-primary" />
+                    <span className="text-sm sm:text-base text-muted-foreground font-medium">Fetching your courses...</span>
                   </div>
                 ) : courses.length === 0 ? (
-                  <div className="p-4 border rounded-md bg-muted/50">
-                    <p className="text-sm text-muted-foreground">
-                      No courses found. Please create a course first.
+                  <div className="p-6 border-2 border-dashed rounded-xl bg-destructive/5 text-center">
+                    <p className="text-sm sm:text-base text-destructive font-semibold mb-1">
+                      No active courses found
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      You need to create a course before scheduling a private session.
                     </p>
                   </div>
                 ) : (
                   <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a course" />
+                    <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base">
+                      <SelectValue placeholder="Which course is this for?" />
                     </SelectTrigger>
                     <SelectContent>
                       {courses.map((course) => (
@@ -281,29 +285,26 @@ export default function CreateSessionPage() {
                     </SelectContent>
                   </Select>
                 )}
-                {sessionType === 'private' && !selectedCourse && (
-                  <p className="text-sm text-destructive">Please select a course</p>
+                {sessionType === 'private' && !selectedCourse && !loadingCourses && courses.length > 0 && (
+                  <p className="text-xs sm:text-sm text-destructive font-medium">Assignment to a course is required</p>
                 )}
-                <p className="text-xs text-muted-foreground">
-                  Only students enrolled in this course will be able to join
-                </p>
               </div>
             )}
 
             {/* Date & Time */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Date Picker */}
               <div className="space-y-2">
-                <Label>
+                <Label className="text-sm sm:text-base font-semibold">
                   Date <span className="text-destructive">*</span>
                 </Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
+                      className="w-full h-10 sm:h-12 justify-start text-left font-normal text-sm sm:text-base"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                       {date ? format(date, 'PPP') : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
@@ -312,8 +313,9 @@ export default function CreateSessionPage() {
                       mode="single"
                       selected={date}
                       onSelect={setDate}
-                      disabled={(date) => date < new Date()}
+                      disabled={(date) => date < new Date().setHours(0,0,0,0)}
                       initialFocus
+                      className="rounded-md border shadow"
                     />
                   </PopoverContent>
                 </Popover>
@@ -321,51 +323,62 @@ export default function CreateSessionPage() {
 
               {/* Time Picker */}
               <div className="space-y-2">
-                <Label htmlFor="time">
+                <Label htmlFor="time" className="text-sm sm:text-base font-semibold">
                   Time <span className="text-destructive">*</span>
                 </Label>
-                <Input
-                  id="time"
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="time"
+                    type="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="h-10 sm:h-12 text-sm sm:text-base"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Preview */}
-            <div className="bg-muted/50 rounded-lg p-4 border">
-              <p className="text-sm font-medium mb-2">Scheduled for:</p>
-              <p className="text-lg font-semibold">
-                {format(date, 'EEEE, MMMM dd, yyyy')} at {time}
+            <div className="bg-primary/5 rounded-xl p-4 sm:p-5 border-2 border-primary/10 shadow-sm transition-all hover:bg-primary/10">
+              <div className="flex items-center gap-3 mb-2 sm:mb-3">
+                <div className="p-2 bg-primary/20 rounded-lg">
+                  <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-primary uppercase tracking-wider">Scheduled for</p>
+              </div>
+              <p className="text-base sm:text-xl font-bold text-foreground">
+                {format(date, 'EEEE, MMMM dd, yyyy')}
+              </p>
+              <p className="text-lg sm:text-2xl font-black text-primary mt-1">
+                {time}
               </p>
             </div>
 
             {/* Submit Button */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 sm:pt-6">
               <Button
                 type="button"
                 variant="outline"
-                className="flex-1"
+                className="w-full sm:flex-1 h-10 sm:h-12 order-2 sm:order-1"
                 onClick={() => router.back()}
                 disabled={loading}
               >
-                Cancel
+                Discard Changes
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
+                className="w-full sm:flex-1 h-10 sm:h-12 order-1 sm:order-2 shadow-lg shadow-primary/20"
                 disabled={loading}
               >
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {isEditMode ? 'Updating...' : 'Creating...'}
+                    {isEditMode ? 'Updating...' : 'Scheduling...'}
                   </>
                 ) : (
                   <>
                     <Video className="w-4 h-4 mr-2" />
-                    {isEditMode ? 'Update Session' : 'Create Session'}
+                    {isEditMode ? 'Update Session' : 'Launch Session'}
                   </>
                 )}
               </Button>

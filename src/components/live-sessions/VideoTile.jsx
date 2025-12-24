@@ -1,12 +1,13 @@
+import { memo } from 'react';
 import { useVideo } from "@100mslive/react-sdk";
 
-export default function VideoTile({ peer, trackId, isScreenShare = false }) {
+const VideoTile = memo(function VideoTile({ peer, trackId, isScreenShare = false, className = '' }) {
   const { videoRef } = useVideo({
     trackId: trackId || peer.videoTrack
   });
 
   return (
-    <div className={`relative bg-gray-900 rounded-lg overflow-hidden border border-gray-800 ${isScreenShare ? 'col-span-full aspect-video' : 'aspect-video'}`}>
+    <div className={`relative bg-gray-900 rounded-lg overflow-hidden border border-gray-800 ${isScreenShare ? 'col-span-full aspect-video' : 'aspect-video'} ${className}`}>
       <video
         ref={videoRef}
         autoPlay
@@ -23,4 +24,15 @@ export default function VideoTile({ peer, trackId, isScreenShare = false }) {
       </div>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison function - only re-render if these change
+  return (
+    prevProps.peer.id === nextProps.peer.id &&
+    prevProps.peer.isLocal === nextProps.peer.isLocal &&
+    prevProps.peer.videoTrack === nextProps.peer.videoTrack &&
+    prevProps.trackId === nextProps.trackId &&
+    prevProps.isScreenShare === nextProps.isScreenShare
+  );
+});
+
+export default VideoTile;

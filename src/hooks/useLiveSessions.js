@@ -15,7 +15,10 @@ export const useLiveSessions = (filters = {}) => {
             setError(null);
         } catch (err) {
             setError(err.message);
-            toast.error('Failed to load sessions');
+            // Don't show toast for HTTP/2 ping errors or canceled requests
+            if (err.code !== 'ERR_HTTP2_PING_FAILED' && err.name !== 'CanceledError') {
+                toast.error('Failed to load sessions');
+            }
         } finally {
             setLoading(false);
         }
@@ -43,7 +46,9 @@ export const useSession = (id) => {
             setError(null);
         } catch (err) {
             setError(err.message);
-            toast.error('Failed to load session');
+            if (err.code !== 'ERR_HTTP2_PING_FAILED' && err.name !== 'CanceledError') {
+                toast.error('Failed to load session');
+            }
         } finally {
             setLoading(false);
         }
@@ -69,7 +74,9 @@ export const useInstructorDashboard = () => {
             setError(null);
         } catch (err) {
             setError(err.message);
-            toast.error('Failed to load dashboard');
+            if (err.code !== 'ERR_HTTP2_PING_FAILED' && err.name !== 'CanceledError') {
+                toast.error('Failed to load dashboard');
+            }
         } finally {
             setLoading(false);
         }
