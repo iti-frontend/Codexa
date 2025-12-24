@@ -300,23 +300,100 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
 
     <div className="lg:col-span-2 space-y-6">
       <div ref={videoContainerRef} className="overflow-hidden border-2 bg-black rounded-xl shadow-sm flex flex-col">
-        {/* Video Grid */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 p-4 min-h-[400px] flex-1 ${isFullScreen ? 'h-full' : ''}`}>
-          {getUniquePeers(peers).map((peer) => (
-            <VideoTile key={peer.id} peer={peer} />
-          ))}
-          {/* Render Screen Shares */}
-          {getUniquePeers(peers).map((peer) => (
-             peer.auxiliaryTracks?.map((trackId) => (
-               <VideoTile key={trackId} peer={peer} trackId={trackId} isScreenShare={true} />
-             ))
-          ))}
-          {peers.length === 0 && (
-            <div className="col-span-full flex items-center justify-center text-white/50 h-full">
-              Waiting for others to join...
+        {/* Video Grid - Responsive Layout */}
+        {(() => {
+          const uniquePeers = getUniquePeers(peers);
+          const screenShares = uniquePeers.flatMap(peer => 
+            peer.auxiliaryTracks?.map(trackId => ({ peer, trackId })) || []
+          );
+          const hasScreenShare = screenShares.length > 0;
+
+          // Full screen with screen share: screen on left, participants on right
+          if (isFullScreen && hasScreenShare) {
+            return (
+              <div className="flex h-full gap-2 p-2">
+                {/* Screen Share - Left Side (Main) */}
+                <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
+                  {screenShares.map(({ peer, trackId }) => (
+                    <VideoTile 
+                      key={trackId} 
+                      peer={peer} 
+                      trackId={trackId} 
+                      isScreenShare={true}
+                      className="h-full"
+                    />
+                  ))}
+                </div>
+                
+                {/* Participants - Right Sidebar */}
+                <div className="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 flex flex-col gap-2 overflow-y-auto">
+                  {uniquePeers.map((peer) => (
+                    <VideoTile 
+                      key={peer.id} 
+                      peer={peer}
+                      className="aspect-video"
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          // Full screen without screen share: responsive grid
+          if (isFullScreen) {
+            const gridCols = uniquePeers.length === 1 ? 'grid-cols-1' :
+                           uniquePeers.length === 2 ? 'grid-cols-1 sm:grid-cols-2' :
+                           uniquePeers.length <= 4 ? 'grid-cols-1 sm:grid-cols-2' :
+                           uniquePeers.length <= 6 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' :
+                           'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
+            
+            return (
+              <div className={`grid ${gridCols} gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 h-full overflow-y-auto`}>
+                {uniquePeers.map((peer) => (
+                  <VideoTile key={peer.id} peer={peer} />
+                ))}
+                {screenShares.map(({ peer, trackId }) => (
+                  <VideoTile 
+                    key={trackId} 
+                    peer={peer} 
+                    trackId={trackId} 
+                    isScreenShare={true}
+                  />
+                ))}
+                {peers.length === 0 && (
+                  <div className="col-span-full flex items-center justify-center text-white/50 h-full">
+                    Waiting for others to join...
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          // Normal mode (not full screen): responsive grid
+          const gridCols = uniquePeers.length === 1 ? 'grid-cols-1' :
+                         'grid-cols-1 sm:grid-cols-2';
+          
+          return (
+            <div className={`grid ${gridCols} gap-3 sm:gap-4 p-3 sm:p-4 min-h-[400px] flex-1`}>
+              {uniquePeers.map((peer) => (
+                <VideoTile key={peer.id} peer={peer} />
+              ))}
+              {screenShares.map(({ peer, trackId }) => (
+                <VideoTile 
+                  key={trackId} 
+                  peer={peer} 
+                  trackId={trackId} 
+                  isScreenShare={true}
+                />
+              ))}
+              {peers.length === 0 && (
+                <div className="col-span-full flex items-center justify-center text-white/50 h-full">
+                  Waiting for others to join...
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          );
+        })()}
 
         {/* Controls */}
         <div className="p-4 bg-card border-t flex items-center justify-center gap-4 flex-wrap">

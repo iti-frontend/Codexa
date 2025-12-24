@@ -163,11 +163,11 @@ export default function InstructorDashboardPage() {
               {dashboard.recentSessions.map((session) => (
                 <div
                   key={session._id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                  className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 sm:p-5 md:p-6 border rounded-lg hover:bg-muted/50 transition-colors"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-lg">{session.title}</h3>
+                  <div className="flex-1 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                      <h3 className="font-semibold text-base sm:text-lg">{session.title}</h3>
                       <Badge
                         variant={
                           session.status === "live"
@@ -176,38 +176,41 @@ export default function InstructorDashboardPage() {
                             ? "default"
                             : "secondary"
                         }
+                        className="w-fit"
                       >
                         {session.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground flex-wrap">
                       <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {format(
-                          new Date(session.scheduledAt),
-                          "MMM dd, yyyy - hh:mm a"
-                        )}
+                        <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="truncate">
+                          {format(
+                            new Date(session.scheduledAt),
+                            "MMM dd, yyyy - hh:mm a"
+                          )}
+                        </span>
                       </span>
                       {session.attendees > 0 && (
                         <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
+                          <Users className="w-3 h-3 sm:w-4 sm:h-4" />
                           {session.attendees} attendees
                         </span>
                       )}
                       {session.duration > 0 && (
                         <span className="flex items-center gap-1">
-                          <Video className="w-4 h-4" />
+                          <Video className="w-3 h-3 sm:w-4 sm:h-4" />
                           {session.duration} min
                         </span>
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
                     {session.status === "live" && (
                       <Button
                         asChild
                         size="sm"
-                        className="bg-red-500 hover:bg-red-600"
+                        className="bg-red-500 hover:bg-red-600 w-full sm:w-auto"
                       >
                         <Link href={`/live-sessions/${session._id}/room`}>
                           Join Live
@@ -215,7 +218,7 @@ export default function InstructorDashboardPage() {
                       </Button>
                     )}
                     {session.status === "ended" && (
-                      <Button asChild size="sm" variant="outline">
+                      <Button asChild size="sm" variant="outline" className="w-full sm:w-auto">
                         <Link
                           href={`/live-sessions/instructor/${session._id}/analytics`}
                         >
@@ -224,7 +227,7 @@ export default function InstructorDashboardPage() {
                         </Link>
                       </Button>
                     )}
-                    <Button asChild size="sm" variant="outline">
+                    <Button asChild size="sm" variant="outline" className="w-full sm:w-auto">
                       <Link href={`/live-sessions/${session._id}`}>
                         View Details
                       </Link>
