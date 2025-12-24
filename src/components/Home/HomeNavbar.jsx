@@ -6,7 +6,6 @@ import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTrigger,
 } from "../ui/sheet";
@@ -15,11 +14,29 @@ import { LanguageToggle } from "../ui/language-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+
 export default function HomeNavbar() {
   const { t } = useTranslation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="h-16 bg-background border-b sticky top-0 z-30">
+    <nav
+      className={cn(
+        "h-16 fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-background/80 backdrop-blur-md border-b shadow-sm"
+          : "bg-transparent border-transparent"
+      )}
+    >
       <div className="h-full flex items-center justify-between container mx-auto px-4 sm:px-6 lg:px-8">
         <Logo />
 
@@ -86,7 +103,7 @@ function HomeNavMenu(props) {
         return (
           <Button
             asChild
-            variant={"primary"}
+            variant={"ghost"}
             className={"!rounded-md justify-start"}
             key={item.href}
           >

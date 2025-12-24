@@ -2,10 +2,9 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, CirclePlay, Sparkles } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { HeroData } from "@/Constants/Home-data";
+import { ArrowRight, Play, Users, BookOpen, Award } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -13,89 +12,91 @@ const HomeHero = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
+    <section className="relative min-h-[85vh] overflow-hidden pt-24 pb-16 bg-gradient-to-b from-primary/5 to-background">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.15) 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
 
-      <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-        <div className="max-w-5xl mx-auto space-y-8">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex justify-center"
-          >
-            <Badge
-              variant="secondary"
-              className="gap-2 px-4 py-2 rounded-full border animate-bounce-slow"
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
             >
-              <Sparkles className="w-3 h-3 text-primary" />
-              {t("home.hero.badge")}
-            </Badge>
-          </motion.div>
+              {/* Badge */}
+              <Badge className="px-4 py-2 bg-primary/10 text-primary border-primary/20 text-sm">
+                ✨ {t("home.hero.badge")}
+              </Badge>
 
-          {/* Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-4"
-          >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center tracking-tight">
-              {t("home.hero.title")}{" "}
-              <span className="text-primary bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Codexa
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground text-center max-w-2xl mx-auto leading-relaxed">
-              {t("home.hero.subtitle")}
-            </p>
-          </motion.div>
+              {/* Main Heading */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
+                {t("home.hero.title")}{" "}
+                <span className="text-primary">Codexa</span>
+              </h1>
 
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            <Button
-              size="lg"
-              className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
-              asChild
+              <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+                {t("home.hero.subtitle")}
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Button size="lg" className="gap-2 text-base px-6 py-6" asChild>
+                  <Link href="/register">
+                    {t("home.hero.getStarted")}
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="gap-2 text-base px-6 py-6" asChild>
+                  <Link href="/login">
+                    <Play className="w-5 h-5" />
+                    {t("home.hero.exploreCourses")}
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="flex flex-wrap gap-8 pt-6">
+                {[
+                  { icon: Users, value: "50K+", label: t("home.stats.students") },
+                  { icon: BookOpen, value: "500+", label: t("home.stats.courses") },
+                  { icon: Award, value: "95%", label: t("home.stats.completion") },
+                ].map((stat, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <stat.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold">{stat.value}</div>
+                      <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative hidden lg:block"
             >
-              <Link href="/login">
-                {t("home.hero.getStarted")}
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="gap-2 hover:bg-primary/5 transition-all"
-              asChild
-            >
-              <a href="#courses">
-                <CirclePlay className="w-4 h-4" />
-                {t("home.hero.exploreCourses")}
-              </a>
-            </Button>
-          </motion.div>
-
-          {/* Feature Cards */}
-          <div className="grid sm:grid-cols-3 gap-8 pt-8">
-            {HeroData.map((item, index) => (
-              <HeroCard
-                key={index}
-                translationKey={item.translationKey}
-                icon={item.icon}
-                index={index}
-              />
-            ))}
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border">
+                <Image
+                  src="/Home_Images/image1.jpg"
+                  alt="Learning"
+                  width={700}
+                  height={550}
+                  className="w-full h-[500px] object-cover"
+                />
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -104,31 +105,3 @@ const HomeHero = () => {
 };
 
 export default HomeHero;
-
-function HeroCard({ icon: Icon, translationKey, index }) {
-  const { t } = useTranslation();
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-    >
-      <Card className="max-w-sm gap-2 shadow-lg rounded-2xl justify-center hover:shadow-xl hover:scale-105 transition-all duration-300 border-primary/10 hover:border-primary/30">
-        <CardHeader>
-          <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-3 w-fit rounded-full shadow border border-primary/20">
-            <Icon size={20} className="text-primary" />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <h3 className="text-xl font-bold text-primary/90">
-            {t(`home.hero.cards.${translationKey}.title`)}
-          </h3>
-          <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-            {t(`home.hero.cards.${translationKey}.description`)}
-          </p>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-}
