@@ -93,6 +93,7 @@ export function useInstructorCourse() {
           Authorization: `Bearer ${userToken}`,
           "Content-Type": "multipart/form-data",
         },
+        timeout: 1800000, // 30 minutes timeout for large video uploads
       });
 
       // Update the course in store with the new videos
