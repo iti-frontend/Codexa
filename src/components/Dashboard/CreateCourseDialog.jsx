@@ -377,10 +377,6 @@ function UploadVideoStep({ courseId, uploadCourseVideos, onClose }) {
         toast.error(t("createCourse.errors.notVideoFile", { name: file.name }));
         return false;
       }
-      if (file.size > 100 * 1024 * 1024) {
-        toast.error(t("createCourse.errors.fileTooLarge", { name: file.name }));
-        return false;
-      }
       return true;
     });
 
