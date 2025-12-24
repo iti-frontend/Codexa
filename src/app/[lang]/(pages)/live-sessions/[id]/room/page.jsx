@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Video, Users, ArrowLeft, PhoneOff, Mic, MicOff, Video as VideoIcon, VideoOff, MonitorUp, MessageSquare, BarChart2, Power, Maximize, Minimize } from 'lucide-react';
+import { Loader2, Video, Users, ArrowLeft, PhoneOff, Mic, MicOff, Video as VideoIcon, VideoOff, MonitorUp, MessageSquare, BarChart2, Power, Maximize, Minimize, Disc } from 'lucide-react';
 import { toast } from 'sonner';
 import PollComponent from '@/components/live-sessions/PollComponent';
 import CreatePollComponent from '@/components/live-sessions/CreatePollComponent';
@@ -29,7 +29,8 @@ import {
   selectIsLocalAudioEnabled,
   selectIsLocalVideoEnabled,
   selectLocalPeer,
-  selectIsLocalScreenShared
+  selectIsLocalScreenShared,
+  selectRecordingState
 } from "@100mslive/react-sdk";
 
 // Inner component that uses HMS hooks
@@ -44,6 +45,8 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
   const isAudioEnabled = useHMSStore(selectIsLocalAudioEnabled);
   const isVideoEnabled = useHMSStore(selectIsLocalVideoEnabled);
   const isScreenShared = useHMSStore(selectIsLocalScreenShared);
+  const recordingState = useHMSStore(selectRecordingState);
+  const isRecording = recordingState?.browser?.running;
 
   const [joining, setJoining] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -190,6 +193,24 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
     }
   };
 
+  const toggleRecording = async () => {
+    try {
+      if (isRecording) {
+        if (!confirm("Are you sure you want to stop the recording?")) return;
+        await hmsActions.stopRTMPAndRecording();
+        toast.success("Recording stopped");
+      } else {
+        await hmsActions.startRTMPOrRecording({
+          record: true // This starts 'Browser Recording' (Composite)
+        });
+        toast.success("Recording started");
+      }
+    } catch (error) {
+      console.error('Error toggling recording:', error);
+      toast.error(error.message || 'Failed to toggle recording');
+    }
+  };
+
   if (!isConnected) {
     return (
       <div className="lg:col-span-2 space-y-6">
@@ -266,6 +287,7 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
                 <h1 className="text-xl font-bold">{session.title}</h1>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                 <Badge className="bg-red-500 animate-pulse">🔴 LIVE</Badge>
+                {isRecording && <Badge className="bg-red-700 animate-pulse flex items-center gap-1"><Disc className="w-3 h-3" /> REC</Badge>}
                 <SessionTimer startedAt={session.startedAt} />
                 <span className="text-sm text-muted-foreground">
                     {getUniquePeers(peers).length} Live Viewers
@@ -324,6 +346,18 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
           >
             <MonitorUp className="w-5 h-5" />
           </Button>
+
+          {isHost && (
+            <Button 
+                variant={isRecording ? "destructive" : "outline"} 
+                size="icon"
+                className={`rounded-full w-12 h-12 ${isRecording ? 'animate-pulse' : ''}`}
+                onClick={toggleRecording}
+                title={isRecording ? "Stop Recording" : "Start Recording"}
+            >
+                <Disc className="w-5 h-5" />
+            </Button>
+          )}
 
           <Button 
             variant="outline" 
