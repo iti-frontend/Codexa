@@ -454,10 +454,22 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
                             <>
                                 <h3 className="font-semibold mb-4">In this room ({uniquePeers.length})</h3>
                                 <div className="space-y-3">
-                                    {uniquePeers.map((peer) => (
+                                    {uniquePeers.map((peer) => {
+                                        let meta = {};
+                                        try {
+                                            meta = peer.metadata ? JSON.parse(peer.metadata) : {};
+                                        } catch (e) {
+                                            // Ignore parsing errors
+                                        }
+
+                                        return (
                                         <div key={peer.id} className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
-                                                {peer.name?.charAt(0)}
+                                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden relative border text-primary font-bold">
+                                                {meta.image ? (
+                                                    <img src={meta.image} alt={peer.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    peer.name?.charAt(0)
+                                                )}
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium">
@@ -468,7 +480,7 @@ function LiveRoomContent({ session, sessionId, refetchSession }) {
                                                 </p>
                                             </div>
                                         </div>
-                                    ))}
+                                    )})}
                                 </div>
                             </>
                         );
