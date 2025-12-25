@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { Bot, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import AiChatWidget from "../ai/AiChatWidget";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { useLiveSessions } from "@/hooks/useLiveSessions";
@@ -25,14 +25,9 @@ function SidebarComponent({ Links, side = "left", ToolsLinks }) {
   const router = useRouter();
   const { t } = useTranslation();
 
-  // Fetch live sessions to check for active status
-  const { sessions, refetch } = useLiveSessions();
+  // Fetch live sessions to check for active status (uses cached data)
+  const { sessions } = useLiveSessions();
   const hasActiveSession = sessions?.some((session) => session.status === "live");
-
-  // Refetch sessions when pathname changes to keep status updated
-  useEffect(() => {
-    refetch();
-  }, [pathName, refetch]);
 
   const logOut = () => {
     handleLogout();
