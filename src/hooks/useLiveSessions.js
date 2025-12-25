@@ -1,31 +1,89 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import liveSessionService from '@/services/liveSessionService';
 import { toast } from 'sonner';
 
-export const useLiveSessions = (filters = {}) => {
-    const [sessions, setSessions] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+// Cache for sessions to prevent excessive API calls
+let sessionsCache = {
+    data: null,
+    timestamp: 0,
+    filters: null,
+};
 
-    const fetchSessions = async () => {
+const CACHE_DURATION = 30000; // 30 seconds cache
+
+export const useLiveSessions = (filters = {}, options = {}) => {
+    const { enablePolling = false, pollInterval = 30000 } = options;
+    const [sessions, setSessions] = useState(sessionsCache.data || []);
+    const [loading, setLoading] = useState(!sessionsCache.data);
+    const [error, setError] = useState(null);
+    const isFetching = useRef(false);
+    const pollIntervalRef = useRef(null);
+
+    const fetchSessions = useCallback(async (force = false) => {
+        const filtersKey = JSON.stringify(filters);
+        const now = Date.now();
+
+        // Check cache validity (unless forced)
+        if (!force &&
+            sessionsCache.data &&
+            sessionsCache.filters === filtersKey &&
+            (now - sessionsCache.timestamp) < CACHE_DURATION) {
+            setSessions(sessionsCache.data);
+            setLoading(false);
+            return;
+        }
+
+        // Prevent concurrent fetches
+        if (isFetching.current) return;
+        isFetching.current = true;
+
         try {
             setLoading(true);
             const data = await liveSessionService.getAllSessions(filters);
-            setSessions(data.sessions || []);
+            const sessionData = data.sessions || [];
+
+            // Update cache
+            sessionsCache = {
+                data: sessionData,
+                timestamp: Date.now(),
+                filters: filtersKey,
+            };
+
+            setSessions(sessionData);
             setError(null);
         } catch (err) {
             setError(err.message);
-            toast.error('Failed to load sessions');
+            // Only show toast on first error, not on cached/repeated errors
+            if (!sessionsCache.data) {
+                toast.error('Failed to load sessions');
+            }
         } finally {
             setLoading(false);
+            isFetching.current = false;
         }
-    };
+    }, [JSON.stringify(filters)]);
 
     useEffect(() => {
         fetchSessions();
-    }, [JSON.stringify(filters)]);
 
-    return { sessions, loading, error, refetch: fetchSessions };
+        // Optional polling (disabled by default)
+        if (enablePolling && pollInterval > 0) {
+            pollIntervalRef.current = setInterval(() => {
+                fetchSessions(true);
+            }, pollInterval);
+        }
+
+        return () => {
+            if (pollIntervalRef.current) {
+                clearInterval(pollIntervalRef.current);
+            }
+        };
+    }, [fetchSessions, enablePolling, pollInterval]);
+
+    // Force refetch function (bypasses cache)
+    const refetch = useCallback(() => fetchSessions(true), [fetchSessions]);
+
+    return { sessions, loading, error, refetch };
 };
 
 export const useSession = (id) => {
